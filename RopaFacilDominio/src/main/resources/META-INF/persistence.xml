@@ -3,6 +3,18 @@
   <persistence-unit name="ConexionPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>entidades.Producto</class>
+    <class>entidades.Categoria</class>
+    <class>entidades.Color</class>
+    <class>entidades.TipoPrenda</class>
+    <class>entidades.CajaAlmacenamiento</class>
+    <class>entidades.Proveedor</class>
+    <class>entidades.Talla</class>
+    <class>entidades.StockPorTalla</class>
+    <class>entidades.Compra</class>
+    <class>entidades.DetalleCompraProducto</class>
+    <class>entidades.DetalleCompraTalla</class>
+    <class>entidades.NuevoProducto</class>
+    <class>entidades.Reposicion</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ROPA_FACIL_252390?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
