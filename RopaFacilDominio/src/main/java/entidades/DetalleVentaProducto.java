@@ -130,5 +130,5 @@ public class DetalleVentaProducto implements Serializable {
      * @return Cadena con el detalle de venta de producto.
      */
     @Override
-    public String toString() {return precioVenta.toString();}
+    public String toString() {return String.format("%s, %s", venta.toString(), precioVenta.toString());}
 }

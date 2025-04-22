@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * Entidad Categoría. Se relaciona con Productos.
+ * Entidad Categoría. Se relaciona con Producto.
  * @author Leonardo Flores Leyva - 252390
  */
 @Entity
@@ -31,7 +31,7 @@ public class Categoria implements Serializable {
      */
     public Categoria() {}
     /**
-     * Contructor que recibe el nombre de la categoría.
+     * Contructor sin ID que recibe el nombre de la categoría.
      * @param categoria Nombre de la categoría.
      */
     public Categoria(String categoria) {this.categoria = categoria;}
@@ -56,12 +56,12 @@ public class Categoria implements Serializable {
     public String getCategoria() {return categoria;}
     /**
      * Establece el ID de la categoría.
-     * @param id ID de la categoría.
+     * @param id Nuevo ID de la categoría.
      */
     public void setId(Long id) {this.id = id;}
     /**
      * Establece el nombre de la categoría.
-     * @param categoria Nombre de la categoría.
+     * @param categoria Nuevo nombre de la categoría.
      */
     public void setCategoria(String categoria) {this.categoria = categoria;}
     /**

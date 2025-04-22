@@ -82,7 +82,7 @@ public class Producto implements Serializable {
      * Lista de stock de tallas del producto.
      */
     @OneToMany(mappedBy = "producto", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<StockPorTalla> tallas = new ArrayList<>();;
+    private List<StockPorTalla> tallas = new ArrayList<>();
     /**
      * Constructor por defecto del producto.
      */
@@ -168,52 +168,52 @@ public class Producto implements Serializable {
         }
     }
     /**
-     * Obtiene el ID del producto.
+     * Retiorna el ID del producto.
      * @return ID del producto.
      */
     public Long getId() {return id;}
     /**
-     * Obtiene el nombre del producto.
+     * Retiorna el nombre del producto.
      * @return Nombre del producto.
      */
     public String getNombre() {return nombre;}
     /**
-     * Obtiene el estado del producto.
+     * Retiorna el estado del producto.
      * @return Estado del producto.
      */
     public EstadoProducto getEstado() {return estado;}
     /**
-     * Obtiene el precio del producto.
+     * Retiorna el precio del producto.
      * @return Precio del producto.
      */
     public Double getPrecio() {return precio;}
     /**
-     * Obtiene la categoría del producto.
+     * Retiorna la categoría del producto.
      * @return Categoría del producto.
      */
     public Categoria getCategoria() {return categoria;}
     /**
-     * Obtiene el color del producto.
+     * Retiorna el color del producto.
      * @return Color del producto.
      */
     public Color getColor() {return color;}
     /**
-     * Obtiene el tipo del producto.
+     * Retiorna el tipo del producto.
      * @return Tipo del producto.
      */
     public TipoPrenda getTipo() {return tipo;}
     /**
-     * Obtiene la caja de almacenamiento del producto.
+     * Retiorna la caja de almacenamiento del producto.
      * @return Caja de almacenamiento del producto.
      */
     public CajaAlmacenamiento getCaja() {return caja;}
     /**
-     * Obtiene el proveedor del producto.
+     * Retiorna el proveedor del producto.
      * @return Proveedor del producto.
      */
     public Proveedor getProveedor() {return proveedor;}
     /**
-     * Obtiene la lista de stock de tallas del producto.
+     * Retiorna la lista de stock de tallas del producto.
      * @return Lista de stock de tallas del producto.
      */
     public List<StockPorTalla> getTallas() {return tallas;}
@@ -244,7 +244,7 @@ public class Producto implements Serializable {
     public void setCategoria(Categoria categoria) {this.categoria = categoria;}
     /**
      * Establece el color del producto.
-     * @param color 
+     * @param color Color del producto.
      */
     public void setColor(Color color) {this.color = color;}
     /**
@@ -299,7 +299,15 @@ public class Producto implements Serializable {
         if(!stockPorTalla.verificarProducto())
             stockPorTalla.setProducto(this);
     }
-    
+    /**
+     * Devuelve una cadena con la información del producto.
+     * @return Cadena con la información del producto.
+     */
     @Override
-    public String toString() {return nombre;}
+    public String toString() {
+        return String.format(
+                "%s, %s, %s, %s, %s, %s, %s", 
+                nombre, precio, estado, color.toString(), categoria.toString(), tipo.toString(), caja.toString()
+        );
+    }
 }

@@ -127,9 +127,9 @@ public class DetalleCompraProducto implements Serializable {
      */
     public boolean verificarCompra(){return compra != null;}
     /**
-     * Regresa una cadena con el detalle de compra de producto.
-     * @return Cadena con el detalle de compra de producto.
+     * Regresa una cadena con la información del detalle de compra de producto.
+     * @return Cadena con la información del detalle de compra de producto.
      */
     @Override
-    public String toString() {return precioCompraUnitario.toString();}
+    public String toString() {return String.format("%s, %s", compra.toString(), precioCompraUnitario.toString());}
 }

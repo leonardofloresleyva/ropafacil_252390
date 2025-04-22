@@ -31,12 +31,12 @@ public class Talla implements Serializable {
      */
     public Talla() {}
     /**
-     * Contructor que recibe el nombre de la talla.
+     * Contructor sin ID que recibe el nombre de la talla.
      * @param talla Nombre de la talla.
      */
     public Talla(String talla) {this.talla = talla;}
     /**
-     * Contructor que recibe el ID y el nombre de la talla.
+     * Contructor con ID y que recibe el nombre de la talla.
      * @param id ID de la talla.
      * @param talla Nombre de la talla.
      */
@@ -56,12 +56,12 @@ public class Talla implements Serializable {
     public String getTalla() {return talla;}
     /**
      * Establece el ID de la talla.
-     * @param id ID de la talla.
+     * @param id Nuevo ID de la talla.
      */
     public void setId(Long id) {this.id = id;}
     /**
      * Establece el nombre de la talla.
-     * @param talla Nombre de la talla.
+     * @param talla Nuevo nombre de la talla.
      */
     public void setTalla(String talla) {this.talla = talla;}
     /**

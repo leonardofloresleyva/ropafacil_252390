@@ -31,7 +31,7 @@ public class Color implements Serializable {
      */
     public Color() {}
     /**
-     * Contructor que recibe el nombre del color.
+     * Contructor sin ID que recibe el nombre del color.
      * @param color Nombre del color.
      */
     public Color(String color) {this.color = color;}
@@ -56,12 +56,12 @@ public class Color implements Serializable {
     public String getColor() {return color;}
     /**
      * Establece el ID del color.
-     * @param id ID del color.
+     * @param id Nuevo ID del color.
      */
     public void setId(Long id) {this.id = id;}
     /**
      * Establece el nombre del color.
-     * @param color Nombre del color.
+     * @param color Nuevo nombre del color.
      */
     public void setColor(String color) {this.color = color;}
     /**

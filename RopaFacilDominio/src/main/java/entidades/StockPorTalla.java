@@ -45,7 +45,7 @@ public class StockPorTalla implements Serializable {
      */
     public StockPorTalla() {}
     /**
-     * Contructor que recibe la cantidad del stock por talla.
+     * Contructor sin ID que recibe la cantidad del stock por talla.
      * @param stock Cantidad del stock por talla.
      * @param producto Producto del stock por talla.
      * @param talla Talla del stock por talla.
@@ -105,7 +105,7 @@ public class StockPorTalla implements Serializable {
      */
     public void setStock(Integer stock) {this.stock = stock;}
     /**
-     * Establece el el producto del stock por talla.
+     * Establece el producto del stock por talla.
      * Si el producto no contiene este StockPorTalla, lo
      * añade, para mantener ambas entidades sincronizadas.
      * @param producto Nuevo producto del stock por talla.
@@ -116,7 +116,7 @@ public class StockPorTalla implements Serializable {
             producto.agregarTalla(this);
     }
     /**
-     * Establece la la talla del stock por talla.
+     * Establece la talla del stock por talla.
      * @param talla Nueva talla del stock por talla.
      */
     public void setTalla(Talla talla) {this.talla = talla;}
@@ -127,9 +127,9 @@ public class StockPorTalla implements Serializable {
      */
     public boolean verificarProducto(){return producto != null;}
     /**
-     * Regresa una cadena con la cantidad del stock por talla.
-     * @return Cadena con la cantidad del stock por talla.
+     * Regresa una cadena con la información del stock por talla.
+     * @return Cadena con la información del stock por talla.
      */
     @Override
-    public String toString() {return stock.toString();}
+    public String toString() {return String.format("%s, %s, %s", producto.getNombre(), talla.toString(), stock);}
 }

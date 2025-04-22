@@ -46,22 +46,70 @@ public class Venta implements Serializable {
     @OneToMany(mappedBy = "venta", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<DetalleVentaTalla> tallasVendidas = new ArrayList<>();
     /**
-     * Ontiene el ID de la venta.
+     * Constructor por defecto de una venta.
+     */
+    public Venta() {}
+    /**
+     * Constructor sin ID de la venta.
+     * @param fechaHora Fecha y hora de la venta.
+     * @param totalVenta Total ganado de la venta.
+     * @param productoVendido Detalles del producto asociado a la venta.
+     * @param tallasVendidas Lista de tallas compradas asociadas al producto.
+     */
+    public Venta(LocalDateTime fechaHora, Double totalVenta, DetalleVentaProducto productoVendido, List<DetalleVentaTalla> tallasVendidas) {
+        this.fechaHora = fechaHora;
+        this.totalVenta = totalVenta;
+        this.productoVendido = productoVendido;
+        // Mantiene sincronizada la relación bidireccional, entre la venta y su DetalleVentaProducto.
+        if(!productoVendido.verificarVenta())
+            productoVendido.setVenta(this);
+        this.tallasVendidas = tallasVendidas;
+        // Mantiene sincronizada la relación bidireccional, entre la venta y su lista de DetalleVentaTalla.
+        for(DetalleVentaTalla tallaVendida : tallasVendidas){
+            if(!tallaVendida.verificarVenta())
+                tallaVendida.setVenta(this);
+        }
+    }
+    /**
+     * Constructor con ID de la venta.
+     * @param id ID de la venta.
+     * @param fechaHora Fecha y hora de la venta.
+     * @param totalVenta Total ganado de la venta.
+     * @param productoVendido Detalles del producto asociado a la venta.
+     * @param tallasVendidas Lista de tallas compradas asociadas al producto.
+     */
+    public Venta(Long id, LocalDateTime fechaHora, Double totalVenta, DetalleVentaProducto productoVendido, List<DetalleVentaTalla> tallasVendidas) {
+        this.id = id;
+        this.fechaHora = fechaHora;
+        this.totalVenta = totalVenta;
+        this.productoVendido = productoVendido;
+        // Mantiene sincronizada la relación bidireccional, entre la venta y su DetalleVentaProducto.
+        if(!productoVendido.verificarVenta())
+            productoVendido.setVenta(this);
+        this.tallasVendidas = tallasVendidas;
+        // Mantiene sincronizada la relación bidireccional, entre la venta y su lista de DetalleVentaTalla.
+        for(DetalleVentaTalla tallaVendida : tallasVendidas){
+            if(!tallaVendida.verificarVenta())
+                tallaVendida.setVenta(this);
+        }
+    }
+    /**
+     * Retorna el ID de la venta.
      * @return ID de la venta.
      */
     public Long getId() {return id;}
     /**
-     * Obtiene la fecha y hora de la venta.
+     * Retorna la fecha y hora de la venta.
      * @return Fecha y hora de la venta.
      */
     public LocalDateTime getFechaHora() {return fechaHora;}
     /**
-     * Obtiene la recaudación total de la venta.
+     * Retorna la recaudación total de la venta.
      * @return Recaudación total de la venta.
      */
     public Double getTotalVenta() {return totalVenta;}
     /**
-     * Obtiene el detalle del producto asociado a la venta.
+     * Retorna el detalle del producto asociado a la venta.
      * @return Detalle del producto asociado a la venta.
      */
     public DetalleVentaProducto getProductoVendido() {return productoVendido;}
@@ -142,9 +190,14 @@ public class Venta implements Serializable {
             tallaVendida.setVenta(this);
     }
     /**
-     * Regresa una cadena con la venta.
-     * @return Cadena con la venta.
+     * Regresa una cadena con la información de la venta.
+     * @return Cadena con la información de la venta.
      */
     @Override
-    public String toString() {return totalVenta.toString();}
+    public String toString() {
+        return String.format(
+                "%s, %s, %s", 
+                productoVendido.getProducto().getNombre(), fechaHora.toString(), totalVenta.toString()
+        );
+    }
 }

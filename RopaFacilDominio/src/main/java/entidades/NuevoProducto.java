@@ -21,14 +21,16 @@ public class NuevoProducto extends Compra implements Serializable {
      */
     @Column(name = "PRECIO_VENTA_SUGERIDO", nullable = false, unique = false)
     private Double precioVentaSugerido;
-
+    /**
+     * Constructor por defecto de una compra de un nuevo producto.
+     */
     public NuevoProducto() {}
     /**
      * Constructor sin ID de la compra de un nuevo producto.
      * @param precioVentaSugerido Precio de venta sugerido de la compra de un nuevo producto.
-     * @param fechaHora Fecha y hora de la compra.
-     * @param totalCompra Total gastado de la compra.
-     * @param productoComprado Detalle del producto asociado a la compra.
+     * @param fechaHora Fecha y hora de la compra de un nuevo producto.
+     * @param totalCompra Total gastado de la compra de un nuevo producto.
+     * @param productoComprado Detalle del producto asociado a la compra de un nuevo producto.
      * @param tallasCompradas Lista de tallas compradas asociadas al producto.
      */
     public NuevoProducto(
@@ -44,10 +46,10 @@ public class NuevoProducto extends Compra implements Serializable {
     /**
      * Constructor con ID incluido de la compra de un nuevo producto.
      * @param precioVentaSugerido Precio de venta sugerido de la compra de un nuevo producto.
-     * @param id ID de la compra.
-     * @param fechaHora Fecha y hora de la compra.
-     * @param totalCompra Total gastado de la compra.
-     * @param productoComprado Detalle del producto asociado a la compra.
+     * @param id ID de la compra de un nuevo producto.
+     * @param fechaHora Fecha y hora de la compra de un nuevo producto.
+     * @param totalCompra Total gastado de la compra de un nuevo producto.
+     * @param productoComprado Detalle del producto asociado a la compra de un nuevo producto.
      * @param tallasCompradas Lista de tallas compradas asociadas al producto.
      */
     public NuevoProducto(

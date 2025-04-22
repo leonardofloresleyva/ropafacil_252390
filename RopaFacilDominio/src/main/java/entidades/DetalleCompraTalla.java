@@ -21,10 +21,10 @@ public class DetalleCompraTalla implements Serializable {
      * ID del detalle de compra de la talla.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
-     * Cantidad de tallas comprada.
+     * Cantidad de tallas compradas.
      */
     @Column(name = "CANTIDAD_COMPRADA", nullable = false, unique = false)
     private Integer cantidadComprada;
@@ -55,7 +55,7 @@ public class DetalleCompraTalla implements Serializable {
         this.talla = talla;
         this.compra = compra;
         // Mantiene la relación bidireccional sincronizada, entre la Compra y su lista de DetalleCompraTalla.
-        if(compra.verificarDetalleCompraTalla(this))
+        if(!compra.verificarDetalleCompraTalla(this))
             compra.agregarTallaComprada(this);
     }
     /**
@@ -71,7 +71,7 @@ public class DetalleCompraTalla implements Serializable {
         this.talla = talla;
         this.compra = compra;
         // Mantiene la relación bidireccional sincronizada, entre la Compra y su lista de DetalleCompraTalla.
-        if(compra.verificarDetalleCompraTalla(this))
+        if(!compra.verificarDetalleCompraTalla(this))
             compra.agregarTallaComprada(this);
     }
     /**
@@ -80,17 +80,17 @@ public class DetalleCompraTalla implements Serializable {
      */
     public Long getId() {return id;}
     /**
-     * Obtiene la cantidad comprada de la talla.
+     * Retorna la cantidad comprada de la talla.
      * @return Cantidad comprada de la talla.
      */
     public Integer getCantidadComprada() {return cantidadComprada;}
     /**
-     * Obtiene la talla asociada.
+     * Retorna la talla asociada.
      * @return Talla asociada.
      */
     public Talla getTalla() {return talla;}
     /**
-     * Obtiene la compra asociada al detalle de compra de la talla.
+     * Retorna la compra asociada al detalle de compra de la talla.
      * @return Compra asociada al detalle de compra de la talla.
      */
     public Compra getCompra() {return compra;}
@@ -118,7 +118,7 @@ public class DetalleCompraTalla implements Serializable {
      */
     public void setCompra(Compra compra) {
         this.compra = compra;
-        if(compra.verificarDetalleCompraTalla(this))
+        if(!compra.verificarDetalleCompraTalla(this))
             compra.agregarTallaComprada(this);
     }
     /**
@@ -128,9 +128,9 @@ public class DetalleCompraTalla implements Serializable {
      */
     public boolean verificarCompra(){return compra != null;}
     /**
-     * Regresa una cadena con el detalle de compra de la talla.
-     * @return Cadena con el detalle de compra de la talla.
+     * Regresa una cadena con la información del detalle de compra de la talla.
+     * @return Cadena con la información del detalle de compra de la talla.
      */
     @Override
-    public String toString() {return cantidadComprada.toString();}
+    public String toString() {return String.format("%s, %s, %s", compra.toString(), talla.toString(), cantidadComprada.toString());}
 }

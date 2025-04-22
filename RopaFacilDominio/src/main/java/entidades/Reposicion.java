@@ -21,9 +21,9 @@ public class Reposicion extends Compra implements Serializable {
     public Reposicion() {}
     /**
      * Constructor sin ID de la compra de de una reposición.
-     * @param fechaHora Fecha y hora de la compra.
-     * @param totalCompra Total gastado de la compra.
-     * @param productoComprado Detalle del producto asociado a la compra.
+     * @param fechaHora Fecha y hora de la reposición.
+     * @param totalCompra Total gastado de la reposición.
+     * @param productoComprado Detalle del producto asociado a la reposición.
      * @param tallasCompradas Lista de tallas compradas asociadas al producto.
      */
     public Reposicion(
@@ -36,10 +36,10 @@ public class Reposicion extends Compra implements Serializable {
     }
     /**
      * Constructor con ID incluido de la compra de una reposición.
-     * @param id ID de la compra.
-     * @param fechaHora Fecha y hora de la compra.
-     * @param totalCompra Total gastado de la compra.
-     * @param productoComprado Detalle del producto asociado a la compra.
+     * @param id ID de la reposición.
+     * @param fechaHora Fecha y hora de la reposición.
+     * @param totalCompra Total gastado de la reposición.
+     * @param productoComprado Detalle del producto asociado a la reposición.
      * @param tallasCompradas Lista de tallas compradas asociadas al producto.
      */
     public Reposicion( 

@@ -31,7 +31,7 @@ public class Proveedor implements Serializable {
      */
     public Proveedor() {}
     /**
-     * Contructor que recibe el nombre del proveedor.
+     * Contructor sin ID que recibe el nombre del proveedor.
      * @param proveedor Nombre del proveedor.
      */
     public Proveedor(String proveedor) {this.proveedor = proveedor;}
@@ -56,12 +56,12 @@ public class Proveedor implements Serializable {
     public String getProveedor() {return proveedor;}
     /**
      * Establece el ID del proveedor.
-     * @param id ID del proveedor.
+     * @param id Nuevo ID del proveedor.
      */
     public void setId(Long id) {this.id = id;}
     /**
      * Establece el nombre del proveedor.
-     * @param proveedor Nombre del proveedor.
+     * @param proveedor Nuevo nombre del proveedor.
      */
     public void setProveedor(String proveedor) {this.proveedor = proveedor;}
     /**

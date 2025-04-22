@@ -60,7 +60,7 @@ public class DetalleVentaTalla implements Serializable {
         this.talla = talla;
         this.venta = venta;
         // Mantiene la relación bidireccional sincronizada, entre la Compra y su lista de DetalleCompraTalla.
-        if(venta.verificarDetalleVentaTalla(this))
+        if(!venta.verificarDetalleVentaTalla(this))
             venta.agregarTallaVendida(this);
     }
     /**
@@ -76,7 +76,7 @@ public class DetalleVentaTalla implements Serializable {
         this.talla = talla;
         this.venta = venta;
         // Mantiene la relación bidireccional sincronizada, entre la Compra y su lista de DetalleCompraTalla.
-        if(venta.verificarDetalleVentaTalla(this))
+        if(!venta.verificarDetalleVentaTalla(this))
             venta.agregarTallaVendida(this);
     }
     /**
@@ -133,7 +133,7 @@ public class DetalleVentaTalla implements Serializable {
      */
     public void setVenta(Venta venta) {
         this.venta = venta;
-        if(venta.verificarDetalleVentaTalla(this))
+        if(!venta.verificarDetalleVentaTalla(this))
             venta.agregarTallaVendida(this);
     }
     /**
@@ -143,9 +143,14 @@ public class DetalleVentaTalla implements Serializable {
      */
     public boolean verificarVenta(){return venta != null;}
     /**
-     * Regresa una cadena con el detalle de venta de la talla.
-     * @return Cadena con el detalle de venta de la talla.
+     * Regresa una cadena con la información del detalle de venta de la talla.
+     * @return Cadena con la información del detalle de venta de la talla.
      */
     @Override
-    public String toString() {return cantidadVendida.toString();}
+    public String toString() {
+        return String.format(
+                "%s, %s, %s, %s", 
+                venta.toString(), talla.toString(), cantidadVendida.toString(), subtotalVenta.toString()
+        );
+    }
 }

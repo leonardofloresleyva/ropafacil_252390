@@ -31,7 +31,7 @@ public class TipoPrenda implements Serializable {
      */
     public TipoPrenda() {}
     /**
-     * Contructor que recibe el nombre del tipo.
+     * Contructor sin ID que recibe el nombre del tipo.
      * @param tipo Nombre del tipo.
      */
     public TipoPrenda(String tipo) {this.tipo = tipo;}
@@ -56,12 +56,12 @@ public class TipoPrenda implements Serializable {
     public String getTipo() {return tipo;}
     /**
      * Establece el ID del tipo.
-     * @param id ID del tipo.
+     * @param id Nuevo ID del tipo.
      */
     public void setId(Long id) {this.id = id;}
     /**
      * Establece el nombre del tipo.
-     * @param tipo Nombre del tipo.
+     * @param tipo Nuevo nombre del tipo.
      */
     public void setTipo(String tipo) {this.tipo = tipo;}
     /**

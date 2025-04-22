@@ -26,7 +26,7 @@ import javax.persistence.Table;
 @Table(name = "COMPRAS")
 @Inheritance(strategy = InheritanceType.JOINED) // Estrategia elegida para separar atributos únicos de clases hijas
 @DiscriminatorColumn(name = "TIPO_COMPRA", discriminatorType = DiscriminatorType.STRING) // Discriminador STRING para especificar bien cada tipo de compra.
-public class Compra implements Serializable {
+public abstract class Compra implements Serializable {
     /**
      * ID de la compra.
      */
@@ -79,7 +79,7 @@ public class Compra implements Serializable {
         }
     }
     /**
-     * Constructor con ID incluido de la compra.
+     * Constructor con ID de la compra.
      * @param id ID de la compra.
      * @param fechaHora Fecha y hora de la compra.
      * @param totalCompra Total gastado de la compra.
@@ -102,22 +102,22 @@ public class Compra implements Serializable {
         }
     }
     /**
-     * Ontiene el ID de la compra.
+     * Retorna el ID de la compra.
      * @return ID de la compra.
      */
     public Long getId() {return id;}
     /**
-     * Obtiene la fecha y hora de la compra.
+     * Retorna la fecha y hora de la compra.
      * @return Fecha y hora de la compra.
      */
     public LocalDateTime getFechaHora() {return fechaHora;}
     /**
-     * Obtiene el gasto total de la compra.
+     * Retorna el gasto total de la compra.
      * @return Gasto total de la compra.
      */
     public Double getTotalCompra() {return totalCompra;}
     /**
-     * Obtiene el detalle del producto asociado a la compra.
+     * Retorna el detalle del producto asociado a la compra.
      * @return Detalle del producto asociado a la compra.
      */
     public DetalleCompraProducto getProductoComprado() {return productoComprado;}
@@ -198,9 +198,14 @@ public class Compra implements Serializable {
             tallaComprada.setCompra(this);
     }
     /**
-     * Regresa una cadena con la compra.
-     * @return Cadena con la compra.
+     * Regresa una cadena con la información de la compra.
+     * @return Cadena con la información de la compra.
      */
     @Override
-    public String toString() {return totalCompra.toString();}
+    public String toString() {
+        return String.format(
+                "%s, %s, %s", 
+                productoComprado.getProducto().getNombre(), fechaHora.toString(), totalCompra.toString()
+        );
+    }
 }

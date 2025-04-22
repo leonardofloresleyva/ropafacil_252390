@@ -56,12 +56,12 @@ public class CajaAlmacenamiento implements Serializable {
     public Integer getCaja() {return caja;}
     /**
      * Establece el ID de la caja de almacenamiento.
-     * @param id ID de la caja de almacenamiento.
+     * @param id Nuevo ID de la caja de almacenamiento.
      */
     public void setId(Long id) {this.id = id;}
     /**
      * Establece el número de la caja de almacenamiento.
-     * @param caja Número de la caja de almacenamiento.
+     * @param caja Nuevo número de la caja de almacenamiento.
      */
     public void setCaja(Integer caja) {this.caja = caja;}
     /**
