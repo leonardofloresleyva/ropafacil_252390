@@ -54,6 +54,9 @@ public class DetalleCompraProducto implements Serializable {
         this.precioCompraUnitario = precioCompraUnitario;
         this.producto = producto;
         this.compra = compra;
+        // Mantiene la relación bidireccional sincronizada, entre la Compra y su lista de DetalleCompraProducto.
+        if(!compra.verificarDetalleCompraProducto())
+            compra.setProductoComprado(this);
     }
     /**
      * Contructor que recibe el ID del detalle de compra de producto.
@@ -66,6 +69,9 @@ public class DetalleCompraProducto implements Serializable {
         this.precioCompraUnitario = precioCompraUnitario;
         this.producto = producto;
         this.compra = compra;
+        // Mantiene la relación bidireccional sincronizada, entre la Compra y su lista de DetalleCompraProducto.
+        if(!compra.verificarDetalleCompraProducto())
+            compra.setProductoComprado(this);
     }
 
     /**

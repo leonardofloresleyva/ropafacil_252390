@@ -2,6 +2,7 @@ package entidades;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,7 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
- * Entidad Producto. Se relaciona con DetalleCompraProducto y DetalleCompraTalla.
+ * Entidad Compra. Se relaciona con DetalleCompraProducto y DetalleCompraTalla.
  * @author Leonardo Flores Leyva - 252390
  */
 @Entity
@@ -30,7 +31,7 @@ public class Compra implements Serializable {
      * ID de la compra.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
      * Fecha y hora de la compra.
@@ -45,13 +46,13 @@ public class Compra implements Serializable {
     /**
      * Detalle del producto asociado a la compra.
      */
-    @OneToMany(mappedBy = "compra", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "compra", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.EAGER)
     private DetalleCompraProducto productoComprado;
     /**
      * Lista de tallas compradas asociadas al producto.
      */
-    @OneToMany(mappedBy = "compra", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<DetalleCompraTalla> tallasCompradas;
+    @OneToMany(mappedBy = "compra", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<DetalleCompraTalla> tallasCompradas = new ArrayList<>();
     /**
      * Constructor por defecto de la compra.
      */
@@ -185,7 +186,7 @@ public class Compra implements Serializable {
         return false;
     }
     /**
-     * Agrega una talla comprada a la lista de tallas.
+     * Agrega una talla comprada a la lista de tallas compradas.
      * Si el detalle de la compra de la talla no tiene
      * asociada esta compra, la asocia, para mantener
      * ambas entidades sincronizadas.
