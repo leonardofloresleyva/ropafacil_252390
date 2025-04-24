@@ -197,7 +197,7 @@ public class MenuPrincipal extends javax.swing.JPanel {
     }//GEN-LAST:event_btnVentasMouseExited
 
     private void btnInventarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInventarioMouseClicked
-        
+        ControlFlujo.mostrarInventario();
     }//GEN-LAST:event_btnInventarioMouseClicked
 
     private void btnInventarioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInventarioMouseEntered

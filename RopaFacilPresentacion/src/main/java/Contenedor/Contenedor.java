@@ -9,6 +9,8 @@ import modulo_compras.HistorialComprasReposiciones;
 import modulo_compras.NuevoProducto;
 import modulo_compras.Reposicion;
 import modulo_compras.SubmenuCompras;
+import modulo_inventario.EditarProducto;
+import modulo_inventario.Inventario;
 
 /**
  *
@@ -25,6 +27,8 @@ public class Contenedor extends javax.swing.JFrame {
     private HistorialCompras historialCompras;
     private HistorialComprasNuevosProductos historialComprasNuevosProductos;
     private HistorialComprasReposiciones historialComprasReposiciones;
+    private Inventario inventario;
+    private EditarProducto editarProducto;
     /**
      * Creates new form Contenedor
      */
@@ -93,6 +97,8 @@ public class Contenedor extends javax.swing.JFrame {
         historialCompras = HistorialCompras.getInstance();
         historialComprasNuevosProductos = HistorialComprasNuevosProductos.getInstance();
         historialComprasReposiciones = HistorialComprasReposiciones.getInstance();
+        inventario = Inventario.getInstance();
+        editarProducto = EditarProducto.getInstance();
         // Se añaden las pantallas al panel contenedor.
         panelContenido.add(menuPrincipal, "MenuPrincipal");
         panelContenido.add(submenuCompras, "SubmenuCompras");
@@ -101,6 +107,8 @@ public class Contenedor extends javax.swing.JFrame {
         panelContenido.add(historialCompras, "HistorialCompras");
         panelContenido.add(historialComprasNuevosProductos, "HistorialComprasNuevosProductos");
         panelContenido.add(historialComprasReposiciones, "HistorialComprasReposiciones");
+        panelContenido.add(inventario, "Inventario");
+        panelContenido.add(editarProducto, "E");
         // Abre el menú principal
         ControlFlujo.mostrarMenuPrincipal();
     }

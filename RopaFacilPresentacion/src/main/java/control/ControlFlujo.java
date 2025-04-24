@@ -8,6 +8,8 @@ import modulo_compras.HistorialComprasReposiciones;
 import modulo_compras.NuevoProducto;
 import modulo_compras.Reposicion;
 import modulo_compras.SubmenuCompras;
+import modulo_inventario.EditarProducto;
+import modulo_inventario.Inventario;
 
 /**
  *
@@ -64,5 +66,19 @@ public class ControlFlujo {
             panelActual.setVisible(false);
         HistorialComprasReposiciones.getInstance().setVisible(true);
         panelActual = HistorialComprasReposiciones.getInstance();
+    }
+    
+    public static void mostrarInventario(){
+        if(panelActual != null)
+            panelActual.setVisible(false);
+        Inventario.getInstance().setVisible(true);
+        panelActual = Inventario.getInstance();
+    }
+    
+    public static void mostrarEditarProducto(){
+        if(panelActual != null)
+            panelActual.setVisible(false);
+        EditarProducto.getInstance().setVisible(true);
+        panelActual = EditarProducto.getInstance();
     }
 }

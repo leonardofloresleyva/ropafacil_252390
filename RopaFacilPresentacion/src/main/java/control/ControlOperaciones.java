@@ -3,6 +3,8 @@ package control;
 import Control.JTextFieldLimit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
@@ -16,6 +18,9 @@ public class ControlOperaciones {
     
     
     public static void configurarCamposTexto(JTextField campo){
+        for(KeyListener keyListener : Arrays.asList(campo.getKeyListeners()))
+            campo.removeKeyListener(keyListener);
+        
         campo.addKeyListener(new KeyAdapter(){
             @Override
             public void keyTyped(KeyEvent e){
@@ -28,6 +33,9 @@ public class ControlOperaciones {
     }
     
     public static void configurarCamposPrecios(JTextField campo){
+        for(KeyListener keyListener : Arrays.asList(campo.getKeyListeners()))
+            campo.removeKeyListener(keyListener);
+        
         campo.addKeyListener(new KeyAdapter(){
             @Override
             public void keyTyped(KeyEvent e){
@@ -43,6 +51,9 @@ public class ControlOperaciones {
     }
     
     public static void configurarCamposCantidades(JTextField campo){
+        for(KeyListener keyListener : Arrays.asList(campo.getKeyListeners()))
+            campo.removeKeyListener(keyListener);
+        
         campo.addKeyListener(new KeyAdapter(){
             @Override
             public void keyTyped(KeyEvent e){
