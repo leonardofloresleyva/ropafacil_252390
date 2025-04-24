@@ -3,6 +3,7 @@ package control;
 import javax.swing.JPanel;
 import menu_principal.MenuPrincipal;
 import modulo_compras.NuevoProducto;
+import modulo_compras.Reposicion;
 import modulo_compras.SubmenuCompras;
 
 /**
@@ -32,5 +33,12 @@ public class ControlFlujo {
             panelActual.setVisible(false);
         NuevoProducto.getInstance().setVisible(true);
         panelActual = NuevoProducto.getInstance();
+    }
+    
+    public static void mostrarReposicion(){
+        if(panelActual != null)
+            panelActual.setVisible(false);
+        Reposicion.getInstance().setVisible(true);
+        panelActual = Reposicion.getInstance();
     }
 }
