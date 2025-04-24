@@ -2,6 +2,7 @@ package control;
 
 import javax.swing.JPanel;
 import menu_principal.MenuPrincipal;
+import modulo_compras.NuevoProducto;
 import modulo_compras.SubmenuCompras;
 
 /**
@@ -10,14 +11,7 @@ import modulo_compras.SubmenuCompras;
  */
 public class ControlFlujo {
     
-//    private static ControlFlujo instance;
     private static JPanel panelActual;
-    
-//    public static ControlFlujo getInstance(){
-//        if(instance == null)
-//            instance = new ControlFlujo();
-//        return instance;
-//    }
     
     public static void mostrarMenuPrincipal(){
         if(panelActual != null)
@@ -31,5 +25,12 @@ public class ControlFlujo {
             panelActual.setVisible(false);
         SubmenuCompras.getInstance().setVisible(true);
         panelActual = SubmenuCompras.getInstance();
+    }
+    
+    public static void mostrarNuevoProducto(){
+        if(panelActual != null)
+            panelActual.setVisible(false);
+        NuevoProducto.getInstance().setVisible(true);
+        panelActual = NuevoProducto.getInstance();
     }
 }

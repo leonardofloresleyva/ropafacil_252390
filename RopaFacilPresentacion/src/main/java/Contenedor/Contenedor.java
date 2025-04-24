@@ -3,6 +3,7 @@ package Contenedor;
 import control.ControlFlujo;
 import javax.swing.JFrame;
 import menu_principal.MenuPrincipal;
+import modulo_compras.NuevoProducto;
 import modulo_compras.SubmenuCompras;
 
 /**
@@ -15,6 +16,7 @@ public class Contenedor extends javax.swing.JFrame {
     
     private MenuPrincipal menuPrincipal;
     private SubmenuCompras submenuCompras;
+    private NuevoProducto nuevoProducto;
     /**
      * Creates new form Contenedor
      */
@@ -79,9 +81,11 @@ public class Contenedor extends javax.swing.JFrame {
         // Se crean las pantallas y se añaden a sus correspondientes atributos.
         menuPrincipal = MenuPrincipal.getInstance();
         submenuCompras = SubmenuCompras.getInstance();
+        nuevoProducto = NuevoProducto.getInstance();
         // Se añaden las pantallas al panel contenedor.
         panelContenido.add(menuPrincipal, "MenuPrincipal");
         panelContenido.add(submenuCompras, "SubmenuCompras");
+        panelContenido.add(nuevoProducto, "NuevoProducto");
         // Abre el menú principal
         ControlFlujo.mostrarMenuPrincipal();
     }
