@@ -1,4 +1,4 @@
-package modulo_compras;
+package moduloCompras;
 
 import control.ControlFlujo;
 import java.awt.Color;
@@ -55,12 +55,12 @@ public class SubmenuCompras extends javax.swing.JPanel {
         jLTítuloCompras.setForeground(new java.awt.Color(0, 0, 0));
         jLTítuloCompras.setText("Compras");
 
-        btnNuevoProducto.setBackground(new java.awt.Color(255, 255, 255));
-        btnNuevoProducto.setFont(new java.awt.Font("Century Gothic", 1, 60)); // NOI18N
-        btnNuevoProducto.setForeground(new java.awt.Color(0, 0, 0));
         btnNuevoProducto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnNuevoProducto.setText("Nuevo Producto");
+        btnNuevoProducto.setBackground(new java.awt.Color(255, 255, 255));
         btnNuevoProducto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnNuevoProducto.setFont(new java.awt.Font("Century Gothic", 1, 60)); // NOI18N
+        btnNuevoProducto.setForeground(new java.awt.Color(0, 0, 0));
         btnNuevoProducto.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnNuevoProducto.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -74,12 +74,12 @@ public class SubmenuCompras extends javax.swing.JPanel {
             }
         });
 
-        btnReposicion.setBackground(new java.awt.Color(255, 255, 255));
-        btnReposicion.setFont(new java.awt.Font("Century Gothic", 1, 60)); // NOI18N
-        btnReposicion.setForeground(new java.awt.Color(0, 0, 0));
         btnReposicion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnReposicion.setText("Reposición");
+        btnReposicion.setBackground(new java.awt.Color(255, 255, 255));
         btnReposicion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnReposicion.setFont(new java.awt.Font("Century Gothic", 1, 60)); // NOI18N
+        btnReposicion.setForeground(new java.awt.Color(0, 0, 0));
         btnReposicion.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnReposicion.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -93,12 +93,12 @@ public class SubmenuCompras extends javax.swing.JPanel {
             }
         });
 
-        btnHistorialCompras.setBackground(new java.awt.Color(255, 255, 255));
-        btnHistorialCompras.setFont(new java.awt.Font("Century Gothic", 1, 60)); // NOI18N
-        btnHistorialCompras.setForeground(new java.awt.Color(0, 0, 0));
         btnHistorialCompras.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnHistorialCompras.setText("Historial de compras");
+        btnHistorialCompras.setBackground(new java.awt.Color(255, 255, 255));
         btnHistorialCompras.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnHistorialCompras.setFont(new java.awt.Font("Century Gothic", 1, 60)); // NOI18N
+        btnHistorialCompras.setForeground(new java.awt.Color(0, 0, 0));
         btnHistorialCompras.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnHistorialCompras.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -118,14 +118,14 @@ public class SubmenuCompras extends javax.swing.JPanel {
 
         IconoReposicion1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/IconoReposicion.png"))); // NOI18N
 
-        btnRegresar.setBackground(new java.awt.Color(0, 0, 0));
-        btnRegresar.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
         btnRegresar.setText("Regresar");
+        btnRegresar.setBackground(new java.awt.Color(0, 0, 0));
         btnRegresar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 0, true));
         btnRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnRegresar.setFocusPainted(false);
         btnRegresar.setFocusable(false);
+        btnRegresar.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegresarActionPerformed(evt);

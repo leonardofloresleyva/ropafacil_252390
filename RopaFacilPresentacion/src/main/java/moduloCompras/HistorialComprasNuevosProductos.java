@@ -1,4 +1,4 @@
-package modulo_compras;
+package moduloCompras;
 
 import control.ControlFlujo;
 import control.ControlOperaciones;
@@ -36,10 +36,10 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
         jTallas.setVisible(false);
         mostrarTallas(false);
         
-        modeloTablaProductos = new DefaultTableModel(new String[]{"Nombre", "Tipo", "Categoría", "Color", "Precio Unitario", "Precio Venta Sugerido", "Total", "Fecha y hora", "Proveedor"}, 0);
+        modeloTablaProductos = (DefaultTableModel) jTProductos.getModel();
         modeloTablaProductos.setRowCount(0);
         jTProductos.setModel(modeloTablaProductos);
-        modeloTablaTallas = new DefaultTableModel(new String[]{"Talla", "Cantidad"}, 0);
+        modeloTablaTallas = (DefaultTableModel) jTallas.getModel();
         modeloTablaTallas.setRowCount(0);
         jTallas.setModel(modeloTablaTallas);
         
@@ -145,9 +145,6 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
         });
         add(jCBFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 117, -1));
 
-        jTProductos.setBackground(new java.awt.Color(255, 255, 255));
-        jTProductos.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jTProductos.setForeground(new java.awt.Color(0, 0, 0));
         jTProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -171,6 +168,9 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        jTProductos.setBackground(new java.awt.Color(255, 255, 255));
+        jTProductos.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jTProductos.setForeground(new java.awt.Color(0, 0, 0));
         jTProductos.setMaximumSize(new java.awt.Dimension(375, 0));
         jTProductos.setMinimumSize(new java.awt.Dimension(375, 0));
         jTProductos.setPreferredSize(new java.awt.Dimension(375, 0));

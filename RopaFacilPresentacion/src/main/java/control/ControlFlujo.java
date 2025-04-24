@@ -1,15 +1,19 @@
 package control;
 
+import moduloVentas.SubmenuVentas;
 import javax.swing.JPanel;
 import menu_principal.MenuPrincipal;
-import modulo_compras.HistorialCompras;
-import modulo_compras.HistorialComprasNuevosProductos;
-import modulo_compras.HistorialComprasReposiciones;
-import modulo_compras.NuevoProducto;
-import modulo_compras.Reposicion;
-import modulo_compras.SubmenuCompras;
-import modulo_inventario.EditarProducto;
-import modulo_inventario.Inventario;
+import moduloCompras.HistorialCompras;
+import moduloCompras.HistorialComprasNuevosProductos;
+import moduloCompras.HistorialComprasReposiciones;
+import moduloCompras.NuevoProducto;
+import moduloCompras.Reposicion;
+import moduloCompras.SubmenuCompras;
+import moduloInventario.EditarProducto;
+import moduloInventario.Inventario;
+import moduloVentas.AgregarProducto;
+import moduloVentas.HistorialVentas;
+import moduloVentas.Vender;
 
 /**
  *
@@ -81,4 +85,34 @@ public class ControlFlujo {
         EditarProducto.getInstance().setVisible(true);
         panelActual = EditarProducto.getInstance();
     }
+    
+    public static void mostrarSubmenuVentas(){
+        if(panelActual != null)
+            panelActual.setVisible(false);
+        SubmenuVentas.getInstance().setVisible(true);
+        panelActual = SubmenuVentas.getInstance();
+    }
+    
+    public static void mostrarVender(){
+        if(panelActual != null)
+            panelActual.setVisible(false);
+        Vender.getInstance().setVisible(true);
+        panelActual = Vender.getInstance();
+    }
+    
+    public static void mostrarAgregarProducto(){
+        if(panelActual != null)
+            panelActual.setVisible(false);
+        AgregarProducto.getInstance().setVisible(true);
+        panelActual = AgregarProducto.getInstance();
+    }
+    
+    public static void mostrarHistorialVentas(){
+        if(panelActual != null)
+            panelActual.setVisible(false);
+        HistorialVentas.getInstance().setVisible(true);
+        panelActual = HistorialVentas.getInstance();
+    }
+    
+    
 }

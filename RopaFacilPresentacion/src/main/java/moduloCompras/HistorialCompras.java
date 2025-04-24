@@ -1,4 +1,4 @@
-package modulo_compras;
+package moduloCompras;
 
 import control.ControlFlujo;
 import java.awt.Color;
@@ -53,12 +53,12 @@ public class HistorialCompras extends javax.swing.JPanel {
         jLTítuloCompras.setForeground(new java.awt.Color(0, 0, 0));
         jLTítuloCompras.setText("Compras");
 
-        btnHistorialReposiciones.setBackground(new java.awt.Color(255, 255, 255));
-        btnHistorialReposiciones.setFont(new java.awt.Font("Century Gothic", 1, 60)); // NOI18N
-        btnHistorialReposiciones.setForeground(new java.awt.Color(0, 0, 0));
         btnHistorialReposiciones.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnHistorialReposiciones.setText("Reposiciones");
+        btnHistorialReposiciones.setBackground(new java.awt.Color(255, 255, 255));
         btnHistorialReposiciones.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnHistorialReposiciones.setFont(new java.awt.Font("Century Gothic", 1, 60)); // NOI18N
+        btnHistorialReposiciones.setForeground(new java.awt.Color(0, 0, 0));
         btnHistorialReposiciones.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnHistorialReposiciones.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -72,12 +72,12 @@ public class HistorialCompras extends javax.swing.JPanel {
             }
         });
 
-        btnHistorialNuevosProductos.setBackground(new java.awt.Color(255, 255, 255));
-        btnHistorialNuevosProductos.setFont(new java.awt.Font("Century Gothic", 1, 60)); // NOI18N
-        btnHistorialNuevosProductos.setForeground(new java.awt.Color(0, 0, 0));
         btnHistorialNuevosProductos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnHistorialNuevosProductos.setText("Nuevos Productos");
+        btnHistorialNuevosProductos.setBackground(new java.awt.Color(255, 255, 255));
         btnHistorialNuevosProductos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnHistorialNuevosProductos.setFont(new java.awt.Font("Century Gothic", 1, 60)); // NOI18N
+        btnHistorialNuevosProductos.setForeground(new java.awt.Color(0, 0, 0));
         btnHistorialNuevosProductos.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnHistorialNuevosProductos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -91,14 +91,14 @@ public class HistorialCompras extends javax.swing.JPanel {
             }
         });
 
-        btnRegresar.setBackground(new java.awt.Color(0, 0, 0));
-        btnRegresar.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
         btnRegresar.setText("Regresar");
+        btnRegresar.setBackground(new java.awt.Color(0, 0, 0));
         btnRegresar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 0, true));
         btnRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnRegresar.setFocusPainted(false);
         btnRegresar.setFocusable(false);
+        btnRegresar.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegresarActionPerformed(evt);

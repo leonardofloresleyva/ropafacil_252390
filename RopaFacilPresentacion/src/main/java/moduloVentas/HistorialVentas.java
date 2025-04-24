@@ -1,9 +1,7 @@
-package modulo_compras;
+package moduloVentas;
 
 import control.ControlFlujo;
 import control.ControlOperaciones;
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -16,9 +14,9 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author PC WHITE WOLF
  */
-public class HistorialComprasReposiciones extends javax.swing.JPanel {
+public class HistorialVentas extends javax.swing.JPanel {
     
-    private static HistorialComprasReposiciones instance;
+    private static HistorialVentas instance;
     
     private boolean campoValido;
     private boolean filtroValido;
@@ -27,7 +25,7 @@ public class HistorialComprasReposiciones extends javax.swing.JPanel {
     /**
      * Constructor por defecto.
      */
-    private HistorialComprasReposiciones() {
+    private HistorialVentas() {
         initComponents();
         jLBuscador.setVisible(false);
         jTFBuscador.setVisible(false);
@@ -38,19 +36,20 @@ public class HistorialComprasReposiciones extends javax.swing.JPanel {
         jTallas.setVisible(false);
         mostrarTallas(false);
         
-        modeloTablaProductos = new DefaultTableModel(new String[]{"Nombre", "Tipo", "Categoría", "Color", "Precio Unitario", "Total", "Fecha y hora", "Proveedor"}, 0);
+        modeloTablaProductos = (DefaultTableModel) jTProductos.getModel();
         modeloTablaProductos.setRowCount(0);
         jTProductos.setModel(modeloTablaProductos);
-        modeloTablaTallas = new DefaultTableModel(new String[]{"Talla", "Cantidad"}, 0);
+        
+        modeloTablaTallas = (DefaultTableModel) jTallas.getModel();
         modeloTablaTallas.setRowCount(0);
         jTallas.setModel(modeloTablaTallas);
         
         ControlOperaciones.configurarCamposTexto(jTFBuscador);
     }
     
-    public static HistorialComprasReposiciones getInstance(){
+    public static HistorialVentas getInstance(){
         if(instance == null)
-            instance = new HistorialComprasReposiciones();
+            instance = new HistorialVentas();
         return instance;
     }
 
@@ -63,7 +62,7 @@ public class HistorialComprasReposiciones extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLTítuloNuevoProducto = new javax.swing.JLabel();
+        jLTítuloHistorialVentas = new javax.swing.JLabel();
         btnRegresar = new javax.swing.JButton();
         jTFBuscador = new javax.swing.JTextField();
         jLBuscador = new javax.swing.JLabel();
@@ -85,20 +84,20 @@ public class HistorialComprasReposiciones extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(1280, 720));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLTítuloNuevoProducto.setText("Historial Reposiciones");
-        jLTítuloNuevoProducto.setBackground(new java.awt.Color(255, 255, 255));
-        jLTítuloNuevoProducto.setFont(new java.awt.Font("Century Gothic", 1, 72)); // NOI18N
-        jLTítuloNuevoProducto.setForeground(new java.awt.Color(0, 0, 0));
-        add(jLTítuloNuevoProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 0, -1, -1));
+        jLTítuloHistorialVentas.setText("Historial Ventas");
+        jLTítuloHistorialVentas.setBackground(new java.awt.Color(255, 255, 255));
+        jLTítuloHistorialVentas.setFont(new java.awt.Font("Century Gothic", 1, 72)); // NOI18N
+        jLTítuloHistorialVentas.setForeground(new java.awt.Color(0, 0, 0));
+        add(jLTítuloHistorialVentas, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 10, -1, -1));
 
-        btnRegresar.setText("Regresar");
         btnRegresar.setBackground(new java.awt.Color(0, 0, 0));
+        btnRegresar.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegresar.setText("Regresar");
         btnRegresar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 0, true));
         btnRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnRegresar.setFocusPainted(false);
         btnRegresar.setFocusable(false);
-        btnRegresar.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegresarActionPerformed(evt);
@@ -134,12 +133,12 @@ public class HistorialComprasReposiciones extends javax.swing.JPanel {
         jLBuscador.setText("Nombre del producto:");
         add(jLBuscador, new org.netbeans.lib.awtextra.AbsoluteConstraints(646, 118, 268, 28));
 
-        jCBFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N/A", "Nombre", "Fecha", "Proveedor" }));
         jCBFiltro.setBackground(new java.awt.Color(255, 255, 255));
-        jCBFiltro.setBorder(null);
-        jCBFiltro.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jCBFiltro.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jCBFiltro.setForeground(new java.awt.Color(0, 0, 0));
+        jCBFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N/A", "Nombre", "Fecha", "Color", "Talla" }));
+        jCBFiltro.setBorder(null);
+        jCBFiltro.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jCBFiltro.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jCBFiltroItemStateChanged(evt);
@@ -152,14 +151,14 @@ public class HistorialComprasReposiciones extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Nombre", "Tipo", "Categoría", "Color", "Precio Unitario", "Total", "Fecha y hora", "Proveedor"
+                "Nombre", "Tipo", "Categoría", "Color", "Precio Unitario", "Total", "Fecha y hora"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Object.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -186,7 +185,7 @@ public class HistorialComprasReposiciones extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(jTProductos);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(26, 203, 1070, 358));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(26, 203, 950, 358));
 
         jLFiltroBusqueda.setBackground(new java.awt.Color(255, 255, 255));
         jLFiltroBusqueda.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
@@ -194,22 +193,19 @@ public class HistorialComprasReposiciones extends javax.swing.JPanel {
         jLFiltroBusqueda.setText("Filtro de búsqueda:");
         add(jLFiltroBusqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, 28));
 
-        jTallas.setBackground(new java.awt.Color(255, 255, 255));
-        jTallas.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jTallas.setForeground(new java.awt.Color(0, 0, 0));
         jTallas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Talla", "Cantidad"
+                "Talla", "Cantidad", "Subtotal"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -220,6 +216,9 @@ public class HistorialComprasReposiciones extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        jTallas.setBackground(new java.awt.Color(255, 255, 255));
+        jTallas.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jTallas.setForeground(new java.awt.Color(0, 0, 0));
         jTallas.setMaximumSize(new java.awt.Dimension(375, 0));
         jTallas.setMinimumSize(new java.awt.Dimension(375, 0));
         jTallas.setPreferredSize(new java.awt.Dimension(375, 0));
@@ -234,7 +233,7 @@ public class HistorialComprasReposiciones extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(jTallas);
 
-        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1108, 203, 139, 133));
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(997, 203, 250, 133));
 
         jDCFechaInicio.setBackground(new java.awt.Color(255, 255, 255));
         jDCFechaInicio.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
@@ -266,7 +265,7 @@ public class HistorialComprasReposiciones extends javax.swing.JPanel {
         modeloTablaProductos.setRowCount(0);
         modeloTablaTallas.setRowCount(0);
         mostrarTallas(false);
-        ControlFlujo.mostrarHistorialCompras();
+        ControlFlujo.mostrarSubmenuVentas();
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void jCBFiltroItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCBFiltroItemStateChanged
@@ -300,9 +299,15 @@ public class HistorialComprasReposiciones extends javax.swing.JPanel {
                 mostrarTallas(false);
                 activarBuscador();
                 
-            } else if(jCBFiltro.getSelectedItem().equals("Proveedor")){
-                filtrarBuscador("Proveedor del producto");
-                ControlOperaciones.limiteCaracteres(jTFBuscador, 100);
+            } else if(jCBFiltro.getSelectedItem().equals("Color")){
+                filtrarBuscador("Color del producto");
+                ControlOperaciones.limiteCaracteres(jTFBuscador, 50);
+                activarBuscador();
+                
+            } else if(jCBFiltro.getSelectedItem().equals("Talla")){
+                filtrarBuscador("Talla de producto");
+                ControlOperaciones.limiteCaracteres(jTFBuscador, 5);
+                ControlOperaciones.configurarCamposTexto(jTFBuscador);
                 activarBuscador();
                 
             }
@@ -407,7 +412,7 @@ public class HistorialComprasReposiciones extends javax.swing.JPanel {
     private javax.swing.JLabel jLFechaFinal;
     private javax.swing.JLabel jLFechaInicio;
     private javax.swing.JLabel jLFiltroBusqueda;
-    private javax.swing.JLabel jLTítuloNuevoProducto;
+    private javax.swing.JLabel jLTítuloHistorialVentas;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTFBuscador;

@@ -1,4 +1,4 @@
-package modulo_compras;
+package moduloCompras;
 
 import control.ControlFlujo;
 import control.ControlOperaciones;
@@ -33,10 +33,7 @@ public class Reposicion extends javax.swing.JPanel {
         jCBCategoria.setVisible(false);
         mostrarTallas(false);
         
-        modeloTablaProductos = new DefaultTableModel(new String[]{"Nombre", "Tipo", "Categoría", "Color", "Precio"}, 0){
-            @Override
-            public boolean isCellEditable(int row, int column) {return false;}
-        };
+        modeloTablaProductos = (DefaultTableModel) jTProductos.getModel();
         modeloTablaProductos.setRowCount(0);
         jTProductos.setModel(modeloTablaProductos);
         

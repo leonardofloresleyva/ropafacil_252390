@@ -1,4 +1,4 @@
-package modulo_inventario;
+package moduloInventario;
 
 import control.ControlFlujo;
 import control.ControlOperaciones;
@@ -128,14 +128,14 @@ public class EditarProducto extends javax.swing.JPanel {
         jLTítuloNuevoProducto.setForeground(new java.awt.Color(0, 0, 0));
         jLTítuloNuevoProducto.setText("Edición de Producto");
 
-        btnRegresar.setBackground(new java.awt.Color(0, 0, 0));
-        btnRegresar.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
         btnRegresar.setText("Regresar");
+        btnRegresar.setBackground(new java.awt.Color(0, 0, 0));
         btnRegresar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 0, true));
         btnRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnRegresar.setFocusPainted(false);
         btnRegresar.setFocusable(false);
+        btnRegresar.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegresarActionPerformed(evt);
@@ -192,12 +192,12 @@ public class EditarProducto extends javax.swing.JPanel {
         jLCajaAlmacenamiento.setForeground(new java.awt.Color(0, 0, 0));
         jLCajaAlmacenamiento.setText("Caja de almacenamiento:");
 
-        jCBCajaAlmacenamiento.setBackground(new java.awt.Color(255, 255, 255));
-        jCBCajaAlmacenamiento.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        jCBCajaAlmacenamiento.setForeground(new java.awt.Color(0, 0, 0));
         jCBCajaAlmacenamiento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N/A", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }));
+        jCBCajaAlmacenamiento.setBackground(new java.awt.Color(255, 255, 255));
         jCBCajaAlmacenamiento.setBorder(null);
         jCBCajaAlmacenamiento.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jCBCajaAlmacenamiento.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        jCBCajaAlmacenamiento.setForeground(new java.awt.Color(0, 0, 0));
         jCBCajaAlmacenamiento.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jCBCajaAlmacenamientoItemStateChanged(evt);
@@ -292,26 +292,26 @@ public class EditarProducto extends javax.swing.JPanel {
         jLTalla1.setForeground(new java.awt.Color(0, 0, 0));
         jLTalla1.setText("Cantidad:");
 
-        btnConfirmarEdicion.setBackground(new java.awt.Color(0, 0, 0));
-        btnConfirmarEdicion.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        btnConfirmarEdicion.setForeground(new java.awt.Color(255, 255, 255));
         btnConfirmarEdicion.setText("Confirmar edición");
+        btnConfirmarEdicion.setBackground(new java.awt.Color(0, 0, 0));
         btnConfirmarEdicion.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 0, true));
         btnConfirmarEdicion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnConfirmarEdicion.setFocusPainted(false);
         btnConfirmarEdicion.setFocusable(false);
+        btnConfirmarEdicion.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        btnConfirmarEdicion.setForeground(new java.awt.Color(255, 255, 255));
         btnConfirmarEdicion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConfirmarEdicionActionPerformed(evt);
             }
         });
 
-        jCBCategoria.setBackground(new java.awt.Color(255, 255, 255));
-        jCBCategoria.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        jCBCategoria.setForeground(new java.awt.Color(0, 0, 0));
         jCBCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N/A", "DAMA", "CABALLERO" }));
+        jCBCategoria.setBackground(new java.awt.Color(255, 255, 255));
         jCBCategoria.setBorder(null);
         jCBCategoria.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jCBCategoria.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        jCBCategoria.setForeground(new java.awt.Color(0, 0, 0));
         jCBCategoria.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jCBCategoriaItemStateChanged(evt);

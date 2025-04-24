@@ -1,16 +1,20 @@
 package Contenedor;
 
+import moduloVentas.SubmenuVentas;
 import control.ControlFlujo;
 import javax.swing.JFrame;
 import menu_principal.MenuPrincipal;
-import modulo_compras.HistorialCompras;
-import modulo_compras.HistorialComprasNuevosProductos;
-import modulo_compras.HistorialComprasReposiciones;
-import modulo_compras.NuevoProducto;
-import modulo_compras.Reposicion;
-import modulo_compras.SubmenuCompras;
-import modulo_inventario.EditarProducto;
-import modulo_inventario.Inventario;
+import moduloCompras.HistorialCompras;
+import moduloCompras.HistorialComprasNuevosProductos;
+import moduloCompras.HistorialComprasReposiciones;
+import moduloCompras.NuevoProducto;
+import moduloCompras.Reposicion;
+import moduloCompras.SubmenuCompras;
+import moduloInventario.EditarProducto;
+import moduloInventario.Inventario;
+import moduloVentas.AgregarProducto;
+import moduloVentas.HistorialVentas;
+import moduloVentas.Vender;
 
 /**
  *
@@ -29,6 +33,10 @@ public class Contenedor extends javax.swing.JFrame {
     private HistorialComprasReposiciones historialComprasReposiciones;
     private Inventario inventario;
     private EditarProducto editarProducto;
+    private SubmenuVentas submenuVentas;
+    private Vender vender;
+    private AgregarProducto agregarProducto;
+    private HistorialVentas historialVentas;
     /**
      * Creates new form Contenedor
      */
@@ -99,6 +107,10 @@ public class Contenedor extends javax.swing.JFrame {
         historialComprasReposiciones = HistorialComprasReposiciones.getInstance();
         inventario = Inventario.getInstance();
         editarProducto = EditarProducto.getInstance();
+        submenuVentas = SubmenuVentas.getInstance();
+        vender = Vender.getInstance();
+        agregarProducto = AgregarProducto.getInstance();
+        historialVentas = HistorialVentas.getInstance();
         // Se añaden las pantallas al panel contenedor.
         panelContenido.add(menuPrincipal, "MenuPrincipal");
         panelContenido.add(submenuCompras, "SubmenuCompras");
@@ -108,7 +120,11 @@ public class Contenedor extends javax.swing.JFrame {
         panelContenido.add(historialComprasNuevosProductos, "HistorialComprasNuevosProductos");
         panelContenido.add(historialComprasReposiciones, "HistorialComprasReposiciones");
         panelContenido.add(inventario, "Inventario");
-        panelContenido.add(editarProducto, "E");
+        panelContenido.add(editarProducto, "EditarProducto");
+        panelContenido.add(submenuVentas, "SubmenuVentas");
+        panelContenido.add(vender, "Vender");
+        panelContenido.add(agregarProducto, "AgregarProducto");
+        panelContenido.add(historialVentas, "HistorialVentas");
         // Abre el menú principal
         ControlFlujo.mostrarMenuPrincipal();
     }
