@@ -226,7 +226,7 @@ public class SubmenuCompras extends javax.swing.JPanel {
     }//GEN-LAST:event_btnReposicionMouseExited
 
     private void btnHistorialComprasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHistorialComprasMouseClicked
-        
+        ControlFlujo.mostrarHistorialCompras();
     }//GEN-LAST:event_btnHistorialComprasMouseClicked
 
     private void btnHistorialComprasMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHistorialComprasMouseEntered

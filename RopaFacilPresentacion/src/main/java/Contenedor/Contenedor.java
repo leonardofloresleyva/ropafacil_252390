@@ -3,6 +3,9 @@ package Contenedor;
 import control.ControlFlujo;
 import javax.swing.JFrame;
 import menu_principal.MenuPrincipal;
+import modulo_compras.HistorialCompras;
+import modulo_compras.HistorialComprasNuevosProductos;
+import modulo_compras.HistorialComprasReposiciones;
 import modulo_compras.NuevoProducto;
 import modulo_compras.Reposicion;
 import modulo_compras.SubmenuCompras;
@@ -19,6 +22,9 @@ public class Contenedor extends javax.swing.JFrame {
     private SubmenuCompras submenuCompras;
     private NuevoProducto nuevoProducto;
     private Reposicion reposicion;
+    private HistorialCompras historialCompras;
+    private HistorialComprasNuevosProductos historialComprasNuevosProductos;
+    private HistorialComprasReposiciones historialComprasReposiciones;
     /**
      * Creates new form Contenedor
      */
@@ -54,7 +60,6 @@ public class Contenedor extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1280, 720));
         setMinimumSize(new java.awt.Dimension(1280, 720));
-        setPreferredSize(new java.awt.Dimension(1280, 720));
 
         panelContenido.setMaximumSize(new java.awt.Dimension(1280, 720));
         panelContenido.setMinimumSize(new java.awt.Dimension(1280, 720));
@@ -85,11 +90,17 @@ public class Contenedor extends javax.swing.JFrame {
         submenuCompras = SubmenuCompras.getInstance();
         nuevoProducto = NuevoProducto.getInstance();
         reposicion = Reposicion.getInstance();
+        historialCompras = HistorialCompras.getInstance();
+        historialComprasNuevosProductos = HistorialComprasNuevosProductos.getInstance();
+        historialComprasReposiciones = HistorialComprasReposiciones.getInstance();
         // Se añaden las pantallas al panel contenedor.
         panelContenido.add(menuPrincipal, "MenuPrincipal");
         panelContenido.add(submenuCompras, "SubmenuCompras");
         panelContenido.add(nuevoProducto, "NuevoProducto");
         panelContenido.add(reposicion, "Reposicion");
+        panelContenido.add(historialCompras, "HistorialCompras");
+        panelContenido.add(historialComprasNuevosProductos, "HistorialComprasNuevosProductos");
+        panelContenido.add(historialComprasReposiciones, "HistorialComprasReposiciones");
         // Abre el menú principal
         ControlFlujo.mostrarMenuPrincipal();
     }

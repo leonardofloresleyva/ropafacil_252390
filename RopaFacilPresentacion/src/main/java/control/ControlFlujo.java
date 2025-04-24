@@ -2,6 +2,9 @@ package control;
 
 import javax.swing.JPanel;
 import menu_principal.MenuPrincipal;
+import modulo_compras.HistorialCompras;
+import modulo_compras.HistorialComprasNuevosProductos;
+import modulo_compras.HistorialComprasReposiciones;
 import modulo_compras.NuevoProducto;
 import modulo_compras.Reposicion;
 import modulo_compras.SubmenuCompras;
@@ -40,5 +43,26 @@ public class ControlFlujo {
             panelActual.setVisible(false);
         Reposicion.getInstance().setVisible(true);
         panelActual = Reposicion.getInstance();
+    }
+    
+    public static void mostrarHistorialCompras(){
+        if(panelActual != null)
+            panelActual.setVisible(false);
+        HistorialCompras.getInstance().setVisible(true);
+        panelActual = HistorialCompras.getInstance();
+    }
+    
+    public static void mostrarHistorialComprasNuevosProductos(){
+        if(panelActual != null)
+            panelActual.setVisible(false);
+        HistorialComprasNuevosProductos.getInstance().setVisible(true);
+        panelActual = HistorialComprasNuevosProductos.getInstance();
+    }
+    
+    public static void mostrarHistorialComprasReposiciones(){
+        if(panelActual != null)
+            panelActual.setVisible(false);
+        HistorialComprasReposiciones.getInstance().setVisible(true);
+        panelActual = HistorialComprasReposiciones.getInstance();
     }
 }
