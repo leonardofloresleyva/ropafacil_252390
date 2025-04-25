@@ -1,12 +1,18 @@
 package BO;
 
+import DAO.ProductoDAO;
 import dtos.ProductoDTO;
 import dtos.StockPorTallaDTO;
+import entidades.Producto;
 import enums.EstadoProducto;
 import exception.NegocioException;
+import exception.PersistenciaException;
 import interfaces.iProductoBO;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import mappers.ProductoMapper;
 
 /**
  *
@@ -26,47 +32,135 @@ public class ProductoBO implements iProductoBO{
     
     @Override
     public boolean actualizarProducto(ProductoDTO producto) throws NegocioException {
-        return true;
+        
+        Producto productoActualizar = ProductoMapper.toEntityViejo(producto);
+        try {
+            return ProductoDAO.getInstance().actualizarProducto(productoActualizar);
+        } catch (PersistenciaException ex) {
+            throw new NegocioException(ex.getMessage(), ex);
+        }
     }
 
     @Override
-    public boolean cambiarEstado(EstadoProducto nuevoEstado) throws NegocioException {
-        return true;
+    public boolean cambiarEstado(ProductoDTO producto, EstadoProducto nuevoEstado) throws NegocioException {
+        Producto productoEstado = ProductoMapper.toEntityViejo(producto);
+        try {
+            return ProductoDAO.getInstance().cambiarEstado(productoEstado, nuevoEstado);
+        } catch (PersistenciaException ex) {
+            throw new NegocioException(ex.getMessage(), ex);
+        }
     }
 
     @Override
     public List<ProductoDTO> buscarPorNombre(String nombre) throws NegocioException {
-        return new ArrayList<>();
+        try {
+            
+            List<ProductoDTO> productosEncontradosDTO = new ArrayList<>();
+            
+            List<Producto> productosEncontrados = ProductoDAO.getInstance().buscarPorNombre(nombre);
+            if(!productosEncontrados.isEmpty())
+                productosEncontrados.stream().forEach(e -> {productosEncontradosDTO.add(ProductoMapper.toDTOViejo(e));});
+            
+            return productosEncontradosDTO;
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @Override
     public List<ProductoDTO> buscarPorEstado(EstadoProducto estado) throws NegocioException {
-        return new ArrayList<>();
+        try {
+            
+            List<ProductoDTO> productosEncontradosDTO = new ArrayList<>();
+            
+            List<Producto> productosEncontrados = ProductoDAO.getInstance().buscarPorEstado(estado);
+            if(!productosEncontrados.isEmpty())
+                productosEncontrados.stream().forEach(e -> {productosEncontradosDTO.add(ProductoMapper.toDTOViejo(e));});
+            
+            return productosEncontradosDTO;
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @Override
     public List<ProductoDTO> buscarPorColor(String color) throws NegocioException {
-        return new ArrayList<>();
+        try {
+            
+            List<ProductoDTO> productosEncontradosDTO = new ArrayList<>();
+            
+            List<Producto> productosEncontrados = ProductoDAO.getInstance().buscarPorColor(color);
+            if(!productosEncontrados.isEmpty())
+                productosEncontrados.stream().forEach(e -> {productosEncontradosDTO.add(ProductoMapper.toDTOViejo(e));});
+            
+            return productosEncontradosDTO;
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @Override
     public List<ProductoDTO> buscarPorTipo(String tipo) throws NegocioException {
-        return new ArrayList<>();
+        try {
+            
+            List<ProductoDTO> productosEncontradosDTO = new ArrayList<>();
+            
+            List<Producto> productosEncontrados = ProductoDAO.getInstance().buscarPorTipo(tipo);
+            if(!productosEncontrados.isEmpty())
+                productosEncontrados.stream().forEach(e -> {productosEncontradosDTO.add(ProductoMapper.toDTOViejo(e));});
+            
+            return productosEncontradosDTO;
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @Override
     public List<ProductoDTO> buscarPorCategoria(String categoria) throws NegocioException {
-        return new ArrayList<>();
+        try {
+            
+            List<ProductoDTO> productosEncontradosDTO = new ArrayList<>();
+            
+            List<Producto> productosEncontrados = ProductoDAO.getInstance().buscarPorCategoria(categoria);
+            if(!productosEncontrados.isEmpty())
+                productosEncontrados.stream().forEach(e -> {productosEncontradosDTO.add(ProductoMapper.toDTOViejo(e));});
+            
+            return productosEncontradosDTO;
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @Override
     public List<ProductoDTO> buscarPorTalla(String talla) throws NegocioException {
-        return new ArrayList<>();
+        try {
+            
+            List<ProductoDTO> productosEncontradosDTO = new ArrayList<>();
+            
+            List<Producto> productosEncontrados = ProductoDAO.getInstance().buscarPorTalla(talla);
+            if(!productosEncontrados.isEmpty())
+                productosEncontrados.stream().forEach(e -> {productosEncontradosDTO.add(ProductoMapper.toDTOViejo(e));});
+            
+            return productosEncontradosDTO;
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @Override
     public List<ProductoDTO> buscarPorCaja(Integer numeroCaja) throws NegocioException {
-        return new ArrayList<>();
+        try {
+            
+            List<ProductoDTO> productosEncontradosDTO = new ArrayList<>();
+            
+            List<Producto> productosEncontrados = ProductoDAO.getInstance().buscarPorCaja(numeroCaja);
+            if(!productosEncontrados.isEmpty())
+                productosEncontrados.stream().forEach(e -> {productosEncontradosDTO.add(ProductoMapper.toDTOViejo(e));});
+            
+            return productosEncontradosDTO;
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
     
 }

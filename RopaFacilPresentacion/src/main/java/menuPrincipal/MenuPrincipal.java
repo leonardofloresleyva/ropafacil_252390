@@ -19,15 +19,6 @@ public class MenuPrincipal extends javax.swing.JPanel {
      */
     public MenuPrincipal() {
         initComponents();
-        try {
-            ControlOperaciones.registrarTalla(new TallaDTO("XS"));
-            ControlOperaciones.registrarTalla(new TallaDTO("S"));
-            ControlOperaciones.registrarTalla(new TallaDTO("M"));
-            ControlOperaciones.registrarTalla(new TallaDTO("L"));
-            ControlOperaciones.registrarTalla(new TallaDTO("XL"));
-        } catch (NegocioException e) {
-            
-        }
     }
     
     public static MenuPrincipal getInstance(){

@@ -3,6 +3,7 @@ package interfaces;
 import entidades.DetalleCompraTalla;
 import entidades.NuevoProducto;
 import entidades.Producto;
+import entidades.Reposicion;
 import entidades.StockPorTalla;
 import exception.PersistenciaException;
 import java.util.List;
@@ -20,4 +21,9 @@ public interface iCompraDAO {
             List<DetalleCompraTalla> detalleCompraTalla
     ) throws PersistenciaException;
     
+    public Reposicion registrarReposicion(
+            Producto producto,
+            Reposicion compra,
+            List<DetalleCompraTalla> detalleCompraTalla
+    ) throws PersistenciaException;
 }

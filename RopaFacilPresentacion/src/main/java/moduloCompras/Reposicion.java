@@ -9,6 +9,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -26,6 +28,7 @@ public class Reposicion extends javax.swing.JPanel {
     
     private boolean campoValido;
     private boolean filtroValido;
+    private boolean categoriaValida;
     private boolean XSValido;
     private boolean SValido;
     private boolean MValido;
@@ -233,7 +236,7 @@ public class Reposicion extends javax.swing.JPanel {
         jCBCategoria.setBackground(new java.awt.Color(255, 255, 255));
         jCBCategoria.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jCBCategoria.setForeground(new java.awt.Color(0, 0, 0));
-        jCBCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DAMA", "CABALLERO" }));
+        jCBCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N/A", "DAMA", "CABALLERO" }));
         jCBCategoria.setBorder(null);
         jCBCategoria.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jCBCategoria.addItemListener(new java.awt.event.ItemListener() {
@@ -505,6 +508,22 @@ public class Reposicion extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        
+        if(jLFiltroCategoria.isVisible())
+            jLFiltroCategoria.setVisible(false);
+
+        if(jCBCategoria.isVisible())
+            jCBCategoria.setVisible(false);
+
+        if(jLBuscador.isVisible())
+            jLBuscador.setVisible(false);
+
+        if(jTFBuscador.isVisible())
+            jTFBuscador.setVisible(false);
+
+        modeloTablaProductos.setRowCount(0);
+        mostrarTallas(false);
+        
         ControlFlujo.mostrarSubmenuCompras();
     }//GEN-LAST:event_btnRegresarActionPerformed
 
@@ -519,21 +538,25 @@ public class Reposicion extends javax.swing.JPanel {
                 filtrarBuscador("Nombre del producto");
                 ControlOperaciones.limiteCaracteres(jTFBuscador, 100);
                 activarBuscador();
+                btnConfirmarReposicion.setVisible(false);
                 
             } else if(jCBFiltro.getSelectedItem().equals("Tipo")){
                 filtrarBuscador("Tipo de producto");
                 ControlOperaciones.limiteCaracteres(jTFBuscador, 50);
                 activarBuscador();
+                btnConfirmarReposicion.setVisible(false);
                 
             }else if(jCBFiltro.getSelectedItem().equals("Color")){
                 filtrarBuscador("Color del producto");
                 ControlOperaciones.limiteCaracteres(jTFBuscador, 50);
                 activarBuscador();
+                btnConfirmarReposicion.setVisible(false);
                 
             }else if(jCBFiltro.getSelectedItem().equals("Talla")){
                 filtrarBuscador("Talla de producto");
                 ControlOperaciones.limiteCaracteres(jTFBuscador, 5);
                 activarBuscador();
+                btnConfirmarReposicion.setVisible(false);
                 
             } else if(jCBFiltro.getSelectedItem().equals("Categoría")){
                 if(jLBuscador.isVisible())
@@ -548,7 +571,10 @@ public class Reposicion extends javax.swing.JPanel {
                 if(!jCBCategoria.isVisible())
                     jCBCategoria.setVisible(true);
                 
+                jCBCategoria.setSelectedItem("N/A");
                 modeloTablaProductos.setRowCount(0);
+                mostrarTallas(false);
+                btnConfirmarReposicion.setVisible(false);
             }
         } else{
             if(jLFiltroCategoria.isVisible())
@@ -565,11 +591,22 @@ public class Reposicion extends javax.swing.JPanel {
             
             modeloTablaProductos.setRowCount(0);
             mostrarTallas(false);
+            btnConfirmarReposicion.setVisible(false);
         }
     }//GEN-LAST:event_jCBFiltroItemStateChanged
 
     private void jCBCategoriaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCBCategoriaItemStateChanged
-        
+        filtroValido = ControlOperaciones.validarCampoInvalidoComboBox(jCBFiltro);
+        categoriaValida = ControlOperaciones.validarCampoInvalidoComboBox(jCBCategoria);
+        if(filtroValido && categoriaValida){
+            try {
+                modeloTablaProductos.setRowCount(0);
+                productosEncontrados = ControlOperaciones.buscarPorCategoria((String) jCBCategoria.getSelectedItem());
+                cargarTablaProductos();
+            } catch (NegocioException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_jCBCategoriaItemStateChanged
 
     private void jTProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTProductosMouseClicked
@@ -630,6 +667,7 @@ public class Reposicion extends javax.swing.JPanel {
     }
     
     private void tablaDinamica() throws NegocioException{
+        modeloTablaProductos.setRowCount(0);
         campoValido = ControlOperaciones.validarCampoInvalidoTexto(jTFBuscador);
         filtroValido = ControlOperaciones.validarCampoInvalidoComboBox(jCBFiltro);
         
@@ -650,13 +688,8 @@ public class Reposicion extends javax.swing.JPanel {
                 productosEncontrados = ControlOperaciones.buscarPorTalla(jTFBuscador.getText());
                 cargarTablaProductos();
                 
-            } else if(jCBFiltro.getSelectedItem().equals("Categoría")){
-                productosEncontrados = ControlOperaciones.buscarPorCategoria((String) jCBCategoria.getSelectedItem());
-                cargarTablaProductos();
             }
         }
-        
-        btnConfirmarReposicion.setEnabled(true);
     }
     
     private void cargarTablaProductos(){
@@ -666,25 +699,26 @@ public class Reposicion extends javax.swing.JPanel {
                     e.getNombre(), 
                     e.getTipo().getTipo(),
                     e.getCategoria().getCategoria(),
-                    e.getColor().getClass(),
+                    e.getColor().getColor(),
                     e.getPrecio()
                 });
             });
         }
+        mostrarTallas(false);
     }
     
     private void activarBoton(){
         campoValido = ControlOperaciones.validarCampoInvalidoTexto(jTFBuscador);
         filtroValido = ControlOperaciones.validarCampoInvalidoComboBox(jCBFiltro);
         if(jTProductos.getSelectedRow() != -1 && campoValido && filtroValido){
-            XSValido = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaXSInput) && Integer.parseInt(jTFTallaXSInput.getText()) > 0;
-            SValido = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaSInput) && Integer.parseInt(jTFTallaSInput.getText()) > 0;
-            MValido = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaMInput)&& Integer.parseInt(jTFTallaMInput.getText()) > 0;
-            LValido = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaLInput) && Integer.parseInt(jTFTallaLInput.getText()) > 0;
-            XLValido = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaXLInput) && Integer.parseInt(jTFTallaXLInput.getText()) > 0;
-            precioUnitarioValido = ControlOperaciones.validarCampoInvalidoPrecios(jTFPrecioCompraUnitario) && Double.parseDouble(jTFPrecioCompraUnitario.getText()) > 0;
+            XSValido = ControlOperaciones.validarCampoInvalidoCantidades(jTFTallaXSInput);
+            SValido = ControlOperaciones.validarCampoInvalidoCantidades(jTFTallaSInput);
+            MValido = ControlOperaciones.validarCampoInvalidoCantidades(jTFTallaMInput);
+            LValido = ControlOperaciones.validarCampoInvalidoCantidades(jTFTallaLInput);
+            XLValido = ControlOperaciones.validarCampoInvalidoCantidades(jTFTallaXLInput);
+            precioUnitarioValido = ControlOperaciones.validarCampoInvalidoPrecios(jTFPrecioCompraUnitario);
             
-            btnConfirmarReposicion.setEnabled(XSValido && SValido && MValido && LValido && XLValido && precioUnitarioValido);
+            btnConfirmarReposicion.setVisible((XSValido || SValido || MValido || LValido || XLValido) && precioUnitarioValido);
         }
             
     }
@@ -699,13 +733,23 @@ public class Reposicion extends javax.swing.JPanel {
         jLTallaXL.setVisible(mostrar);
 
         jTFTallaXSInput.setVisible(mostrar);
+        jTFTallaXSInput.setText("0");
+        
         jTFTallaSInput.setVisible(mostrar);
+        jTFTallaSInput.setText("0");
+        
         jTFTallaMInput.setVisible(mostrar);
+        jTFTallaMInput.setText("0");
+        
         jTFTallaLInput.setVisible(mostrar);
+        jTFTallaLInput.setText("0");
+        
         jTFTallaXLInput.setVisible(mostrar);
+        jTFTallaXLInput.setText("0");
         
         jLPrecioCompraUnitario.setVisible(mostrar);
         jTFPrecioCompraUnitario.setVisible(mostrar);
+        jTFPrecioCompraUnitario.setText("0");
     }
     
     private void filtrarBuscador(String nuevoTítulo){
@@ -725,6 +769,7 @@ public class Reposicion extends javax.swing.JPanel {
         jTFBuscador.setText("");
         jTFPrecioCompraUnitario.setText("0");
         modeloTablaProductos.setRowCount(0);
+        mostrarTallas(false);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

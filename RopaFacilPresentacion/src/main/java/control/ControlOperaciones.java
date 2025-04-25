@@ -113,7 +113,11 @@ public class ControlOperaciones {
     }
     
     public static boolean validarCampoInvalidoPrecios(JTextField campo){
-        return !campo.getText().trim().isEmpty();
+        return !campo.getText().trim().isEmpty() && Double.parseDouble(campo.getText()) > 0.0;
+    }
+    
+    public static boolean validarCampoInvalidoCantidades(JTextField campo){
+        return !campo.getText().trim().isEmpty() && Integer.parseInt(campo.getText()) > 0;
     }
     
     public static boolean validarCampoInvalidoComboBox(JComboBox comboBox){

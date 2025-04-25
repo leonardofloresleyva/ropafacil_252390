@@ -9,6 +9,7 @@ import dtos.StockPorTallaDTO;
 import entidades.DetalleCompraTalla;
 import entidades.NuevoProducto;
 import entidades.Producto;
+import entidades.Reposicion;
 import entidades.StockPorTalla;
 import exception.NegocioException;
 import exception.PersistenciaException;
@@ -20,6 +21,7 @@ import java.util.logging.Logger;
 import mappers.DetalleCompraTallaMapper;
 import mappers.NuevoProductoMapper;
 import mappers.ProductoMapper;
+import mappers.ReposicionMapper;
 import mappers.StockPorTallaMapper;
 
 /**
@@ -55,6 +57,9 @@ public class CompraBO implements iCompraBO{
 
     @Override
     public boolean registrarCompraReposicion(ProductoDTO producto, ReposicionDTO compra, List<DetalleCompraTallaDTO> detalleCompraTalla) throws NegocioException {
+        Producto productoNuevo = ProductoMapper.toEntityNuevo(producto);
+        Reposicion compraNueva = ReposicionMapper.toEntityNuevo(compra);
+        List<DetalleCompraTalla> tallasCompradas = detalleCompraTalla.stream().map(e -> DetalleCompraTallaMapper.toEntityNuevo(e)).toList();
         return true;
     }
 

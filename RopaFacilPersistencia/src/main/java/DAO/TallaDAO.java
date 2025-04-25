@@ -46,12 +46,10 @@ public class TallaDAO implements iTallaDAO {
     public Talla buscarTalla(Talla talla) throws PersistenciaException {
         EntityManager em = Conexion.crearConexion();
         try {
-            em.getTransaction().begin();
             
             Query query = em.createQuery("SELECT t FROM Talla t WHERE t.talla = :talla", Talla.class);
             query.setParameter("talla", talla.getTalla());
             List<Talla> tallaEncontrada = query.getResultList();
-            em.getTransaction().commit();
             
             if(!tallaEncontrada.isEmpty())
                 return tallaEncontrada.getFirst();
@@ -59,7 +57,6 @@ public class TallaDAO implements iTallaDAO {
                 return null;
             
         } catch (Exception ex) {
-            em.getTransaction().rollback();
             throw new PersistenciaException("Ha ocurrido un error al buscar la talla");
             
         } finally {

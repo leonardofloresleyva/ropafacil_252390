@@ -51,31 +51,31 @@ public class Producto implements Serializable {
     /**
      * Categoría del producto.
      */
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne()
     @JoinColumn(name = "ID_CATEGORIA", nullable = false)
     private Categoria categoria;
     /**
      * Color del producto.
      */
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne()
     @JoinColumn(name = "ID_COLOR", nullable = false)
     private Color color;    
     /**
      * Tipo del producto.
      */
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne()
     @JoinColumn(name = "ID_TIPO", nullable = false)
     private TipoPrenda tipo;
     /**
      * Caja de almacenamiento del producto.
      */
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne()
     @JoinColumn(name = "ID_CAJA", nullable = false)
     private CajaAlmacenamiento caja;
     /**
      * Proveedor del producto.
      */
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne()
     @JoinColumn(name = "ID_PROVEEDOR", nullable = true)
     private Proveedor proveedor;
     /**

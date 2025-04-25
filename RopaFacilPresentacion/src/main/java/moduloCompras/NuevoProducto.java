@@ -50,7 +50,7 @@ public class NuevoProducto extends javax.swing.JPanel {
      */
     private NuevoProducto() {
         initComponents();
-        btnConfirmarCompra.setEnabled(false);
+        btnConfirmarCompra.setVisible(false);
         jTFTallaXSInput.setText("0");
         jTFTallaSInput.setText("0");
         jTFTallaMInput.setText("0");
@@ -153,14 +153,14 @@ public class NuevoProducto extends javax.swing.JPanel {
         jLTítuloNuevoProducto.setForeground(new java.awt.Color(0, 0, 0));
         jLTítuloNuevoProducto.setText("Nuevo Producto");
 
-        btnRegresar.setText("Regresar");
         btnRegresar.setBackground(new java.awt.Color(0, 0, 0));
+        btnRegresar.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegresar.setText("Regresar");
         btnRegresar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 0, true));
         btnRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnRegresar.setFocusPainted(false);
         btnRegresar.setFocusable(false);
-        btnRegresar.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegresarActionPerformed(evt);
@@ -227,12 +227,12 @@ public class NuevoProducto extends javax.swing.JPanel {
         jLCajaAlmacenamiento.setForeground(new java.awt.Color(0, 0, 0));
         jLCajaAlmacenamiento.setText("Caja de almacenamiento*:");
 
-        jCBCajaAlmacenamiento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N/A", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }));
         jCBCajaAlmacenamiento.setBackground(new java.awt.Color(255, 255, 255));
-        jCBCajaAlmacenamiento.setBorder(null);
-        jCBCajaAlmacenamiento.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jCBCajaAlmacenamiento.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jCBCajaAlmacenamiento.setForeground(new java.awt.Color(0, 0, 0));
+        jCBCajaAlmacenamiento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N/A", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }));
+        jCBCajaAlmacenamiento.setBorder(null);
+        jCBCajaAlmacenamiento.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jCBCajaAlmacenamiento.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jCBCajaAlmacenamientoItemStateChanged(evt);
@@ -337,26 +337,26 @@ public class NuevoProducto extends javax.swing.JPanel {
         jLTalla1.setForeground(new java.awt.Color(0, 0, 0));
         jLTalla1.setText("Cantidad:");
 
-        btnConfirmarCompra.setText("Confirmar compra");
         btnConfirmarCompra.setBackground(new java.awt.Color(0, 0, 0));
+        btnConfirmarCompra.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        btnConfirmarCompra.setForeground(new java.awt.Color(255, 255, 255));
+        btnConfirmarCompra.setText("Confirmar compra");
         btnConfirmarCompra.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 0, true));
         btnConfirmarCompra.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnConfirmarCompra.setFocusPainted(false);
         btnConfirmarCompra.setFocusable(false);
-        btnConfirmarCompra.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        btnConfirmarCompra.setForeground(new java.awt.Color(255, 255, 255));
         btnConfirmarCompra.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConfirmarCompraActionPerformed(evt);
             }
         });
 
-        jCBCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N/A", "DAMA", "CABALLERO" }));
         jCBCategoria.setBackground(new java.awt.Color(255, 255, 255));
-        jCBCategoria.setBorder(null);
-        jCBCategoria.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jCBCategoria.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jCBCategoria.setForeground(new java.awt.Color(0, 0, 0));
+        jCBCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N/A", "DAMA", "CABALLERO" }));
+        jCBCategoria.setBorder(null);
+        jCBCategoria.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jCBCategoria.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jCBCategoriaItemStateChanged(evt);
@@ -554,56 +554,68 @@ public class NuevoProducto extends javax.swing.JPanel {
         productoDTO.setCaja(new CajaAlmacenamientoDTO(Integer.valueOf((String) jCBCajaAlmacenamiento.getSelectedItem())));
         if(jTFProveedor != null && !jTFProveedor.getText().isEmpty())
             productoDTO.setProveedor(new ProveedorDTO(jTFProveedor.getText()));
-        
-        StockPorTallaDTO tallaXS = new StockPorTallaDTO();
-        StockPorTallaDTO tallaS = new StockPorTallaDTO();
-        StockPorTallaDTO tallaM = new StockPorTallaDTO();
-        StockPorTallaDTO tallaL = new StockPorTallaDTO();
-        StockPorTallaDTO tallaXL = new StockPorTallaDTO();
-        
-        tallaXS.setTalla(new TallaDTO("XS"));
-        tallaS.setTalla(new TallaDTO("S"));
-        tallaM.setTalla(new TallaDTO("M"));
-        tallaL.setTalla(new TallaDTO("L"));
-        tallaXL.setTalla(new TallaDTO("XL"));
-        
-        tallaXS.setStock(Integer.valueOf(jTFTallaXSInput.getText()));
-        tallaS.setStock(Integer.valueOf(jTFTallaSInput.getText()));
-        tallaM.setStock(Integer.valueOf(jTFTallaMInput.getText()));
-        tallaL.setStock(Integer.valueOf(jTFTallaLInput.getText()));
-        tallaXL.setStock(Integer.valueOf(jTFTallaXLInput.getText()));
-        
+                
         List<StockPorTallaDTO> tallas = new ArrayList<>();
-        tallas.add(tallaXS);
-        tallas.add(tallaS);
-        tallas.add(tallaM);
-        tallas.add(tallaL);
-        tallas.add(tallaXL);
-        
-        DetalleCompraTallaDTO tallaCompraXS = new DetalleCompraTallaDTO();
-        DetalleCompraTallaDTO tallaCompraS = new DetalleCompraTallaDTO();
-        DetalleCompraTallaDTO tallaCompraM = new DetalleCompraTallaDTO();
-        DetalleCompraTallaDTO tallaCompraL = new DetalleCompraTallaDTO();
-        DetalleCompraTallaDTO tallaCompraXL = new DetalleCompraTallaDTO();
-        
-        tallaCompraXS.setCantidadComprada(Integer.valueOf(jTFTallaXSInput.getText()));
-        tallaCompraS.setCantidadComprada(Integer.valueOf(jTFTallaSInput.getText()));
-        tallaCompraM.setCantidadComprada(Integer.valueOf(jTFTallaMInput.getText()));
-        tallaCompraL.setCantidadComprada(Integer.valueOf(jTFTallaLInput.getText()));
-        tallaCompraXL.setCantidadComprada(Integer.valueOf(jTFTallaXLInput.getText()));
-        
-        tallaCompraXS.setTalla(tallaXS.getTalla());
-        tallaCompraS.setTalla(tallaS.getTalla());
-        tallaCompraM.setTalla(tallaM.getTalla());
-        tallaCompraL.setTalla(tallaL.getTalla());
-        tallaCompraXL.setTalla(tallaXL.getTalla());
-        
         List<DetalleCompraTallaDTO> tallasCompradas = new ArrayList<>();
-        tallasCompradas.add(tallaCompraXS);
-        tallasCompradas.add(tallaCompraS);
-        tallasCompradas.add(tallaCompraM);
-        tallasCompradas.add(tallaCompraL);
-        tallasCompradas.add(tallaCompraXL);
+        
+        if(XSValido){
+            StockPorTallaDTO tallaXS = new StockPorTallaDTO();
+            tallaXS.setTalla(new TallaDTO("XS"));
+            tallaXS.setStock(Integer.valueOf(jTFTallaXSInput.getText()));
+            tallas.add(tallaXS);
+            
+            DetalleCompraTallaDTO tallaCompraXS = new DetalleCompraTallaDTO();
+            tallaCompraXS.setCantidadComprada(Integer.valueOf(jTFTallaXSInput.getText()));
+            tallaCompraXS.setTalla(tallaXS.getTalla());
+            tallasCompradas.add(tallaCompraXS);
+        }
+        if(SValido){
+            StockPorTallaDTO tallaS = new StockPorTallaDTO();
+            tallaS.setTalla(new TallaDTO("S"));
+            tallaS.setStock(Integer.valueOf(jTFTallaSInput.getText()));
+            tallas.add(tallaS);
+            
+            DetalleCompraTallaDTO tallaCompraS = new DetalleCompraTallaDTO();
+            tallaCompraS.setCantidadComprada(Integer.valueOf(jTFTallaSInput.getText()));
+            tallaCompraS.setTalla(tallaS.getTalla());
+            tallasCompradas.add(tallaCompraS);
+        }
+        
+        if(MValido){
+            StockPorTallaDTO tallaM = new StockPorTallaDTO();
+            tallaM.setTalla(new TallaDTO("M"));
+            tallaM.setStock(Integer.valueOf(jTFTallaMInput.getText()));
+            tallas.add(tallaM);
+            
+            DetalleCompraTallaDTO tallaCompraM = new DetalleCompraTallaDTO();
+            tallaCompraM.setCantidadComprada(Integer.valueOf(jTFTallaMInput.getText()));
+            tallaCompraM.setTalla(tallaM.getTalla());
+            tallasCompradas.add(tallaCompraM);
+        }
+        
+        if(LValido){
+            StockPorTallaDTO tallaL = new StockPorTallaDTO();
+            tallaL.setTalla(new TallaDTO("L"));
+            tallaL.setStock(Integer.valueOf(jTFTallaLInput.getText()));
+            tallas.add(tallaL);
+            
+            DetalleCompraTallaDTO tallaCompraL = new DetalleCompraTallaDTO();
+            tallaCompraL.setCantidadComprada(Integer.valueOf(jTFTallaLInput.getText()));
+            tallaCompraL.setTalla(tallaL.getTalla());
+            tallasCompradas.add(tallaCompraL);
+        }
+        
+        if(XLValido){
+            StockPorTallaDTO tallaXL = new StockPorTallaDTO();
+            tallaXL.setTalla(new TallaDTO("XL"));
+            tallaXL.setStock(Integer.valueOf(jTFTallaXLInput.getText()));
+            tallas.add(tallaXL);
+            
+            DetalleCompraTallaDTO tallaCompraXL = new DetalleCompraTallaDTO();
+            tallaCompraXL.setCantidadComprada(Integer.valueOf(jTFTallaXLInput.getText()));
+            tallaCompraXL.setTalla(tallaXL.getTalla());
+            tallasCompradas.add(tallaCompraXL);
+        }
         
         NuevoProductoDTO nuevoProducto = new NuevoProductoDTO();
         nuevoProducto.setPrecioVentaSugerido(Double.valueOf(jTFPrecioVentaSugerido.getText()));
@@ -671,20 +683,20 @@ public class NuevoProducto extends javax.swing.JPanel {
         precioVentaValido = ControlOperaciones.validarCampoInvalidoPrecios(jTFPrecioVentaSugerido);
         categoriaValida = ControlOperaciones.validarCampoInvalidoComboBox(jCBCategoria);
         cajaValida = ControlOperaciones.validarCampoInvalidoComboBox(jCBCajaAlmacenamiento);
-        XSValido = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaXSInput);
-        SValido = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaSInput);
-        MValido = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaMInput);
-        LValido = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaLInput);
-        XLValido = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaXLInput);
+        XSValido = ControlOperaciones.validarCampoInvalidoCantidades(jTFTallaXSInput);
+        SValido = ControlOperaciones.validarCampoInvalidoCantidades(jTFTallaSInput);
+        MValido = ControlOperaciones.validarCampoInvalidoCantidades(jTFTallaMInput);
+        LValido = ControlOperaciones.validarCampoInvalidoCantidades(jTFTallaLInput);
+        XLValido = ControlOperaciones.validarCampoInvalidoCantidades(jTFTallaXLInput);
         
-        btnConfirmarCompra.setEnabled(
+        btnConfirmarCompra.setVisible(
                 nombreValido && colorValido && tipoValido 
                         && 
                 precioUnitarioValido && precioVentaValido 
                         && 
                 categoriaValida && cajaValida 
                         &&
-                XSValido && SValido && MValido && LValido && XLValido
+                (XSValido || SValido || MValido || LValido || XLValido)
         );
     }
     

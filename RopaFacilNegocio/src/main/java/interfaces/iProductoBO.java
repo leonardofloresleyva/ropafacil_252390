@@ -13,7 +13,7 @@ public interface iProductoBO {
     
     public boolean actualizarProducto(ProductoDTO producto) throws NegocioException;
     
-    public boolean cambiarEstado(EstadoProducto nuevoEstado) throws NegocioException;
+    public boolean cambiarEstado(ProductoDTO producto, EstadoProducto nuevoEstado) throws NegocioException;
     
     public List<ProductoDTO> buscarPorNombre(String nombre) throws NegocioException;
     
