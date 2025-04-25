@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence           http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
-  <persistence-unit name="ConexionPU" transaction-type="RESOURCE_LOCAL">
+  <persistence-unit name="PUConnection" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>entidades.NuevoProducto</class>
     <class>entidades.Producto</class>
-    <class>entidades.Categoria</class>
-    <class>entidades.Color</class>
-    <class>entidades.TipoPrenda</class>
-    <class>entidades.CajaAlmacenamiento</class>
+    <class>entidades.DetalleVentaTalla</class>
     <class>entidades.Proveedor</class>
-    <class>entidades.Talla</class>
+    <class>entidades.Reposicion</class>
     <class>entidades.StockPorTalla</class>
     <class>entidades.Compra</class>
-    <class>entidades.DetalleCompraProducto</class>
+    <class>entidades.TipoPrenda</class>
+    <class>entidades.Talla</class>
     <class>entidades.DetalleCompraTalla</class>
-    <class>entidades.NuevoProducto</class>
-    <class>entidades.Reposicion</class>
+    <class>entidades.Categoria</class>
+    <class>entidades.Color</class>
+    <class>entidades.CajaAlmacenamiento</class>
     <class>entidades.Venta</class>
-    <class>entidades.DetalleVentaProducto</class>
-    <class>entidades.DetalleVentaTalla</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ROPA_FACIL_252390?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ROPA_FACIL_252390?useJDBCCompliantTimezonShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
       <property name="javax.persistence.jdbc.password" value="itson"/>

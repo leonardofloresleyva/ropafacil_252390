@@ -11,6 +11,6 @@ public interface iTallaDAO {
     
     public Talla registrarTalla(Talla talla) throws PersistenciaException;
     
-    public boolean buscarTalla(Talla talla) throws PersistenciaException;
+    public Talla buscarTalla(Talla talla) throws PersistenciaException;
     
 }

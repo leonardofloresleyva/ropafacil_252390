@@ -2,11 +2,13 @@ package moduloCompras;
 
 import control.ControlFlujo;
 import control.ControlOperaciones;
+import dtos.CajaAlmacenamientoDTO;
 import dtos.CategoriaDTO;
 import dtos.ColorDTO;
 import dtos.DetalleCompraTallaDTO;
 import dtos.NuevoProductoDTO;
 import dtos.ProductoDTO;
+import dtos.ProveedorDTO;
 import dtos.StockPorTallaDTO;
 import dtos.TallaDTO;
 import dtos.TipoPrendaDTO;
@@ -549,6 +551,9 @@ public class NuevoProducto extends javax.swing.JPanel {
         productoDTO.setCategoria(new CategoriaDTO((String) jCBCategoria.getSelectedItem()));
         productoDTO.setColor(new ColorDTO(jTFColor.getText()));
         productoDTO.setTipo(new TipoPrendaDTO(jTFTipoPrenda.getText()));
+        productoDTO.setCaja(new CajaAlmacenamientoDTO(Integer.valueOf((String) jCBCajaAlmacenamiento.getSelectedItem())));
+        if(jTFProveedor != null && !jTFProveedor.getText().isEmpty())
+            productoDTO.setProveedor(new ProveedorDTO(jTFProveedor.getText()));
         
         StockPorTallaDTO tallaXS = new StockPorTallaDTO();
         StockPorTallaDTO tallaS = new StockPorTallaDTO();

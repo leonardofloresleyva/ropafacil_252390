@@ -28,7 +28,7 @@ public class TallaBO implements iTallaBO {
     public boolean registrarTalla(TallaDTO tallaDTO) throws NegocioException {
         try {
             Talla talla = TallaMapper.toEntityNuevo(tallaDTO);
-            if(TallaDAO.getInstance().buscarTalla(talla))
+            if(TallaDAO.getInstance().buscarTalla(talla) != null)
                 return false;
             else{
                 Talla tallaRegistrada = TallaDAO.getInstance().registrarTalla(talla);

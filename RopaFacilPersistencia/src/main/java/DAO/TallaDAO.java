@@ -43,7 +43,7 @@ public class TallaDAO implements iTallaDAO {
     }
     
     @Override
-    public boolean buscarTalla(Talla talla) throws PersistenciaException {
+    public Talla buscarTalla(Talla talla) throws PersistenciaException {
         EntityManager em = Conexion.crearConexion();
         try {
             em.getTransaction().begin();
@@ -53,7 +53,10 @@ public class TallaDAO implements iTallaDAO {
             List<Talla> tallaEncontrada = query.getResultList();
             em.getTransaction().commit();
             
-            return !tallaEncontrada.isEmpty();
+            if(!tallaEncontrada.isEmpty())
+                return tallaEncontrada.getFirst();
+            else
+                return null;
             
         } catch (Exception ex) {
             em.getTransaction().rollback();

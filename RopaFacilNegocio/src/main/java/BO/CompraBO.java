@@ -1,14 +1,26 @@
 package BO;
 
+import DAO.CompraDAO;
 import dtos.DetalleCompraTallaDTO;
 import dtos.NuevoProductoDTO;
 import dtos.ProductoDTO;
 import dtos.ReposicionDTO;
 import dtos.StockPorTallaDTO;
+import entidades.DetalleCompraTalla;
+import entidades.NuevoProducto;
+import entidades.Producto;
+import entidades.StockPorTalla;
 import exception.NegocioException;
+import exception.PersistenciaException;
 import interfaces.iCompraBO;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import mappers.DetalleCompraTallaMapper;
+import mappers.NuevoProductoMapper;
+import mappers.ProductoMapper;
+import mappers.StockPorTallaMapper;
 
 /**
  *
@@ -28,7 +40,17 @@ public class CompraBO implements iCompraBO{
     
     @Override
     public boolean registrarCompraNuevoProducto(ProductoDTO producto, List<StockPorTallaDTO> tallas, NuevoProductoDTO compra, List<DetalleCompraTallaDTO> detalleCompraTalla) throws NegocioException {
-        return true;
+        Producto productoNuevo = ProductoMapper.toEntityNuevo(producto);
+        List<StockPorTalla> tallasNuevas = tallas.stream().map(e -> StockPorTallaMapper.toEntityNuevo(e)).toList();
+        NuevoProducto compraNueva = NuevoProductoMapper.toEntityNuevo(compra);
+        List<DetalleCompraTalla> tallasCompradas = detalleCompraTalla.stream().map(e -> DetalleCompraTallaMapper.toEntityNuevo(e)).toList();
+        try {
+            compraNueva = CompraDAO.getInstance().registrarNuevoProducto(productoNuevo, tallasNuevas, compraNueva, tallasCompradas);
+            return compraNueva.getId() != null;
+        } catch (PersistenciaException ex) {
+            throw new NegocioException(ex.getMessage(), ex);
+        }
+        
     }
 
     @Override

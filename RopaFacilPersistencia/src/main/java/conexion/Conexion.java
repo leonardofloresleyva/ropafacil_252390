@@ -14,7 +14,7 @@ public class Conexion{
      * EntityManager cuando se requiera, para el manejo de las
      * operaciones CRUD con la base de datos.
      */
-    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("ConexionPU"); // solo un factory en toda la aplicación
+    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("PUConnection"); // solo un factory en toda la aplicación
     
     /**
      * Crea una nueva conexión con la base de datos.
