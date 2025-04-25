@@ -2,7 +2,7 @@ package control;
 
 import moduloVentas.SubmenuVentas;
 import javax.swing.JPanel;
-import menu_principal.MenuPrincipal;
+import menuPrincipal.MenuPrincipal;
 import moduloCompras.HistorialCompras;
 import moduloCompras.HistorialComprasNuevosProductos;
 import moduloCompras.HistorialComprasReposiciones;

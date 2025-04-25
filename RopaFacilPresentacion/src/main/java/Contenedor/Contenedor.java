@@ -3,7 +3,7 @@ package Contenedor;
 import moduloVentas.SubmenuVentas;
 import control.ControlFlujo;
 import javax.swing.JFrame;
-import menu_principal.MenuPrincipal;
+import menuPrincipal.MenuPrincipal;
 import moduloCompras.HistorialCompras;
 import moduloCompras.HistorialComprasNuevosProductos;
 import moduloCompras.HistorialComprasReposiciones;

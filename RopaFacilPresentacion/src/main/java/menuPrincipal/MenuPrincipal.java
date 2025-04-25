@@ -1,4 +1,4 @@
-package menu_principal;
+package menuPrincipal;
 
 import control.ControlFlujo;
 import java.awt.Color;
@@ -65,14 +65,8 @@ public class MenuPrincipal extends javax.swing.JPanel {
         });
 
         IconoCompras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/IconoCompras.png"))); // NOI18N
-        IconoCompras.setMaximumSize(new java.awt.Dimension(128, 128));
-        IconoCompras.setMinimumSize(new java.awt.Dimension(128, 128));
-        IconoCompras.setPreferredSize(new java.awt.Dimension(128, 128));
 
         IconoVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/IconoVenta.png"))); // NOI18N
-        IconoVentas.setMaximumSize(new java.awt.Dimension(128, 128));
-        IconoVentas.setMinimumSize(new java.awt.Dimension(128, 128));
-        IconoVentas.setPreferredSize(new java.awt.Dimension(128, 128));
 
         IconoInventario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/IconoInventario.png"))); // NOI18N
 
@@ -131,7 +125,7 @@ public class MenuPrincipal extends javax.swing.JPanel {
                 .addGap(362, 362, 362))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(115, 115, 115)
-                .addComponent(IconoCompras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(IconoCompras)
                 .addGap(18, 18, 18)
                 .addComponent(btnCompras)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 235, Short.MAX_VALUE)
@@ -154,7 +148,7 @@ public class MenuPrincipal extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addComponent(IconoCompras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(IconoCompras)
                                     .addGap(86, 86, 86))
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                     .addComponent(btnCompras)

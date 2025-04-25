@@ -101,7 +101,7 @@ public class VentaDTO {
      * Establece la recaudación total de la venta.
      * @param totalVenta Nueva recaudación total de la venta.
      */
-    public void setTotalCompra(Double totalVenta) {this.totalVenta = totalVenta;}
+    public void setTotalVenta(Double totalVenta) {this.totalVenta = totalVenta;}
     /**
      * Establece el detalle del producto asociado a la venta.
      * Si el detalle del producto asociado a la venta no 
