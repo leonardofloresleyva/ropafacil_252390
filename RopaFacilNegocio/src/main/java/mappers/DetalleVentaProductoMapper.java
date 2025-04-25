@@ -26,9 +26,7 @@ public class DetalleVentaProductoMapper {
         detalleVentaProducto.setId(detalleVentaProductoDTO.getId());
         detalleVentaProducto.setPrecioVenta(detalleVentaProductoDTO.getPrecioVenta());
         
-        Producto producto = new Producto();
-        producto.setId(detalleVentaProductoDTO.getProducto().getId());
-        detalleVentaProducto.setProducto(producto);
+        detalleVentaProducto.setProducto(ProductoMapper.toEntityViejo(detalleVentaProductoDTO.getProducto()));
         
         Venta venta = new Venta();
         venta.setId(detalleVentaProductoDTO.getId());
@@ -50,9 +48,7 @@ public class DetalleVentaProductoMapper {
         detalleVentaProductoDTO.setId(detalleVentaProducto.getId());
         detalleVentaProductoDTO.setPrecioVenta(detalleVentaProducto.getPrecioVenta());
         
-        ProductoDTO productoDTO = new ProductoDTO();
-        productoDTO.setId(detalleVentaProducto.getProducto().getId());
-        detalleVentaProductoDTO.setProducto(productoDTO);
+        detalleVentaProductoDTO.setProducto(ProductoMapper.toDTOViejo(detalleVentaProducto.getProducto()));
         
         VentaDTO ventaDTO = new VentaDTO();
         ventaDTO.setId(detalleVentaProducto.getId());

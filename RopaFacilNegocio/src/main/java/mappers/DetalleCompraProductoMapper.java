@@ -27,9 +27,7 @@ public class DetalleCompraProductoMapper {
         detalleCompraProducto.setId(detalleCompraProductoDTO.getId());
         detalleCompraProducto.setPrecioCompraUnitario(detalleCompraProductoDTO.getPrecioCompraUnitario());
         
-        Producto producto = new Producto();
-        producto.setId(detalleCompraProductoDTO.getProducto().getId());
-        detalleCompraProducto.setProducto(producto);
+        detalleCompraProducto.setProducto(ProductoMapper.toEntityViejo(detalleCompraProductoDTO.getProducto()));
         
         if(detalleCompraProductoDTO.getCompra() instanceof ReposicionDTO){
             Reposicion reposicion = new Reposicion();
@@ -57,9 +55,7 @@ public class DetalleCompraProductoMapper {
         detalleCompraProductoDTO.setId(detalleCompraProducto.getId());
         detalleCompraProductoDTO.setPrecioCompraUnitario(detalleCompraProducto.getPrecioCompraUnitario());
         
-        ProductoDTO productoDTO = new ProductoDTO();
-        productoDTO.setId(detalleCompraProducto.getProducto().getId());
-        detalleCompraProductoDTO.setProducto(productoDTO);
+        detalleCompraProductoDTO.setProducto(ProductoMapper.toDTOViejo(detalleCompraProducto.getProducto()));
         
         if(detalleCompraProducto.getCompra() instanceof Reposicion){
             ReposicionDTO reposicionDTO = new ReposicionDTO();
