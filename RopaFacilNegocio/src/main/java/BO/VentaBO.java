@@ -1,7 +1,7 @@
 package BO;
 
-import dtos.DetalleVentaProductoDTO;
 import dtos.DetalleVentaTallaDTO;
+import dtos.ProductoDTO;
 import dtos.VentaDTO;
 import exception.NegocioException;
 import interfaces.iVentaBO;
@@ -25,8 +25,8 @@ public class VentaBO implements iVentaBO{
     }
     
     @Override
-    public boolean registarVenta(VentaDTO venta, List<DetalleVentaProductoDTO> detalleVentaProducto, List<DetalleVentaTallaDTO> tallasVendidas) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean registarVenta(VentaDTO venta, ProductoDTO producto, List<DetalleVentaTallaDTO> tallasVendidas) throws NegocioException {
+        return true;
     }
 
     @Override

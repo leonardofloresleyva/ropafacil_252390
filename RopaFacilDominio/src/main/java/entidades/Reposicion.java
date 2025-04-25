@@ -22,22 +22,25 @@ public class Reposicion extends Compra implements Serializable {
     /**
      * Constructor sin ID de la compra de de una reposición.
      * @param fechaHora Fecha y hora de la reposición.
+     * @param precioCompraUnitario Precio de compra unitario de la compra.
      * @param totalCompra Total gastado de la reposición.
      * @param productoComprado Detalle del producto asociado a la reposición.
      * @param tallasCompradas Lista de tallas compradas asociadas al producto.
      */
     public Reposicion(
             LocalDateTime fechaHora, 
+            Double precioCompraUnitario, 
             Double totalCompra, 
-            DetalleCompraProducto productoComprado, 
+            Producto productoComprado, 
             List<DetalleCompraTalla> tallasCompradas
     ) {
-        super(fechaHora, totalCompra, productoComprado, tallasCompradas);
+        super(fechaHora, precioCompraUnitario, totalCompra, productoComprado, tallasCompradas);
     }
     /**
      * Constructor con ID incluido de la compra de una reposición.
      * @param id ID de la reposición.
      * @param fechaHora Fecha y hora de la reposición.
+     * @param precioCompraUnitario Precio de compra unitario de la compra.
      * @param totalCompra Total gastado de la reposición.
      * @param productoComprado Detalle del producto asociado a la reposición.
      * @param tallasCompradas Lista de tallas compradas asociadas al producto.
@@ -45,10 +48,11 @@ public class Reposicion extends Compra implements Serializable {
     public Reposicion( 
             Long id, 
             LocalDateTime fechaHora, 
+            Double precioCompraUnitario, 
             Double totalCompra, 
-            DetalleCompraProducto productoComprado, 
+            Producto productoComprado, 
             List<DetalleCompraTalla> tallasCompradas
     ) {
-        super(id, fechaHora, totalCompra, productoComprado, tallasCompradas);
+        super(id, fechaHora, precioCompraUnitario, totalCompra, productoComprado, tallasCompradas);
     }
 }

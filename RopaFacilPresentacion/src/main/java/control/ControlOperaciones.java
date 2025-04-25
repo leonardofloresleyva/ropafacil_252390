@@ -4,7 +4,6 @@ import BO.CompraBO;
 import BO.ProductoBO;
 import BO.TallaBO;
 import Control.JTextFieldLimit;
-import dtos.DetalleCompraProductoDTO;
 import dtos.DetalleCompraTallaDTO;
 import dtos.NuevoProductoDTO;
 import dtos.ProductoDTO;
@@ -33,20 +32,18 @@ public class ControlOperaciones {
     public static boolean registrarCompra(
             ProductoDTO producto, 
             List<StockPorTallaDTO> tallas, 
-            NuevoProductoDTO compra, 
-            DetalleCompraProductoDTO detalleCompraProducto, 
+            NuevoProductoDTO compra,
             List<DetalleCompraTallaDTO> detalleCompraTalla
     ) throws NegocioException{
-        return CompraBO.getInstance().registrarCompraNuevoProducto(producto, tallas, compra, detalleCompraProducto, detalleCompraTalla);
+        return CompraBO.getInstance().registrarCompraNuevoProducto(producto, tallas, compra, detalleCompraTalla);
     }
     
     public boolean registrarCompraReposicion(
             ProductoDTO producto, 
             ReposicionDTO compra, 
-            DetalleCompraProductoDTO detalleCompraProducto, 
             List<DetalleCompraTallaDTO> detalleCompraTalla
     ) throws NegocioException{
-        return CompraBO.getInstance().registrarCompraReposicion(producto, compra, detalleCompraProducto, detalleCompraTalla);
+        return CompraBO.getInstance().registrarCompraReposicion(producto, compra, detalleCompraTalla);
     }
     
     public static List<ProductoDTO> buscarProductosPorNombre(String nombre) throws NegocioException {return ProductoBO.getInstance().buscarPorNombre(nombre);}

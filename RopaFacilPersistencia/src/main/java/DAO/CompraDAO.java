@@ -1,7 +1,6 @@
 package DAO;
 
 import conexion.Conexion;
-import entidades.DetalleCompraProducto;
 import entidades.DetalleCompraTalla;
 import entidades.NuevoProducto;
 import entidades.Producto;
@@ -22,8 +21,7 @@ public class CompraDAO implements iCompraDAO {
     public NuevoProducto registrarNuevoProducto(
             Producto producto, 
             List<StockPorTalla> tallas, 
-            NuevoProducto compra, 
-            DetalleCompraProducto detalleCompraProducto, 
+            NuevoProducto compra,
             List<DetalleCompraTalla> detalleCompraTalla
     ) throws PersistenciaException {
         EntityManager em = Conexion.crearConexion();
@@ -33,15 +31,13 @@ public class CompraDAO implements iCompraDAO {
             producto.setTallas(tallas);
             em.persist(producto);
             
-            detalleCompraProducto.setProducto(producto);
-            
             compra.setFechaHora(LocalDateTime.now());
             int cantidadTotalTallas = 0;
             for(DetalleCompraTalla talla : detalleCompraTalla)
                 cantidadTotalTallas += talla.getCantidadComprada();
             
-            compra.setTotalCompra(cantidadTotalTallas * detalleCompraProducto.getPrecioCompraUnitario());
-            compra.setProductoComprado(detalleCompraProducto);
+            compra.setTotalCompra(cantidadTotalTallas * compra.getPrecioCompraUnitario());
+            compra.setProductoComprado(producto);
             compra.setTallasCompradas(detalleCompraTalla);
             
             em.persist(compra);

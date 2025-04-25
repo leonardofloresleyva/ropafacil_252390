@@ -2,7 +2,6 @@ package moduloCompras;
 
 import control.ControlFlujo;
 import control.ControlOperaciones;
-import dtos.DetalleCompraProductoDTO;
 import dtos.ProductoDTO;
 import exception.NegocioException;
 import java.awt.Graphics;
@@ -10,8 +9,6 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -512,7 +509,7 @@ public class Reposicion extends javax.swing.JPanel {
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void btnConfirmarReposicionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarReposicionActionPerformed
-        DetalleCompraProductoDTO detalleCompraProducto = new DetalleCompraProductoDTO();
+        
         
     }//GEN-LAST:event_btnConfirmarReposicionActionPerformed
 

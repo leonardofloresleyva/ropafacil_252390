@@ -1,6 +1,5 @@
 package interfaces;
 
-import dtos.DetalleCompraProductoDTO;
 import dtos.DetalleCompraTallaDTO;
 import dtos.NuevoProductoDTO;
 import dtos.ProductoDTO;
@@ -16,9 +15,9 @@ import java.util.List;
  */
 public interface iCompraBO {
     
-    public boolean registrarCompraNuevoProducto(ProductoDTO producto, List<StockPorTallaDTO> tallas, NuevoProductoDTO compra, DetalleCompraProductoDTO detalleCompraProducto, List<DetalleCompraTallaDTO> detalleCompraTalla) throws NegocioException;
+    public boolean registrarCompraNuevoProducto(ProductoDTO producto, List<StockPorTallaDTO> tallas, NuevoProductoDTO compra, List<DetalleCompraTallaDTO> detalleCompraTalla) throws NegocioException;
     
-    public boolean registrarCompraReposicion(ProductoDTO producto, ReposicionDTO compra, DetalleCompraProductoDTO detalleCompraProducto, List<DetalleCompraTallaDTO> detalleCompraTalla) throws NegocioException;
+    public boolean registrarCompraReposicion(ProductoDTO producto, ReposicionDTO compra, List<DetalleCompraTallaDTO> detalleCompraTalla) throws NegocioException;
     
     public List<NuevoProductoDTO> obtenerNuevosProductosFecha(LocalDate fechaInicial, LocalDate fechaFinal) throws NegocioException;
     

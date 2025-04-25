@@ -19,13 +19,17 @@ public class VentaDTO {
      */
     private LocalDateTime fechaHora;
     /**
+     * Precio de venta del producto.
+     */
+    private Double precioVenta;
+    /**
      * Total gastado de la venta.
      */
     private Double totalVenta;
     /**
-     * Detalle del producto asociado a la venta.
+     * Producto vendido.
      */
-    private DetalleVentaProductoDTO productoVendido;
+    private ProductoDTO productoVendido;
     /**
      * Lista de tallas compradas asociadas al producto.
      */
@@ -37,12 +41,14 @@ public class VentaDTO {
     /**
      * Constructor sin ID de la venta.
      * @param fechaHora Fecha y hora de la venta.
+     * @param precioVenta Precio de venta del producto.
      * @param totalVenta Total ganado de la venta.
      * @param productoVendido Detalles del producto asociado a la venta.
      * @param tallasVendidas Lista de tallas compradas asociadas al producto.
      */
-    public VentaDTO(LocalDateTime fechaHora, Double totalVenta, DetalleVentaProductoDTO productoVendido, List<DetalleVentaTallaDTO> tallasVendidas) {
+    public VentaDTO(LocalDateTime fechaHora, Double precioVenta, Double totalVenta, ProductoDTO productoVendido, List<DetalleVentaTallaDTO> tallasVendidas) {
         this.fechaHora = fechaHora;
+        this.precioVenta = precioVenta;
         this.totalVenta = totalVenta;
         this.productoVendido = productoVendido;
         this.tallasVendidas = tallasVendidas;
@@ -51,13 +57,15 @@ public class VentaDTO {
      * Constructor con ID de la venta.
      * @param id ID de la venta.
      * @param fechaHora Fecha y hora de la venta.
+     * @param precioVenta Precio de venta del producto.
      * @param totalVenta Total ganado de la venta.
      * @param productoVendido Detalles del producto asociado a la venta.
      * @param tallasVendidas Lista de tallas compradas asociadas al producto.
      */
-    public VentaDTO(Long id, LocalDateTime fechaHora, Double totalVenta, DetalleVentaProductoDTO productoVendido, List<DetalleVentaTallaDTO> tallasVendidas) {
+    public VentaDTO(Long id, LocalDateTime fechaHora, Double precioVenta, Double totalVenta, ProductoDTO productoVendido, List<DetalleVentaTallaDTO> tallasVendidas) {
         this.id = id;
         this.fechaHora = fechaHora;
+        this.precioVenta = precioVenta;
         this.totalVenta = totalVenta;
         this.productoVendido = productoVendido;
         this.tallasVendidas = tallasVendidas;
@@ -73,15 +81,20 @@ public class VentaDTO {
      */
     public LocalDateTime getFechaHora() {return fechaHora;}
     /**
+     * Retorna el precio de venta.
+     * @return Precio de venta del producto.
+     */
+    public Double getPrecioVenta() {return precioVenta;}
+    /**
      * Retorna la recaudación total de la venta.
      * @return Recaudación total de la venta.
      */
     public Double getTotalVenta() {return totalVenta;}
     /**
-     * Retorna el detalle del producto asociado a la venta.
-     * @return Detalle del producto asociado a la venta.
+     * Retorna el producto asociado a la venta.
+     * @return Producto asociado a la venta.
      */
-    public DetalleVentaProductoDTO getProductoVendido() {return productoVendido;}
+    public ProductoDTO getProductoVendido() {return productoVendido;}
     /**
      * Retorna la lista de tallas vendidas asociadas al producto.
      * @return Lista de tallas vendidas asociadas al producto.
@@ -98,18 +111,20 @@ public class VentaDTO {
      */
     public void setFechaHora(LocalDateTime fechaHora) {this.fechaHora = fechaHora;}
     /**
+     * Establece el precio de venta del producto.
+     * @param precioVenta Nuevo precio de venta del producto.
+     */
+    public void setPrecioVenta(Double precioVenta) {this.precioVenta = precioVenta;}
+    /**
      * Establece la recaudación total de la venta.
      * @param totalVenta Nueva recaudación total de la venta.
      */
     public void setTotalVenta(Double totalVenta) {this.totalVenta = totalVenta;}
     /**
-     * Establece el detalle del producto asociado a la venta.
-     * Si el detalle del producto asociado a la venta no 
-     * tiene esta venta, lo añade, para mantener ambas
-     * entidades sincronizadas.
-     * @param productoVendido Nuevo detalle del producto asociado a la venta.
+     * Establece el producto asociado a la venta.
+     * @param productoVendido Nuevo producto asociado a la venta.
      */
-    public void setProductoVendido(DetalleVentaProductoDTO productoVendido) {this.productoVendido = productoVendido;}
+    public void setProductoVendido(ProductoDTO productoVendido) {this.productoVendido = productoVendido;}
     /**
      * Establece la lista de tallas vendidas a la venta.
      * Si alguna talla vendida no tiene asociada esta 
@@ -134,7 +149,7 @@ public class VentaDTO {
     public String toString() {
         return String.format(
                 "%s, %s, %s", 
-                productoVendido.getProducto().getNombre(), fechaHora.toString(), totalVenta.toString()
+                productoVendido.getNombre(), fechaHora.toString(), totalVenta.toString()
         );
     }
 }

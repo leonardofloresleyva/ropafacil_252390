@@ -1,6 +1,5 @@
 package interfaces;
 
-import entidades.DetalleCompraProducto;
 import entidades.DetalleCompraTalla;
 import entidades.NuevoProducto;
 import entidades.Producto;
@@ -17,8 +16,7 @@ public interface iCompraDAO {
     public NuevoProducto registrarNuevoProducto(
             Producto producto, 
             List<StockPorTalla> tallas, 
-            NuevoProducto compra, 
-            DetalleCompraProducto detalleCompraProducto, 
+            NuevoProducto compra,
             List<DetalleCompraTalla> detalleCompraTalla
     ) throws PersistenciaException;
     

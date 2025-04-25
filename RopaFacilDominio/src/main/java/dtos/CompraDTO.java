@@ -19,13 +19,17 @@ public abstract class CompraDTO {
      */
     private LocalDateTime fechaHora;
     /**
+     * Precio de compra unitario de la compra.
+     */
+    private Double precioCompraUnitario;
+    /**
      * Total gastado de la compra.
      */
     private Double totalCompra;
     /**
-     * Detalle del producto asociado a la compra.
+     * Categoría del producto.
      */
-    private DetalleCompraProductoDTO productoComprado;
+    private ProductoDTO productoComprado;
     /**
      * Lista de tallas compradas asociadas al producto.
      */
@@ -38,11 +42,13 @@ public abstract class CompraDTO {
  * Contructor sin ID de la compra.
  * @param fechaHora Fecha y hora de la compra.
  * @param totalCompra Total gastado de la compra.
+ * @param precioCompraUnitario Precio de compra unitario de la compra.
  * @param productoComprado Detalle del producto asociado a la compra.
  * @param tallasCompradas Lista de tallas compradas asociadas al producto.
  */
-    public CompraDTO(LocalDateTime fechaHora, Double totalCompra, DetalleCompraProductoDTO productoComprado, List<DetalleCompraTallaDTO> tallasCompradas) {
+    public CompraDTO(LocalDateTime fechaHora, Double precioCompraUnitario, Double totalCompra, ProductoDTO productoComprado, List<DetalleCompraTallaDTO> tallasCompradas) {
         this.fechaHora = fechaHora;
+        this.precioCompraUnitario = precioCompraUnitario;
         this.totalCompra = totalCompra;
         this.productoComprado = productoComprado;
         this.tallasCompradas = tallasCompradas;
@@ -52,12 +58,14 @@ public abstract class CompraDTO {
      * @param id ID de la compra.
      * @param fechaHora Fecha y hora de la compra.
      * @param totalCompra Total gastado de la compra.
+     * @param precioCompraUnitario Precio de compra unitario de la compra.
      * @param productoComprado Detalle del producto asociado a la compra.
      * @param tallasCompradas Lista de tallas compradas asociadas al producto.
      */
-    public CompraDTO(Long id, LocalDateTime fechaHora, Double totalCompra, DetalleCompraProductoDTO productoComprado, List<DetalleCompraTallaDTO> tallasCompradas) {
+    public CompraDTO(Long id, LocalDateTime fechaHora, Double precioCompraUnitario, Double totalCompra, ProductoDTO productoComprado, List<DetalleCompraTallaDTO> tallasCompradas) {
         this.id = id;
         this.fechaHora = fechaHora;
+        this.precioCompraUnitario = precioCompraUnitario;
         this.totalCompra = totalCompra;
         this.productoComprado = productoComprado;
         this.tallasCompradas = tallasCompradas;
@@ -73,15 +81,20 @@ public abstract class CompraDTO {
      */
     public LocalDateTime getFechaHora() {return fechaHora;}
     /**
+     * Retorna el precio de compra unitario de la compra.
+     * @return Precio de compra unitario de la compra.
+     */
+    public Double getPrecioCompraUnitario() {return precioCompraUnitario;}
+    /**
      * Retorna el gasto total de la compra.
      * @return Gasto total de la compra.
      */
     public Double getTotalCompra() {return totalCompra;}
     /**
-     * Retorna el detalle del producto asociado a la compra.
-     * @return Detalle del producto asociado a la compra.
+     * Retorna el producto asociado a la compra.
+     * @return Producto asociado a la compra.
      */
-    public DetalleCompraProductoDTO getProductoComprado() {return productoComprado;}
+    public ProductoDTO getProductoComprado() {return productoComprado;}
     /**
      * Retorna la lista de tallas compradas asociadas al producto.
      * @return Lista de tallas compradas asociadas al producto.
@@ -98,18 +111,20 @@ public abstract class CompraDTO {
      */
     public void setFechaHora(LocalDateTime fechaHora) {this.fechaHora = fechaHora;}
     /**
+     * Establece el precio de compra unitario de la compra.
+     * @param precioCompraUnitario Nuevo precio de compra unitario de la compra.
+     */
+    public void setPrecioCompraUnitario(Double precioCompraUnitario) {this.precioCompraUnitario = precioCompraUnitario;}
+    /**
      * Establece el gasto total de la compra.
      * @param totalCompra Nuevo gasto total de la compra.
      */
     public void setTotalCompra(Double totalCompra) {this.totalCompra = totalCompra;}
     /**
-     * Establece el detalle del producto asociado a la compra.
-     * Si el detalle del producto asociado a la compra no 
-     * tiene esta compra, lo añade, para mantener ambas
-     * entidades sincronizadas.
-     * @param productoComprado Nuevo detalle del producto asociado a la compra.
+     * Establece el producto asociado a la compra.
+     * @param productoComprado Nuevo producto asociado a la compra.
      */
-    public void setProductoComprado(DetalleCompraProductoDTO productoComprado) {this.productoComprado = productoComprado;}
+    public void setProductoComprado(ProductoDTO productoComprado) {this.productoComprado = productoComprado;}
     /**
      * Establece la lista de tallas compradas a la compra.
      * Si alguna talla comprada no tiene asociada esta 
@@ -134,7 +149,7 @@ public abstract class CompraDTO {
     public String toString() {
         return String.format(
                 "%s, %s, %s", 
-                productoComprado.getProducto().getNombre(), fechaHora.toString(), totalCompra.toString()
+                productoComprado.getNombre(), fechaHora.toString(), totalCompra.toString()
         );
     }
 }

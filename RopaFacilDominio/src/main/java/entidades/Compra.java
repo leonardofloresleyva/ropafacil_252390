@@ -15,7 +15,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -39,15 +41,21 @@ public abstract class Compra implements Serializable {
     @Column(name = "FECHA_HORA", nullable = false, unique = false)
     private LocalDateTime fechaHora;
     /**
+     * Precio de compra unitario de la compra.
+     */
+    @Column(name = "PRECIO_COMPRA_UNITARIO", nullable = false, unique = false)
+    private Double precioCompraUnitario;
+    /**
      * Total gastado de la compra.
      */
     @Column(name = "TOTAL_COMPRA", nullable = false, unique = false)
     private Double totalCompra;
     /**
-     * Detalle del producto asociado a la compra.
+     * Categoría del producto.
      */
-    @OneToMany(mappedBy = "compra", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.EAGER)
-    private DetalleCompraProducto productoComprado;
+    @OneToOne()
+    @JoinColumn(name = "ID_PRODUCTO", nullable = false)
+    private Producto productoComprado;
     /**
      * Lista de tallas compradas asociadas al producto.
      */
@@ -60,17 +68,16 @@ public abstract class Compra implements Serializable {
 /**
  * Contructor sin ID de la compra.
  * @param fechaHora Fecha y hora de la compra.
+ * @param precioCompraUnitario Precio de compra unitario de la compra.
  * @param totalCompra Total gastado de la compra.
  * @param productoComprado Detalle del producto asociado a la compra.
  * @param tallasCompradas Lista de tallas compradas asociadas al producto.
  */
-    public Compra(LocalDateTime fechaHora, Double totalCompra, DetalleCompraProducto productoComprado, List<DetalleCompraTalla> tallasCompradas) {
+    public Compra(LocalDateTime fechaHora, Double precioCompraUnitario, Double totalCompra, Producto productoComprado, List<DetalleCompraTalla> tallasCompradas) {
         this.fechaHora = fechaHora;
+        this.precioCompraUnitario = precioCompraUnitario;
         this.totalCompra = totalCompra;
         this.productoComprado = productoComprado;
-        // Mantiene sincronizada la relación bidireccional, entre la compra y su DetalleCompraProducto.
-        if(!productoComprado.verificarCompra())
-            productoComprado.setCompra(this);
         this.tallasCompradas = tallasCompradas;
         // Mantiene sincronizada la relación bidireccional, entre la compra y su lista de DetalleCompraTalla.
         for(DetalleCompraTalla tallaComprada : tallasCompradas){
@@ -84,16 +91,15 @@ public abstract class Compra implements Serializable {
      * @param fechaHora Fecha y hora de la compra.
      * @param totalCompra Total gastado de la compra.
      * @param productoComprado Detalle del producto asociado a la compra.
+     * @param precioCompraUnitario Precio de compra unitario de la compra.
      * @param tallasCompradas Lista de tallas compradas asociadas al producto.
      */
-    public Compra(Long id, LocalDateTime fechaHora, Double totalCompra, DetalleCompraProducto productoComprado, List<DetalleCompraTalla> tallasCompradas) {
+    public Compra(Long id, LocalDateTime fechaHora, Double precioCompraUnitario, Double totalCompra, Producto productoComprado, List<DetalleCompraTalla> tallasCompradas) {
         this.id = id;
         this.fechaHora = fechaHora;
+        this.precioCompraUnitario = precioCompraUnitario;
         this.totalCompra = totalCompra;
         this.productoComprado = productoComprado;
-        // Mantiene sincronizada la relación bidireccional, entre la compra y su DetalleCompraProducto.
-        if(!productoComprado.verificarCompra())
-            productoComprado.setCompra(this);
         this.tallasCompradas = tallasCompradas;
         // Mantiene sincronizada la relación bidireccional, entre la compra y su lista de DetalleCompraTalla.
         for(DetalleCompraTalla tallaComprada : tallasCompradas){
@@ -112,15 +118,20 @@ public abstract class Compra implements Serializable {
      */
     public LocalDateTime getFechaHora() {return fechaHora;}
     /**
+     * Retorna el precio de compra unitario de la compra.
+     * @return Precio de compra unitario de la compra.
+     */
+    public Double getPrecioCompraUnitario() {return precioCompraUnitario;}
+    /**
      * Retorna el gasto total de la compra.
      * @return Gasto total de la compra.
      */
     public Double getTotalCompra() {return totalCompra;}
     /**
-     * Retorna el detalle del producto asociado a la compra.
+     * Retorna el producto asociado a la compra.
      * @return Detalle del producto asociado a la compra.
      */
-    public DetalleCompraProducto getProductoComprado() {return productoComprado;}
+    public Producto getProductoComprado() {return productoComprado;}
     /**
      * Retorna la lista de tallas compradas asociadas al producto.
      * @return Lista de tallas compradas asociadas al producto.
@@ -137,22 +148,20 @@ public abstract class Compra implements Serializable {
      */
     public void setFechaHora(LocalDateTime fechaHora) {this.fechaHora = fechaHora;}
     /**
+     * Establece el precio de compra unitario de la compra.
+     * @param precioCompraUnitario Nuevo precio de compra unitario de la compra.
+     */
+    public void setPrecioCompraUnitario(Double precioCompraUnitario) {this.precioCompraUnitario = precioCompraUnitario;}
+    /**
      * Establece el gasto total de la compra.
      * @param totalCompra Nuevo gasto total de la compra.
      */
     public void setTotalCompra(Double totalCompra) {this.totalCompra = totalCompra;}
     /**
-     * Establece el detalle del producto asociado a la compra.
-     * Si el detalle del producto asociado a la compra no 
-     * tiene esta compra, lo añade, para mantener ambas
-     * entidades sincronizadas.
+     * Establece el producto asociado a la compra.
      * @param productoComprado Nuevo detalle del producto asociado a la compra.
      */
-    public void setProductoComprado(DetalleCompraProducto productoComprado) {
-        this.productoComprado = productoComprado;
-        if(!productoComprado.verificarCompra())
-            productoComprado.setCompra(this);
-    }
+    public void setProductoComprado(Producto productoComprado) {this.productoComprado = productoComprado;}
     /**
      * Establece la lista de tallas compradas a la compra.
      * Si alguna talla comprada no tiene asociada esta 
@@ -205,7 +214,7 @@ public abstract class Compra implements Serializable {
     public String toString() {
         return String.format(
                 "%s, %s, %s", 
-                productoComprado.getProducto().getNombre(), fechaHora.toString(), totalCompra.toString()
+                productoComprado.getNombre(), fechaHora.toString(), totalCompra.toString()
         );
     }
 }

@@ -21,18 +21,20 @@ public class NuevoProductoDTO extends CompraDTO {
      * Constructor sin ID de la compra de un nuevo producto.
      * @param precioVentaSugerido Precio de venta sugerido de la compra de un nuevo producto.
      * @param fechaHora Fecha y hora de la compra de un nuevo producto.
+     * @param precioCompraUnitario Precio de compra unitario de la compra.
      * @param totalCompra Total gastado de la compra de un nuevo producto.
      * @param productoComprado Detalle del producto asociado a la compra de un nuevo producto.
      * @param tallasCompradas Lista de tallas compradas asociadas al producto.
      */
     public NuevoProductoDTO(
             Double precioVentaSugerido, 
-            LocalDateTime fechaHora, 
+            LocalDateTime fechaHora,
+            Double precioCompraUnitario, 
             Double totalCompra, 
-            DetalleCompraProductoDTO productoComprado, 
+            ProductoDTO productoComprado, 
             List<DetalleCompraTallaDTO> tallasCompradas
     ) {
-        super(fechaHora, totalCompra, productoComprado, tallasCompradas);
+        super(fechaHora, precioCompraUnitario, totalCompra, productoComprado, tallasCompradas);
         this.precioVentaSugerido = precioVentaSugerido;
     }
     /**
@@ -40,6 +42,7 @@ public class NuevoProductoDTO extends CompraDTO {
      * @param precioVentaSugerido Precio de venta sugerido de la compra de un nuevo producto.
      * @param id ID de la compra de un nuevo producto.
      * @param fechaHora Fecha y hora de la compra de un nuevo producto.
+     * @param precioCompraUnitario Precio de compra unitario de la compra.
      * @param totalCompra Total gastado de la compra de un nuevo producto.
      * @param productoComprado Detalle del producto asociado a la compra de un nuevo producto.
      * @param tallasCompradas Lista de tallas compradas asociadas al producto.
@@ -48,11 +51,12 @@ public class NuevoProductoDTO extends CompraDTO {
             Double precioVentaSugerido, 
             Long id, 
             LocalDateTime fechaHora, 
+            Double precioCompraUnitario, 
             Double totalCompra, 
-            DetalleCompraProductoDTO productoComprado, 
+            ProductoDTO productoComprado, 
             List<DetalleCompraTallaDTO> tallasCompradas
     ) {
-        super(id, fechaHora, totalCompra, productoComprado, tallasCompradas);
+        super(id, fechaHora, precioCompraUnitario, totalCompra, productoComprado, tallasCompradas);
         this.precioVentaSugerido = precioVentaSugerido;
     }
     /**

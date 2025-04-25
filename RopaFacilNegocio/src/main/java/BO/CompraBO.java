@@ -1,6 +1,5 @@
 package BO;
 
-import dtos.DetalleCompraProductoDTO;
 import dtos.DetalleCompraTallaDTO;
 import dtos.NuevoProductoDTO;
 import dtos.ProductoDTO;
@@ -28,12 +27,12 @@ public class CompraBO implements iCompraBO{
     }
     
     @Override
-    public boolean registrarCompraNuevoProducto(ProductoDTO producto, List<StockPorTallaDTO> tallas, NuevoProductoDTO compra, DetalleCompraProductoDTO detalleCompraProducto, List<DetalleCompraTallaDTO> detalleCompraTalla) throws NegocioException {
+    public boolean registrarCompraNuevoProducto(ProductoDTO producto, List<StockPorTallaDTO> tallas, NuevoProductoDTO compra, List<DetalleCompraTallaDTO> detalleCompraTalla) throws NegocioException {
         return true;
     }
 
     @Override
-    public boolean registrarCompraReposicion(ProductoDTO producto, ReposicionDTO compra, DetalleCompraProductoDTO detalleCompraProducto, List<DetalleCompraTallaDTO> detalleCompraTalla) throws NegocioException {
+    public boolean registrarCompraReposicion(ProductoDTO producto, ReposicionDTO compra, List<DetalleCompraTallaDTO> detalleCompraTalla) throws NegocioException {
         return true;
     }
 

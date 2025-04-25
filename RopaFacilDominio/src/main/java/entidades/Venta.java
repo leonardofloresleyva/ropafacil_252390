@@ -11,7 +11,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  * Entidad Venta. Se relaciona con DetalleVentaProducto y DetalleVentaTalla.
@@ -31,15 +33,21 @@ public class Venta implements Serializable {
     @Column(name = "FECHA_HORA", nullable = false, unique = false)
     private LocalDateTime fechaHora;
     /**
+     * Precio de venta del producto.
+     */
+    @Column(name = "PRECIO_VENTA", nullable = false, unique = false)
+    private Double precioVenta;
+    /**
      * Total gastado de la venta.
      */
     @Column(name = "TOTAL_VENTA", nullable = false, unique = false)
     private Double totalVenta;
     /**
-     * Detalle del producto asociado a la venta.
+     * Producto vendido.
      */
-    @OneToMany(mappedBy = "venta", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.EAGER)
-    private DetalleVentaProducto productoVendido;
+    @OneToOne()
+    @JoinColumn(name = "ID_PRODUCTO", nullable = false)
+    private Producto productoVendido;
     /**
      * Lista de tallas compradas asociadas al producto.
      */
@@ -52,17 +60,16 @@ public class Venta implements Serializable {
     /**
      * Constructor sin ID de la venta.
      * @param fechaHora Fecha y hora de la venta.
+     * @param precioVenta Precio de venta del producto.
      * @param totalVenta Total ganado de la venta.
-     * @param productoVendido Detalles del producto asociado a la venta.
+     * @param productoVendido Producto vendido
      * @param tallasVendidas Lista de tallas compradas asociadas al producto.
      */
-    public Venta(LocalDateTime fechaHora, Double totalVenta, DetalleVentaProducto productoVendido, List<DetalleVentaTalla> tallasVendidas) {
+    public Venta(LocalDateTime fechaHora, Double precioVenta, Double totalVenta, Producto productoVendido, List<DetalleVentaTalla> tallasVendidas) {
         this.fechaHora = fechaHora;
+        this.precioVenta = precioVenta;
         this.totalVenta = totalVenta;
         this.productoVendido = productoVendido;
-        // Mantiene sincronizada la relación bidireccional, entre la venta y su DetalleVentaProducto.
-        if(!productoVendido.verificarVenta())
-            productoVendido.setVenta(this);
         this.tallasVendidas = tallasVendidas;
         // Mantiene sincronizada la relación bidireccional, entre la venta y su lista de DetalleVentaTalla.
         for(DetalleVentaTalla tallaVendida : tallasVendidas){
@@ -74,18 +81,17 @@ public class Venta implements Serializable {
      * Constructor con ID de la venta.
      * @param id ID de la venta.
      * @param fechaHora Fecha y hora de la venta.
+     * @param precioVenta Precio de venta del producto.
      * @param totalVenta Total ganado de la venta.
-     * @param productoVendido Detalles del producto asociado a la venta.
+     * @param productoVendido Producto vendido
      * @param tallasVendidas Lista de tallas compradas asociadas al producto.
      */
-    public Venta(Long id, LocalDateTime fechaHora, Double totalVenta, DetalleVentaProducto productoVendido, List<DetalleVentaTalla> tallasVendidas) {
+    public Venta(Long id, LocalDateTime fechaHora, Double precioVenta, Double totalVenta, Producto productoVendido, List<DetalleVentaTalla> tallasVendidas) {
         this.id = id;
         this.fechaHora = fechaHora;
+        this.precioVenta = precioVenta;
         this.totalVenta = totalVenta;
         this.productoVendido = productoVendido;
-        // Mantiene sincronizada la relación bidireccional, entre la venta y su DetalleVentaProducto.
-        if(!productoVendido.verificarVenta())
-            productoVendido.setVenta(this);
         this.tallasVendidas = tallasVendidas;
         // Mantiene sincronizada la relación bidireccional, entre la venta y su lista de DetalleVentaTalla.
         for(DetalleVentaTalla tallaVendida : tallasVendidas){
@@ -104,15 +110,20 @@ public class Venta implements Serializable {
      */
     public LocalDateTime getFechaHora() {return fechaHora;}
     /**
+     * Retorna el precio de venta.
+     * @return Precio de venta del producto.
+     */
+    public Double getPrecioVenta() {return precioVenta;}
+    /**
      * Retorna la recaudación total de la venta.
      * @return Recaudación total de la venta.
      */
     public Double getTotalVenta() {return totalVenta;}
     /**
-     * Retorna el detalle del producto asociado a la venta.
-     * @return Detalle del producto asociado a la venta.
+     * Retorna el producto asociado a la venta.
+     * @return Producto asociado a la venta.
      */
-    public DetalleVentaProducto getProductoVendido() {return productoVendido;}
+    public Producto getProductoVendido() {return productoVendido;}
     /**
      * Retorna la lista de tallas vendidas asociadas al producto.
      * @return Lista de tallas vendidas asociadas al producto.
@@ -129,22 +140,20 @@ public class Venta implements Serializable {
      */
     public void setFechaHora(LocalDateTime fechaHora) {this.fechaHora = fechaHora;}
     /**
+     * Establece el precio de venta del producto.
+     * @param precioVenta Nuevo precio de venta del producto.
+     */
+    public void setPrecioVenta(Double precioVenta) {this.precioVenta = precioVenta;}
+    /**
      * Establece la recaudación total de la venta.
      * @param totalVenta Nueva recaudación total de la venta.
      */
     public void setTotalVenta(Double totalVenta) {this.totalVenta = totalVenta;}
     /**
-     * Establece el detalle del producto asociado a la venta.
-     * Si el detalle del producto asociado a la venta no 
-     * tiene esta venta, lo añade, para mantener ambas
-     * entidades sincronizadas.
-     * @param productoVendido Nuevo detalle del producto asociado a la venta.
+     * Establece el producto asociado a la venta.
+     * @param productoVendido Nuevo producto asociado a la venta.
      */
-    public void setProductoVendido(DetalleVentaProducto productoVendido) {
-        this.productoVendido = productoVendido;
-        if(!productoVendido.verificarVenta())
-            productoVendido.setVenta(this);
-    }
+    public void setProductoVendido(Producto productoVendido) {this.productoVendido = productoVendido;}
     /**
      * Establece la lista de tallas vendidas a la venta.
      * Si alguna talla vendida no tiene asociada esta 
@@ -197,7 +206,7 @@ public class Venta implements Serializable {
     public String toString() {
         return String.format(
                 "%s, %s, %s", 
-                productoVendido.getProducto().getNombre(), fechaHora.toString(), totalVenta.toString()
+                productoVendido.getNombre(), fechaHora.toString(), totalVenta.toString()
         );
     }
 }

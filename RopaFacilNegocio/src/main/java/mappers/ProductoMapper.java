@@ -1,7 +1,6 @@
 package mappers;
 
 import dtos.ProductoDTO;
-import dtos.StockPorTallaDTO;
 import entidades.Producto;
 import entidades.StockPorTalla;
 

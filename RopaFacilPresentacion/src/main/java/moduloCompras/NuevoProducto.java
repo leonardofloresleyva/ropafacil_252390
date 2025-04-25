@@ -4,7 +4,6 @@ import control.ControlFlujo;
 import control.ControlOperaciones;
 import dtos.CategoriaDTO;
 import dtos.ColorDTO;
-import dtos.DetalleCompraProductoDTO;
 import dtos.DetalleCompraTallaDTO;
 import dtos.NuevoProductoDTO;
 import dtos.ProductoDTO;
@@ -576,9 +575,6 @@ public class NuevoProducto extends javax.swing.JPanel {
         tallas.add(tallaL);
         tallas.add(tallaXL);
         
-        DetalleCompraProductoDTO detalleProductoDTO = new DetalleCompraProductoDTO();
-        detalleProductoDTO.setPrecioCompraUnitario(Double.valueOf(jTFPrecioCompraUnitario.getText()));
-        
         DetalleCompraTallaDTO tallaCompraXS = new DetalleCompraTallaDTO();
         DetalleCompraTallaDTO tallaCompraS = new DetalleCompraTallaDTO();
         DetalleCompraTallaDTO tallaCompraM = new DetalleCompraTallaDTO();
@@ -606,9 +602,10 @@ public class NuevoProducto extends javax.swing.JPanel {
         
         NuevoProductoDTO nuevoProducto = new NuevoProductoDTO();
         nuevoProducto.setPrecioVentaSugerido(Double.valueOf(jTFPrecioVentaSugerido.getText()));
+        nuevoProducto.setPrecioCompraUnitario(Double.valueOf(jTFPrecioCompraUnitario.getText()));
         
         try {
-            ControlOperaciones.registrarCompra(productoDTO, tallas, nuevoProducto, detalleProductoDTO, tallasCompradas);
+            ControlOperaciones.registrarCompra(productoDTO, tallas, nuevoProducto, tallasCompradas);
             
             jTFNombre.setText("");
             jTFColor.setText("");

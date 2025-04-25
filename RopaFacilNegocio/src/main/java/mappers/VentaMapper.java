@@ -11,12 +11,7 @@ public class VentaMapper {
     
     public static Venta toEntityNuevo(VentaDTO ventaDTO){
         Venta venta = new Venta();
-        
-        if(ventaDTO.getFechaHora() != null)
-            venta.setFechaHora(ventaDTO.getFechaHora());
-        
-        if(ventaDTO.getTotalVenta() != null)
-            venta.setTotalVenta(ventaDTO.getTotalVenta());
+        venta.setPrecioVenta(ventaDTO.getPrecioVenta());
         
         return venta;
     }
@@ -26,8 +21,9 @@ public class VentaMapper {
         venta.setId(ventaDTO.getId());
         venta.setFechaHora(ventaDTO.getFechaHora());
         venta.setTotalVenta(ventaDTO.getTotalVenta());
+        venta.setPrecioVenta(ventaDTO.getPrecioVenta());
         
-        venta.setProductoVendido(DetalleVentaProductoMapper.toEntityViejo(ventaDTO.getProductoVendido()));
+        venta.setProductoVendido(ProductoMapper.toEntityViejo(ventaDTO.getProductoVendido()));
         venta.setTallasVendidas(ventaDTO.getTallasVendidas().stream().map(e -> DetalleVentaTallaMapper.toEntityViejo(e)).toList());
         
         return venta;
@@ -35,12 +31,7 @@ public class VentaMapper {
     
     public static VentaDTO toDTONuevo(Venta venta){
         VentaDTO ventaDTO = new VentaDTO();
-        
-        if(venta.getFechaHora() != null)
-            ventaDTO.setFechaHora(venta.getFechaHora());
-        
-        if(venta.getTotalVenta() != null)
-            ventaDTO.setTotalVenta(venta.getTotalVenta());
+        ventaDTO.setPrecioVenta(venta.getPrecioVenta());
         
         return ventaDTO;
     }
@@ -50,8 +41,9 @@ public class VentaMapper {
         ventaDTO.setId(venta.getId());
         ventaDTO.setFechaHora(venta.getFechaHora());
         ventaDTO.setTotalVenta(venta.getTotalVenta());
+        ventaDTO.setPrecioVenta(venta.getPrecioVenta());
         
-        ventaDTO.setProductoVendido(DetalleVentaProductoMapper.toDTOViejo(venta.getProductoVendido()));
+        ventaDTO.setProductoVendido(ProductoMapper.toDTOViejo(venta.getProductoVendido()));
         ventaDTO.setTallasVendidas(venta.getTallasVendidas().stream().map(e -> DetalleVentaTallaMapper.toDTOViejo(e)).toList());
         
         return ventaDTO;
