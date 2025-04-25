@@ -11,8 +11,12 @@ public class VentaMapper {
     
     public static Venta toEntityNuevo(VentaDTO ventaDTO){
         Venta venta = new Venta();
-        venta.setFechaHora(ventaDTO.getFechaHora());
-        venta.setTotalVenta(ventaDTO.getTotalVenta());
+        
+        if(ventaDTO.getFechaHora() != null)
+            venta.setFechaHora(ventaDTO.getFechaHora());
+        
+        if(ventaDTO.getTotalVenta() != null)
+            venta.setTotalVenta(ventaDTO.getTotalVenta());
         
         return venta;
     }
@@ -31,8 +35,12 @@ public class VentaMapper {
     
     public static VentaDTO toDTONuevo(Venta venta){
         VentaDTO ventaDTO = new VentaDTO();
-        ventaDTO.setFechaHora(venta.getFechaHora());
-        ventaDTO.setTotalVenta(venta.getTotalVenta());
+        
+        if(venta.getFechaHora() != null)
+            ventaDTO.setFechaHora(venta.getFechaHora());
+        
+        if(venta.getTotalVenta() != null)
+            ventaDTO.setTotalVenta(venta.getTotalVenta());
         
         return ventaDTO;
     }

@@ -2,11 +2,9 @@ package mappers;
 
 import dtos.DetalleCompraProductoDTO;
 import dtos.NuevoProductoDTO;
-import dtos.ProductoDTO;
 import dtos.ReposicionDTO;
 import entidades.DetalleCompraProducto;
 import entidades.NuevoProducto;
-import entidades.Producto;
 import entidades.Reposicion;
 
 /**

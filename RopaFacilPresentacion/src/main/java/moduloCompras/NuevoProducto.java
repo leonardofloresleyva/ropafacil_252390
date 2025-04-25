@@ -2,10 +2,24 @@ package moduloCompras;
 
 import control.ControlFlujo;
 import control.ControlOperaciones;
+import dtos.CategoriaDTO;
+import dtos.ColorDTO;
+import dtos.DetalleCompraProductoDTO;
+import dtos.DetalleCompraTallaDTO;
+import dtos.NuevoProductoDTO;
+import dtos.ProductoDTO;
+import dtos.StockPorTallaDTO;
+import dtos.TallaDTO;
+import dtos.TipoPrendaDTO;
+import enums.EstadoProducto;
+import exception.NegocioException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -529,6 +543,94 @@ public class NuevoProducto extends javax.swing.JPanel {
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void btnConfirmarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarCompraActionPerformed
+        ProductoDTO productoDTO = new ProductoDTO();
+        productoDTO.setNombre(jTFNombre.getText());
+        productoDTO.setPrecio(Double.valueOf(jTFPrecioVentaSugerido.getText()));
+        productoDTO.setEstado(EstadoProducto.ACTIVO);
+        productoDTO.setCategoria(new CategoriaDTO((String) jCBCategoria.getSelectedItem()));
+        productoDTO.setColor(new ColorDTO(jTFColor.getText()));
+        productoDTO.setTipo(new TipoPrendaDTO(jTFTipoPrenda.getText()));
+        
+        StockPorTallaDTO tallaXS = new StockPorTallaDTO();
+        StockPorTallaDTO tallaS = new StockPorTallaDTO();
+        StockPorTallaDTO tallaM = new StockPorTallaDTO();
+        StockPorTallaDTO tallaL = new StockPorTallaDTO();
+        StockPorTallaDTO tallaXL = new StockPorTallaDTO();
+        
+        tallaXS.setTalla(new TallaDTO("XS"));
+        tallaS.setTalla(new TallaDTO("S"));
+        tallaM.setTalla(new TallaDTO("M"));
+        tallaL.setTalla(new TallaDTO("L"));
+        tallaXL.setTalla(new TallaDTO("XL"));
+        
+        tallaXS.setStock(Integer.valueOf(jTFTallaXSInput.getText()));
+        tallaS.setStock(Integer.valueOf(jTFTallaSInput.getText()));
+        tallaM.setStock(Integer.valueOf(jTFTallaMInput.getText()));
+        tallaL.setStock(Integer.valueOf(jTFTallaLInput.getText()));
+        tallaXL.setStock(Integer.valueOf(jTFTallaXLInput.getText()));
+        
+        List<StockPorTallaDTO> tallas = new ArrayList<>();
+        tallas.add(tallaXS);
+        tallas.add(tallaS);
+        tallas.add(tallaM);
+        tallas.add(tallaL);
+        tallas.add(tallaXL);
+        
+        DetalleCompraProductoDTO detalleProductoDTO = new DetalleCompraProductoDTO();
+        detalleProductoDTO.setPrecioCompraUnitario(Double.valueOf(jTFPrecioCompraUnitario.getText()));
+        
+        DetalleCompraTallaDTO tallaCompraXS = new DetalleCompraTallaDTO();
+        DetalleCompraTallaDTO tallaCompraS = new DetalleCompraTallaDTO();
+        DetalleCompraTallaDTO tallaCompraM = new DetalleCompraTallaDTO();
+        DetalleCompraTallaDTO tallaCompraL = new DetalleCompraTallaDTO();
+        DetalleCompraTallaDTO tallaCompraXL = new DetalleCompraTallaDTO();
+        
+        tallaCompraXS.setCantidadComprada(Integer.valueOf(jTFTallaXSInput.getText()));
+        tallaCompraS.setCantidadComprada(Integer.valueOf(jTFTallaSInput.getText()));
+        tallaCompraM.setCantidadComprada(Integer.valueOf(jTFTallaMInput.getText()));
+        tallaCompraL.setCantidadComprada(Integer.valueOf(jTFTallaLInput.getText()));
+        tallaCompraXL.setCantidadComprada(Integer.valueOf(jTFTallaXLInput.getText()));
+        
+        tallaCompraXS.setTalla(tallaXS.getTalla());
+        tallaCompraS.setTalla(tallaS.getTalla());
+        tallaCompraM.setTalla(tallaM.getTalla());
+        tallaCompraL.setTalla(tallaL.getTalla());
+        tallaCompraXL.setTalla(tallaXL.getTalla());
+        
+        List<DetalleCompraTallaDTO> tallasCompradas = new ArrayList<>();
+        tallasCompradas.add(tallaCompraXS);
+        tallasCompradas.add(tallaCompraS);
+        tallasCompradas.add(tallaCompraM);
+        tallasCompradas.add(tallaCompraL);
+        tallasCompradas.add(tallaCompraXL);
+        
+        NuevoProductoDTO nuevoProducto = new NuevoProductoDTO();
+        nuevoProducto.setPrecioVentaSugerido(Double.valueOf(jTFPrecioVentaSugerido.getText()));
+        
+        try {
+            ControlOperaciones.registrarCompra(productoDTO, tallas, nuevoProducto, detalleProductoDTO, tallasCompradas);
+            
+            jTFNombre.setText("");
+            jTFColor.setText("");
+            jTFTipoPrenda.setText("");
+            jTFProveedor.setText("");
+            jTFPrecioCompraUnitario.setText("");
+            jTFPrecioVentaSugerido.setText("");
+            
+            jTFTallaXSInput.setText("");
+            jTFTallaSInput.setText("");
+            jTFTallaMInput.setText("");
+            jTFTallaLInput.setText("");
+            jTFTallaXLInput.setText("");
+            
+            jCBCategoria.setSelectedItem("N/A");
+            jCBCajaAlmacenamiento.setSelectedItem("N/A");
+            
+            JOptionPane.showMessageDialog(this, "¡Producto comprado con éxito!", "¡Registro exitoso!", JOptionPane.PLAIN_MESSAGE);
+            
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
         
     }//GEN-LAST:event_btnConfirmarCompraActionPerformed
 

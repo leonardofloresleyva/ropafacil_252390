@@ -11,9 +11,12 @@ public class ReposicionMapper {
     
     public static Reposicion toEntityNuevo(ReposicionDTO reposicionDTO){
         Reposicion reposicion = new Reposicion();
-        reposicion.setId(reposicionDTO.getId());
-        reposicion.setFechaHora(reposicionDTO.getFechaHora());
-        reposicion.setTotalCompra(reposicionDTO.getTotalCompra());
+        
+        if(reposicionDTO.getFechaHora() != null)
+            reposicion.setFechaHora(reposicionDTO.getFechaHora());
+        
+        if(reposicionDTO.getTotalCompra() != null)
+            reposicion.setTotalCompra(reposicionDTO.getTotalCompra());
         
         return reposicion;
     }
@@ -32,9 +35,12 @@ public class ReposicionMapper {
     
     public static ReposicionDTO toDTONuevo(Reposicion reposicion){
         ReposicionDTO reposicionDTO = new ReposicionDTO();
-        reposicionDTO.setId(reposicion.getId());
-        reposicionDTO.setFechaHora(reposicion.getFechaHora());
-        reposicionDTO.setTotalCompra(reposicion.getTotalCompra());
+        
+        if(reposicion.getFechaHora() != null)
+            reposicionDTO.setFechaHora(reposicion.getFechaHora());
+        
+        if(reposicion.getTotalCompra() != null)
+            reposicionDTO.setTotalCompra(reposicion.getTotalCompra());
         
         return reposicionDTO;
     }

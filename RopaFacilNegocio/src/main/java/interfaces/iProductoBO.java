@@ -1,7 +1,6 @@
 package interfaces;
 
 import dtos.ProductoDTO;
-import dtos.StockPorTallaDTO;
 import enums.EstadoProducto;
 import exception.NegocioException;
 import java.util.List;
@@ -11,8 +10,6 @@ import java.util.List;
  * @author PC WHITE WOLF
  */
 public interface iProductoBO {
-    
-    public boolean registrarProducto(ProductoDTO producto, List<StockPorTallaDTO> tallas) throws NegocioException;
     
     public boolean actualizarProducto(ProductoDTO producto) throws NegocioException;
     

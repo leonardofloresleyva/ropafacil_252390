@@ -1,11 +1,22 @@
 package control;
 
+import BO.CompraBO;
+import BO.ProductoBO;
+import BO.TallaBO;
 import Control.JTextFieldLimit;
+import dtos.DetalleCompraProductoDTO;
+import dtos.DetalleCompraTallaDTO;
+import dtos.NuevoProductoDTO;
+import dtos.ProductoDTO;
+import dtos.ReposicionDTO;
+import dtos.StockPorTallaDTO;
+import dtos.TallaDTO;
+import exception.NegocioException;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Arrays;
-import java.util.regex.Pattern;
+import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
@@ -15,7 +26,38 @@ import javax.swing.JTextField;
  */
 public class ControlOperaciones {
     
+    public static boolean registrarTalla(TallaDTO tallaDTO) throws NegocioException{
+        return TallaBO.getInstance().registrarTalla(tallaDTO);
+    }
     
+    public static boolean registrarCompra(
+            ProductoDTO producto, 
+            List<StockPorTallaDTO> tallas, 
+            NuevoProductoDTO compra, 
+            DetalleCompraProductoDTO detalleCompraProducto, 
+            List<DetalleCompraTallaDTO> detalleCompraTalla
+    ) throws NegocioException{
+        return CompraBO.getInstance().registrarCompraNuevoProducto(producto, tallas, compra, detalleCompraProducto, detalleCompraTalla);
+    }
+    
+    public boolean registrarCompraReposicion(
+            ProductoDTO producto, 
+            ReposicionDTO compra, 
+            DetalleCompraProductoDTO detalleCompraProducto, 
+            List<DetalleCompraTallaDTO> detalleCompraTalla
+    ) throws NegocioException{
+        return CompraBO.getInstance().registrarCompraReposicion(producto, compra, detalleCompraProducto, detalleCompraTalla);
+    }
+    
+    public static List<ProductoDTO> buscarProductosPorNombre(String nombre) throws NegocioException {return ProductoBO.getInstance().buscarPorNombre(nombre);}
+    
+    public static List<ProductoDTO> buscarPorTipo(String tipo) throws NegocioException {return ProductoBO.getInstance().buscarPorTipo(tipo);}
+    
+    public static List<ProductoDTO> buscarPorCategoria(String categoria) throws NegocioException {return ProductoBO.getInstance().buscarPorCategoria(categoria);}
+    
+    public static List<ProductoDTO> buscarPorColor(String color) throws NegocioException {return ProductoBO.getInstance().buscarPorColor(color);}
+    
+    public static List<ProductoDTO> buscarPorTalla(String talla) throws NegocioException{return ProductoBO.getInstance().buscarPorTalla(talla);}
     
     public static void configurarCamposTexto(JTextField campo){
         for(KeyListener keyListener : Arrays.asList(campo.getKeyListeners()))

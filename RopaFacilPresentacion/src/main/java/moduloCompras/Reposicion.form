@@ -41,12 +41,13 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
                       <Component id="btnRegresar" min="-2" pref="145" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="btnConfirmarReposicion" min="-2" pref="267" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -66,42 +67,52 @@
                           </Group>
                           <Component id="jScrollPane1" alignment="0" min="-2" pref="882" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="72" max="32767" attributes="0"/>
+                      <EmptySpace pref="72" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLTalla" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
-                              <Component id="jLCantidad" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="jLTallaS" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jLTallaXS" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jLTallaM" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jLTallaXL" alignment="0" min="-2" pref="21" max="-2" attributes="0"/>
-                                  <Component id="jLTallaL" alignment="0" min="-2" pref="21" max="-2" attributes="0"/>
-                              </Group>
+                          <Group type="102" alignment="1" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
-                                      <Component id="jTFTallaXSInput" min="-2" pref="50" max="-2" attributes="0"/>
+                                      <Component id="jLTalla" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                                      <Component id="jLCantidad" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                          <Component id="jLTallaS" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="jLTallaXS" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="jLTallaM" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="jLTallaXL" alignment="0" min="-2" pref="21" max="-2" attributes="0"/>
+                                          <Component id="jLTallaL" alignment="0" min="-2" pref="21" max="-2" attributes="0"/>
+                                      </Group>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jTFTallaMInput" alignment="1" min="-2" pref="50" max="-2" attributes="0"/>
-                                          <Component id="jTFTallaLInput" alignment="1" min="-2" pref="50" max="-2" attributes="0"/>
-                                          <Component id="jTFTallaXLInput" alignment="1" min="-2" pref="50" max="-2" attributes="0"/>
-                                          <Component id="jTFTallaSInput" alignment="1" min="-2" pref="50" max="-2" attributes="0"/>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
+                                              <Component id="jTFTallaXSInput" min="-2" pref="50" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="jTFTallaMInput" alignment="1" min="-2" pref="50" max="-2" attributes="0"/>
+                                                  <Component id="jTFTallaLInput" alignment="1" min="-2" pref="50" max="-2" attributes="0"/>
+                                                  <Component id="jTFTallaXLInput" alignment="1" min="-2" pref="50" max="-2" attributes="0"/>
+                                                  <Component id="jTFTallaSInput" alignment="1" min="-2" pref="50" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
                                       </Group>
                                   </Group>
                               </Group>
+                              <EmptySpace min="-2" pref="112" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jTFPrecioCompraUnitario" min="-2" pref="180" max="-2" attributes="0"/>
+                                  <Component id="jLPrecioCompraUnitario" min="-2" pref="268" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -167,6 +178,10 @@
                                   <Component id="jLTallaXL" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
                                   <Component id="jTFTallaXLInput" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
+                              <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                              <Component id="jLPrecioCompraUnitario" min="-2" pref="28" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jTFPrecioCompraUnitario" min="-2" pref="43" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -667,6 +682,38 @@
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value="M"/>
         <Property name="horizontalTextPosition" type="int" value="0"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLPrecioCompraUnitario">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Century Gothic" size="18" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="0" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Precio de compra unitario*:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTFPrecioCompraUnitario">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Century Gothic" size="14" style="0"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="0" type="rgb"/>
+        </Property>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+            <LineBorder roundedCorners="true"/>
+          </Border>
+        </Property>
       </Properties>
     </Component>
   </SubComponents>

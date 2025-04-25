@@ -11,9 +11,13 @@ public class NuevoProductoMapper {
     
     public static NuevoProducto toEntityNuevo(NuevoProductoDTO nuevoProductoDTO){
         NuevoProducto nuevoProducto = new NuevoProducto();
-        nuevoProducto.setFechaHora(nuevoProductoDTO.getFechaHora());
         nuevoProducto.setPrecioVentaSugerido(nuevoProductoDTO.getPrecioVentaSugerido());
-        nuevoProducto.setTotalCompra(nuevoProductoDTO.getTotalCompra());
+        
+        if(nuevoProductoDTO.getFechaHora() != null)
+            nuevoProducto.setFechaHora(nuevoProductoDTO.getFechaHora());
+        
+        if(nuevoProductoDTO.getTotalCompra() != null)
+            nuevoProducto.setTotalCompra(nuevoProductoDTO.getTotalCompra());
         
         return nuevoProducto;
     }
@@ -33,9 +37,13 @@ public class NuevoProductoMapper {
     
     public static NuevoProductoDTO toDTONuevo(NuevoProducto nuevoProducto){
         NuevoProductoDTO nuevoProductoDTO = new NuevoProductoDTO();
-        nuevoProductoDTO.setFechaHora(nuevoProducto.getFechaHora());
         nuevoProductoDTO.setPrecioVentaSugerido(nuevoProducto.getPrecioVentaSugerido());
-        nuevoProductoDTO.setTotalCompra(nuevoProducto.getTotalCompra());
+        
+        if(nuevoProducto.getFechaHora() != null)
+            nuevoProductoDTO.setFechaHora(nuevoProducto.getFechaHora());
+        
+        if(nuevoProducto.getTotalCompra() != null)
+            nuevoProductoDTO.setTotalCompra(nuevoProducto.getTotalCompra());
         
         return nuevoProductoDTO;
     }

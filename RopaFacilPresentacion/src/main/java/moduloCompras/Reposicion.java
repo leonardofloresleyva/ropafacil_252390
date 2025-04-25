@@ -2,10 +2,19 @@ package moduloCompras;
 
 import control.ControlFlujo;
 import control.ControlOperaciones;
+import dtos.DetalleCompraProductoDTO;
+import dtos.ProductoDTO;
+import exception.NegocioException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -20,7 +29,14 @@ public class Reposicion extends javax.swing.JPanel {
     
     private boolean campoValido;
     private boolean filtroValido;
+    private boolean XSValido;
+    private boolean SValido;
+    private boolean MValido;
+    private boolean LValido;
+    private boolean XLValido;
+    private boolean precioUnitarioValido;
     private final DefaultTableModel modeloTablaProductos;
+    private List<ProductoDTO> productosEncontrados;
     /**
      * Constructor por defecto.
      */
@@ -32,12 +48,42 @@ public class Reposicion extends javax.swing.JPanel {
         jLFiltroCategoria.setVisible(false);
         jCBCategoria.setVisible(false);
         mostrarTallas(false);
+        productosEncontrados = new ArrayList<>();
+        
+        jTFTallaXSInput.setVisible(false);
+        jTFTallaSInput.setVisible(false);
+        jTFTallaMInput.setVisible(false);
+        jTFTallaLInput.setVisible(false);
+        jTFTallaXLInput.setVisible(false);
+        jLPrecioCompraUnitario.setVisible(false);
+        jTFPrecioCompraUnitario.setVisible(false);
         
         modeloTablaProductos = (DefaultTableModel) jTProductos.getModel();
         modeloTablaProductos.setRowCount(0);
         jTProductos.setModel(modeloTablaProductos);
         
         ControlOperaciones.configurarCamposTexto(jTFBuscador);
+        
+        ControlOperaciones.limiteCaracteres(jTFTallaXSInput, 5);
+        ControlOperaciones.limiteCaracteres(jTFTallaSInput, 5);
+        ControlOperaciones.limiteCaracteres(jTFTallaMInput, 5);
+        ControlOperaciones.limiteCaracteres(jTFTallaLInput, 5);
+        ControlOperaciones.limiteCaracteres(jTFTallaXLInput, 5);
+        ControlOperaciones.limiteCaracteres(jTFPrecioCompraUnitario, 20);
+        
+        ControlOperaciones.configurarCamposCantidades(jTFTallaXSInput);
+        ControlOperaciones.configurarCamposCantidades(jTFTallaSInput);
+        ControlOperaciones.configurarCamposCantidades(jTFTallaMInput);
+        ControlOperaciones.configurarCamposCantidades(jTFTallaLInput);
+        ControlOperaciones.configurarCamposCantidades(jTFTallaXLInput);
+        ControlOperaciones.configurarCamposPrecios(jTFPrecioCompraUnitario);
+        
+        activarBotonConfirmarReposicion(jTFTallaXSInput);
+        activarBotonConfirmarReposicion(jTFTallaSInput);
+        activarBotonConfirmarReposicion(jTFTallaMInput);
+        activarBotonConfirmarReposicion(jTFTallaLInput);
+        activarBotonConfirmarReposicion(jTFTallaXLInput);
+        activarBotonConfirmarReposicion(jTFPrecioCompraUnitario);
     }
     
     public static Reposicion getInstance(){
@@ -78,6 +124,8 @@ public class Reposicion extends javax.swing.JPanel {
         jLTallaS = new javax.swing.JLabel();
         jLTallaXS = new javax.swing.JLabel();
         jLTallaM = new javax.swing.JLabel();
+        jLPrecioCompraUnitario = new javax.swing.JLabel();
+        jTFPrecioCompraUnitario = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setForeground(new java.awt.Color(0, 0, 0));
@@ -290,6 +338,16 @@ public class Reposicion extends javax.swing.JPanel {
         jLTallaM.setText("M");
         jLTallaM.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
+        jLPrecioCompraUnitario.setBackground(new java.awt.Color(255, 255, 255));
+        jLPrecioCompraUnitario.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        jLPrecioCompraUnitario.setForeground(new java.awt.Color(0, 0, 0));
+        jLPrecioCompraUnitario.setText("Precio de compra unitario*:");
+
+        jTFPrecioCompraUnitario.setBackground(new java.awt.Color(255, 255, 255));
+        jTFPrecioCompraUnitario.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jTFPrecioCompraUnitario.setForeground(new java.awt.Color(0, 0, 0));
+        jTFPrecioCompraUnitario.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -304,7 +362,8 @@ public class Reposicion extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnConfirmarReposicion, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnConfirmarReposicion, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(60, 60, 60))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -320,32 +379,38 @@ public class Reposicion extends javax.swing.JPanel {
                                     .addComponent(jLBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jTFBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 882, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLTalla)
-                                .addGap(33, 33, 33)
-                                .addComponent(jLCantidad))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jLTallaS, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLTallaXS, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLTallaM, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLTallaXL, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLTallaL, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(57, 57, 57)
-                                        .addComponent(jTFTallaXSInput, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLTalla)
+                                        .addGap(33, 33, 33)
+                                        .addComponent(jLCantidad))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(jLTallaS, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLTallaXS, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLTallaM, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLTallaXL, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLTallaL, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jTFTallaMInput, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jTFTallaLInput, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jTFTallaXLInput, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jTFTallaSInput, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                        .addGap(52, 52, 52)))
-                .addGap(60, 60, 60))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(57, 57, 57)
+                                                .addComponent(jTFTallaXSInput, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jTFTallaMInput, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jTFTallaLInput, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jTFTallaXLInput, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jTFTallaSInput, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                .addGap(112, 112, 112))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTFPrecioCompraUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLPrecioCompraUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap())))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -398,6 +463,10 @@ public class Reposicion extends javax.swing.JPanel {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLTallaXL, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jTFTallaXLInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(39, 39, 39)
+                                .addComponent(jLPrecioCompraUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTFPrecioCompraUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLFiltroCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -443,6 +512,7 @@ public class Reposicion extends javax.swing.JPanel {
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void btnConfirmarReposicionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarReposicionActionPerformed
+        DetalleCompraProductoDTO detalleCompraProducto = new DetalleCompraProductoDTO();
         
     }//GEN-LAST:event_btnConfirmarReposicionActionPerformed
 
@@ -509,31 +579,117 @@ public class Reposicion extends javax.swing.JPanel {
         
         if(ControlOperaciones.validarCampoInvalidoComboBox(jCBFiltro) && jTProductos.getSelectedRow() != -1){
             mostrarTallas(true);
-            
-        } else{
-            mostrarTallas(false);
-        }
-            
-        
+        }        
     }//GEN-LAST:event_jTProductosMouseClicked
 
     private void activarBuscador(){
         jTFBuscador.getDocument().addDocumentListener( new DocumentListener() {
             @Override
-            public void insertUpdate(DocumentEvent e) {tablaDinamica();}
+            public void insertUpdate(DocumentEvent e) {
+                try {
+                    tablaDinamica();
+                } catch (NegocioException ex) {
+                    JOptionPane.showMessageDialog(Reposicion.getInstance(), ex.getMessage(), "Error de búsqueda", JOptionPane.ERROR_MESSAGE);
+                }
+            }
 
             @Override
-            public void removeUpdate(DocumentEvent e) {tablaDinamica();}
+            public void removeUpdate(DocumentEvent e) {
+                try {
+                    tablaDinamica();
+                } catch (NegocioException ex) {
+                    JOptionPane.showMessageDialog(Reposicion.getInstance(), ex.getMessage(), "Error de búsqueda", JOptionPane.ERROR_MESSAGE);
+                }
+            }
 
             @Override
-            public void changedUpdate(DocumentEvent e) {tablaDinamica();}
+            public void changedUpdate(DocumentEvent e) {
+                try {
+                    tablaDinamica();
+                } catch (NegocioException ex) {
+                    JOptionPane.showMessageDialog(Reposicion.getInstance(), ex.getMessage(), "Error de búsqueda", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         });
     }
     
-    private void tablaDinamica(){
+    private void activarBotonConfirmarReposicion(JTextField talla){
+        talla.getDocument().addDocumentListener( new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                activarBoton();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                activarBoton();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                activarBoton();
+            }
+        });
+    }
+    
+    private void tablaDinamica() throws NegocioException{
         campoValido = ControlOperaciones.validarCampoInvalidoTexto(jTFBuscador);
+        filtroValido = ControlOperaciones.validarCampoInvalidoComboBox(jCBFiltro);
+        
+        if(campoValido && filtroValido){
+            if(jCBFiltro.getSelectedItem().equals("Nombre")){
+                productosEncontrados = ControlOperaciones.buscarProductosPorNombre(jTFBuscador.getText());
+                cargarTablaProductos();
+                
+            } else if(jCBFiltro.getSelectedItem().equals("Tipo")){
+                productosEncontrados = ControlOperaciones.buscarPorTipo(jTFBuscador.getText());
+                cargarTablaProductos();
+                
+            }else if(jCBFiltro.getSelectedItem().equals("Color")){
+                productosEncontrados = ControlOperaciones.buscarPorColor(jTFBuscador.getText());
+                cargarTablaProductos();
+                
+            }else if(jCBFiltro.getSelectedItem().equals("Talla")){
+                productosEncontrados = ControlOperaciones.buscarPorTalla(jTFBuscador.getText());
+                cargarTablaProductos();
+                
+            } else if(jCBFiltro.getSelectedItem().equals("Categoría")){
+                productosEncontrados = ControlOperaciones.buscarPorCategoria((String) jCBCategoria.getSelectedItem());
+                cargarTablaProductos();
+            }
+        }
         
         btnConfirmarReposicion.setEnabled(true);
+    }
+    
+    private void cargarTablaProductos(){
+        if(!productosEncontrados.isEmpty()){
+            productosEncontrados.stream().forEach(e -> {
+            modeloTablaProductos.addRow(new Object[]{
+                    e.getNombre(), 
+                    e.getTipo().getTipo(),
+                    e.getCategoria().getCategoria(),
+                    e.getColor().getClass(),
+                    e.getPrecio()
+                });
+            });
+        }
+    }
+    
+    private void activarBoton(){
+        campoValido = ControlOperaciones.validarCampoInvalidoTexto(jTFBuscador);
+        filtroValido = ControlOperaciones.validarCampoInvalidoComboBox(jCBFiltro);
+        if(jTProductos.getSelectedRow() != -1 && campoValido && filtroValido){
+            XSValido = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaXSInput) && Integer.parseInt(jTFTallaXSInput.getText()) > 0;
+            SValido = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaSInput) && Integer.parseInt(jTFTallaSInput.getText()) > 0;
+            MValido = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaMInput)&& Integer.parseInt(jTFTallaMInput.getText()) > 0;
+            LValido = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaLInput) && Integer.parseInt(jTFTallaLInput.getText()) > 0;
+            XLValido = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaXLInput) && Integer.parseInt(jTFTallaXLInput.getText()) > 0;
+            precioUnitarioValido = ControlOperaciones.validarCampoInvalidoPrecios(jTFPrecioCompraUnitario) && Double.parseDouble(jTFPrecioCompraUnitario.getText()) > 0;
+            
+            btnConfirmarReposicion.setEnabled(XSValido && SValido && MValido && LValido && XLValido && precioUnitarioValido);
+        }
+            
     }
     
     private void mostrarTallas(boolean mostrar){
@@ -550,6 +706,9 @@ public class Reposicion extends javax.swing.JPanel {
         jTFTallaMInput.setVisible(mostrar);
         jTFTallaLInput.setVisible(mostrar);
         jTFTallaXLInput.setVisible(mostrar);
+        
+        jLPrecioCompraUnitario.setVisible(mostrar);
+        jTFPrecioCompraUnitario.setVisible(mostrar);
     }
     
     private void filtrarBuscador(String nuevoTítulo){
@@ -567,6 +726,7 @@ public class Reposicion extends javax.swing.JPanel {
         
         jLBuscador.setText(nuevoTítulo);
         jTFBuscador.setText("");
+        jTFPrecioCompraUnitario.setText("0");
         modeloTablaProductos.setRowCount(0);
     }
     
@@ -579,6 +739,7 @@ public class Reposicion extends javax.swing.JPanel {
     private javax.swing.JLabel jLCantidad;
     private javax.swing.JLabel jLFiltroBusqueda;
     private javax.swing.JLabel jLFiltroCategoria;
+    private javax.swing.JLabel jLPrecioCompraUnitario;
     private javax.swing.JLabel jLTalla;
     private javax.swing.JLabel jLTallaL;
     private javax.swing.JLabel jLTallaM;
@@ -588,6 +749,7 @@ public class Reposicion extends javax.swing.JPanel {
     private javax.swing.JLabel jLTítuloNuevoProducto;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTFBuscador;
+    private javax.swing.JTextField jTFPrecioCompraUnitario;
     private javax.swing.JTextField jTFTallaLInput;
     private javax.swing.JTextField jTFTallaMInput;
     private javax.swing.JTextField jTFTallaSInput;
