@@ -15,9 +15,8 @@ import exception.NegocioException;
 import exception.PersistenciaException;
 import interfaces.iCompraBO;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import mappers.DetalleCompraTallaMapper;
 import mappers.NuevoProductoMapper;
 import mappers.ProductoMapper;
@@ -70,32 +69,89 @@ public class CompraBO implements iCompraBO{
 
     @Override
     public List<NuevoProductoDTO> obtenerNuevosProductosFecha(LocalDate fechaInicial, LocalDate fechaFinal) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            List<NuevoProductoDTO> comprasDTO = new ArrayList<>();
+            List<NuevoProducto> comprasEncontradas = CompraDAO.getInstance().obtenerNuevosProductosFecha(fechaInicial, fechaFinal);
+            if(!comprasEncontradas.isEmpty())
+                comprasDTO = comprasEncontradas.stream().map(e -> NuevoProductoMapper.toDTOViejo(e)).toList();
+            return comprasDTO;
+            
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @Override
     public List<ReposicionDTO> obtenerReposicionesFecha(LocalDate fechaInicial, LocalDate fechaFinal) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            List<ReposicionDTO> comprasDTO = new ArrayList<>();
+            List<Reposicion> comprasEncontradas = CompraDAO.getInstance().obtenerReposicionesFecha(fechaInicial, fechaFinal);
+            if(!comprasEncontradas.isEmpty())
+                comprasDTO = comprasEncontradas.stream().map(e -> ReposicionMapper.toDTOViejo(e)).toList();
+            return comprasDTO;
+            
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @Override
     public List<NuevoProductoDTO> obtenerNuevosProductosNombre(String nombre) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            List<NuevoProductoDTO> comprasDTO = new ArrayList<>();
+            List<NuevoProducto> comprasEncontradas = CompraDAO.getInstance().obtenerNuevosProductosNombre(nombre);
+            if(!comprasEncontradas.isEmpty()){
+                for(NuevoProducto compraEncontrada : comprasEncontradas){
+                    comprasDTO.add(NuevoProductoMapper.toDTOViejo(compraEncontrada));
+                }
+            }
+            return comprasDTO;
+            
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @Override
     public List<ReposicionDTO> obtenerReposicionesNombre(String nombre) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            List<ReposicionDTO> comprasDTO = new ArrayList<>();
+            List<Reposicion> comprasEncontradas = CompraDAO.getInstance().obtenerReposicionesNombre(nombre);
+            if(!comprasEncontradas.isEmpty())
+                comprasDTO = comprasEncontradas.stream().map(e -> ReposicionMapper.toDTOViejo(e)).toList();
+            return comprasDTO;
+            
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @Override
     public List<NuevoProductoDTO> obtenerNuevosProductosProveedor(String proveedor) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            List<NuevoProductoDTO> comprasDTO = new ArrayList<>();
+            List<NuevoProducto> comprasEncontradas = CompraDAO.getInstance().obtenerNuevosProductosProveedor(proveedor);
+            if(!comprasEncontradas.isEmpty())
+                comprasDTO = comprasEncontradas.stream().map(e -> NuevoProductoMapper.toDTOViejo(e)).toList();
+            return comprasDTO;
+            
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @Override
     public List<ReposicionDTO> obtenerReposicionesProveedor(String proveedor) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            List<ReposicionDTO> comprasDTO = new ArrayList<>();
+            List<Reposicion> comprasEncontradas = CompraDAO.getInstance().obtenerReposicionesProveedor(proveedor);
+            if(!comprasEncontradas.isEmpty())
+                comprasDTO = comprasEncontradas.stream().map(e -> ReposicionMapper.toDTOViejo(e)).toList();
+            return comprasDTO;
+            
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
     
 }

@@ -1,11 +1,19 @@
 package moduloCompras;
 
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import control.ControlFlujo;
 import control.ControlOperaciones;
+import dtos.DetalleCompraTallaDTO;
+import dtos.NuevoProductoDTO;
+import exception.NegocioException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -20,8 +28,12 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
     
     private boolean campoValido;
     private boolean filtroValido;
+    private boolean fechaInicioValida;
+    private boolean fechaFinalValida;
+    
     private final DefaultTableModel modeloTablaProductos;
     private final DefaultTableModel modeloTablaTallas;
+    private List<NuevoProductoDTO> comprasEncontradas;
     /**
      * Constructor por defecto.
      */
@@ -34,16 +46,21 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
         jDCFechaInicio.setVisible(false);
         jDCFechaFinal.setVisible(false);
         jTallas.setVisible(false);
-        mostrarTallas(false);
+        
+        comprasEncontradas = new ArrayList<>();
         
         modeloTablaProductos = (DefaultTableModel) jTProductos.getModel();
         modeloTablaProductos.setRowCount(0);
         jTProductos.setModel(modeloTablaProductos);
+        
         modeloTablaTallas = (DefaultTableModel) jTallas.getModel();
         modeloTablaTallas.setRowCount(0);
         jTallas.setModel(modeloTablaTallas);
         
         ControlOperaciones.configurarCamposTexto(jTFBuscador);
+        
+        activarListenerFechas(jDCFechaInicio);
+        activarListenerFechas(jDCFechaFinal);
     }
     
     public static HistorialComprasNuevosProductos getInstance(){
@@ -66,15 +83,15 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
         jTFBuscador = new javax.swing.JTextField();
         jLBuscador = new javax.swing.JLabel();
         jCBFiltro = new javax.swing.JComboBox<>();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTProductos = new javax.swing.JTable();
         jLFiltroBusqueda = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTallas = new javax.swing.JTable();
         jDCFechaInicio = new com.github.lgooddatepicker.components.DatePicker();
         jLFechaInicio = new javax.swing.JLabel();
         jLFechaFinal = new javax.swing.JLabel();
         jDCFechaFinal = new com.github.lgooddatepicker.components.DatePicker();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTProductos = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTallas = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setForeground(new java.awt.Color(0, 0, 0));
@@ -119,17 +136,17 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
             }
         });
 
-        jTFBuscador.setBackground(new java.awt.Color(255, 255, 255));
         jTFBuscador.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jTFBuscador.setForeground(new java.awt.Color(0, 0, 0));
+        jTFBuscador.setBackground(new java.awt.Color(255, 255, 255));
         jTFBuscador.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        jTFBuscador.setForeground(new java.awt.Color(0, 0, 0));
         jTFBuscador.setMaximumSize(new java.awt.Dimension(64, 21));
         add(jTFBuscador, new org.netbeans.lib.awtextra.AbsoluteConstraints(646, 158, 601, 33));
 
+        jLBuscador.setText("Nombre del producto:");
         jLBuscador.setBackground(new java.awt.Color(255, 255, 255));
         jLBuscador.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         jLBuscador.setForeground(new java.awt.Color(0, 0, 0));
-        jLBuscador.setText("Nombre del producto:");
         add(jLBuscador, new org.netbeans.lib.awtextra.AbsoluteConstraints(646, 118, 268, 28));
 
         jCBFiltro.setBackground(new java.awt.Color(255, 255, 255));
@@ -145,16 +162,52 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
         });
         add(jCBFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 117, -1));
 
+        jLFiltroBusqueda.setBackground(new java.awt.Color(255, 255, 255));
+        jLFiltroBusqueda.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        jLFiltroBusqueda.setForeground(new java.awt.Color(0, 0, 0));
+        jLFiltroBusqueda.setText("Filtro de búsqueda:");
+        add(jLFiltroBusqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, 28));
+
+        jDCFechaInicio.setBackground(new java.awt.Color(255, 255, 255));
+        jDCFechaInicio.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jDCFechaInicio.setForeground(new java.awt.Color(0, 0, 0));
+        jDCFechaInicio.setMaximumSize(new java.awt.Dimension(143, 21));
+        add(jDCFechaInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(249, 158, -1, 33));
+
+        jLFechaInicio.setBackground(new java.awt.Color(255, 255, 255));
+        jLFechaInicio.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        jLFechaInicio.setForeground(new java.awt.Color(0, 0, 0));
+        jLFechaInicio.setText("Fecha inicio:");
+        add(jLFechaInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(249, 118, -1, 28));
+
+        jLFechaFinal.setBackground(new java.awt.Color(255, 255, 255));
+        jLFechaFinal.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        jLFechaFinal.setForeground(new java.awt.Color(0, 0, 0));
+        jLFechaFinal.setText("Fecha final:");
+        add(jLFechaFinal, new org.netbeans.lib.awtextra.AbsoluteConstraints(432, 118, -1, 28));
+
+        jDCFechaFinal.setBackground(new java.awt.Color(255, 255, 255));
+        jDCFechaFinal.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jDCFechaFinal.setForeground(new java.awt.Color(0, 0, 0));
+        jDCFechaFinal.setMaximumSize(new java.awt.Dimension(143, 21));
+        add(jDCFechaFinal, new org.netbeans.lib.awtextra.AbsoluteConstraints(432, 158, -1, 33));
+
+        jTProductos.setBackground(new java.awt.Color(255, 255, 255));
+        jTProductos.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jTProductos.setForeground(new java.awt.Color(0, 0, 0));
         jTProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Nombre", "Tipo", "Categoría", "Color", "Precio Unitario", "Precio Venta Sugerido", "Total", "Fecha y hora", "Proveedor"
+                "Nombre", "Tipo", "Categoria", "Color", "Precio Unitario", "Precio Venta Sugerido", "Total", "Fecha y hora", "Proveedor"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Object.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false, false, false
@@ -168,30 +221,16 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jTProductos.setBackground(new java.awt.Color(255, 255, 255));
-        jTProductos.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jTProductos.setForeground(new java.awt.Color(0, 0, 0));
-        jTProductos.setMaximumSize(new java.awt.Dimension(375, 0));
-        jTProductos.setMinimumSize(new java.awt.Dimension(375, 0));
-        jTProductos.setPreferredSize(new java.awt.Dimension(375, 0));
+        jTProductos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         jTProductos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jTProductos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jTProductos.getTableHeader().setResizingAllowed(false);
-        jTProductos.getTableHeader().setReorderingAllowed(false);
         jTProductos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTProductosMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jTProductos);
+        jScrollPane3.setViewportView(jTProductos);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(26, 203, 1070, 358));
-
-        jLFiltroBusqueda.setBackground(new java.awt.Color(255, 255, 255));
-        jLFiltroBusqueda.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
-        jLFiltroBusqueda.setForeground(new java.awt.Color(0, 0, 0));
-        jLFiltroBusqueda.setText("Filtro de búsqueda:");
-        add(jLFiltroBusqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, 28));
+        add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 1050, 340));
 
         jTallas.setBackground(new java.awt.Color(255, 255, 255));
         jTallas.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
@@ -219,52 +258,17 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jTallas.setMaximumSize(new java.awt.Dimension(375, 0));
-        jTallas.setMinimumSize(new java.awt.Dimension(375, 0));
-        jTallas.setPreferredSize(new java.awt.Dimension(375, 0));
         jTallas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jTallas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jTallas.getTableHeader().setResizingAllowed(false);
-        jTallas.getTableHeader().setReorderingAllowed(false);
-        jTallas.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTallasMouseClicked(evt);
-            }
-        });
         jScrollPane2.setViewportView(jTallas);
 
-        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1108, 203, 139, 133));
-
-        jDCFechaInicio.setBackground(new java.awt.Color(255, 255, 255));
-        jDCFechaInicio.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jDCFechaInicio.setForeground(new java.awt.Color(0, 0, 0));
-        jDCFechaInicio.setMaximumSize(new java.awt.Dimension(143, 21));
-        add(jDCFechaInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(249, 158, -1, 33));
-
-        jLFechaInicio.setBackground(new java.awt.Color(255, 255, 255));
-        jLFechaInicio.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
-        jLFechaInicio.setForeground(new java.awt.Color(0, 0, 0));
-        jLFechaInicio.setText("Fecha inicio:");
-        add(jLFechaInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(249, 118, -1, 28));
-
-        jLFechaFinal.setBackground(new java.awt.Color(255, 255, 255));
-        jLFechaFinal.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
-        jLFechaFinal.setForeground(new java.awt.Color(0, 0, 0));
-        jLFechaFinal.setText("Fecha final:");
-        add(jLFechaFinal, new org.netbeans.lib.awtextra.AbsoluteConstraints(432, 118, -1, 28));
-
-        jDCFechaFinal.setBackground(new java.awt.Color(255, 255, 255));
-        jDCFechaFinal.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jDCFechaFinal.setForeground(new java.awt.Color(0, 0, 0));
-        jDCFechaFinal.setMaximumSize(new java.awt.Dimension(143, 21));
-        add(jDCFechaFinal, new org.netbeans.lib.awtextra.AbsoluteConstraints(432, 158, -1, 33));
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1092, 210, 180, 140));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         jTFBuscador.setText("");
         modeloTablaProductos.setRowCount(0);
         modeloTablaTallas.setRowCount(0);
-        mostrarTallas(false);
         ControlFlujo.mostrarHistorialCompras();
     }//GEN-LAST:event_btnRegresarActionPerformed
 
@@ -296,7 +300,6 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
 
                 modeloTablaProductos.setRowCount(0);
                 modeloTablaTallas.setRowCount(0);
-                mostrarTallas(false);
                 activarBuscador();
                 
             } else if(jCBFiltro.getSelectedItem().equals("Proveedor")){
@@ -327,47 +330,111 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
                 jTFBuscador.setVisible(false);
             
             modeloTablaProductos.setRowCount(0);
-            mostrarTallas(false);
+            modeloTablaTallas.setRowCount(0);
         }
     }//GEN-LAST:event_jCBFiltroItemStateChanged
 
     private void jTProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTProductosMouseClicked
-        
-        if(ControlOperaciones.validarCampoInvalidoComboBox(jCBFiltro) && jTProductos.getSelectedRow() != -1){
-            mostrarTallas(true);
-            
-        } else{
-            mostrarTallas(false);
+        filtroValido = ControlOperaciones.validarCampoInvalidoComboBox(jCBFiltro);
+        if(filtroValido && jTProductos.getSelectedRow() != -1){
+            modeloTablaTallas.setRowCount(0);
+            cargarTablaTallas();
         }
-            
-        
     }//GEN-LAST:event_jTProductosMouseClicked
-
-    private void jTallasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTallasMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTallasMouseClicked
 
     private void activarBuscador(){
         jTFBuscador.getDocument().addDocumentListener( new DocumentListener() {
             @Override
-            public void insertUpdate(DocumentEvent e) {tablaDinamica();}
+            public void insertUpdate(DocumentEvent e) {
+                try {
+                    tablaDinamica();
+                } catch (NegocioException ex) {
+                    JOptionPane.showMessageDialog(HistorialComprasNuevosProductos.getInstance(), ex.getMessage(), "Error de búsqueda", JOptionPane.ERROR_MESSAGE);
+                }
+            }
 
             @Override
-            public void removeUpdate(DocumentEvent e) {tablaDinamica();}
+            public void removeUpdate(DocumentEvent e) {
+                try {
+                    tablaDinamica();
+                } catch (NegocioException ex) {
+                    JOptionPane.showMessageDialog(HistorialComprasNuevosProductos.getInstance(), ex.getMessage(), "Error de búsqueda", JOptionPane.ERROR_MESSAGE);
+                }
+            }
 
             @Override
-            public void changedUpdate(DocumentEvent e) {tablaDinamica();}
+            public void changedUpdate(DocumentEvent e) {
+                try {
+                    tablaDinamica();
+                } catch (NegocioException ex) {
+                    JOptionPane.showMessageDialog(HistorialComprasNuevosProductos.getInstance(), ex.getMessage(), "Error de búsqueda", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         });
     }
     
-    private void tablaDinamica(){
+    private void activarListenerFechas(DatePicker picker){
+        picker.addDateChangeListener((DateChangeEvent event) -> {
+            fechaInicioValida = ControlOperaciones.validarFechaInvalida(jDCFechaInicio);
+            fechaFinalValida = ControlOperaciones.validarFechaInvalida(jDCFechaFinal);
+            if(fechaInicioValida && fechaFinalValida){
+                try {
+                    comprasEncontradas = ControlOperaciones.buscarNuevosProductosFecha(jDCFechaInicio.getDate(), jDCFechaFinal.getDate());
+                    cargarTablaCompras();
+                } catch (NegocioException ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Error de búsqueda", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+    }
+    
+    private void tablaDinamica() throws NegocioException{
         campoValido = ControlOperaciones.validarCampoInvalidoTexto(jTFBuscador);
+        filtroValido = ControlOperaciones.validarCampoInvalidoComboBox(jCBFiltro);
         
+        if(campoValido && filtroValido){
+            modeloTablaProductos.setRowCount(0);
+            modeloTablaTallas.setRowCount(0);
+            if(jCBFiltro.getSelectedItem().equals("Nombre")){
+                comprasEncontradas = ControlOperaciones.buscarNuevosProductosNombre(jTFBuscador.getText());
+                cargarTablaCompras();
+            } else if (jCBFiltro.getSelectedItem().equals("Proveedor")){
+                comprasEncontradas = ControlOperaciones.buscarNuevosProductosProveedor(jTFBuscador.getText());
+                cargarTablaCompras();
+            }
+        }
         
     }
     
-    private void mostrarTallas(boolean mostrar){
-        jTallas.setVisible(mostrar);
+    private void cargarTablaCompras(){
+        if(!comprasEncontradas.isEmpty()){
+            for(NuevoProductoDTO e : comprasEncontradas){
+                String proveedor = "N/A";
+                if(e.getProductoComprado().getProveedor() != null)
+                    proveedor = e.getProductoComprado().getProveedor().getProveedor();
+                    
+                modeloTablaProductos.addRow(new Object[]{
+                    e.getProductoComprado().getNombre(),
+                    e.getProductoComprado().getTipo().getTipo(),
+                    e.getProductoComprado().getCategoria().getCategoria(),
+                    e.getProductoComprado().getColor().getColor(),
+                    e.getPrecioCompraUnitario(),
+                    e.getPrecioVentaSugerido(),
+                    e.getTotalCompra(),
+                    e.getFechaHora().toString(),
+                    proveedor
+                });
+            }
+        }
+    }
+    
+    private void cargarTablaTallas(){
+        if(!comprasEncontradas.isEmpty()){
+            List<DetalleCompraTallaDTO> tallas = comprasEncontradas.get(jTProductos.getSelectedRow()).getTallasCompradas();
+            tallas.stream().forEach(e -> {
+                modeloTablaTallas.addRow(new Object[] {e.getTalla().getTalla(), e.getCantidadComprada().toString()});
+            });
+        }
     }
     
     private void filtrarBuscador(String nuevoTítulo){
@@ -394,7 +461,6 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
         jTFBuscador.setText("");
         modeloTablaProductos.setRowCount(0);
         modeloTablaTallas.setRowCount(0);
-        mostrarTallas(false);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -407,8 +473,8 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
     private javax.swing.JLabel jLFechaInicio;
     private javax.swing.JLabel jLFiltroBusqueda;
     private javax.swing.JLabel jLTítuloNuevoProducto;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField jTFBuscador;
     private javax.swing.JTable jTProductos;
     private javax.swing.JTable jTallas;

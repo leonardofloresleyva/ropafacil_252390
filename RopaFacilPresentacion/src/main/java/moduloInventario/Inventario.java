@@ -2,13 +2,23 @@ package moduloInventario;
 
 import control.ControlFlujo;
 import control.ControlOperaciones;
+import dtos.ProductoDTO;
+import dtos.StockPorTallaDTO;
+import enums.EstadoProducto;
+import exception.NegocioException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import moduloCompras.Reposicion;
 
 /**
  *
@@ -20,8 +30,10 @@ public class Inventario extends javax.swing.JPanel {
     
     private boolean campoValido;
     private boolean filtroValido;
-    private final DefaultTableModel modeloTablaProductos;
-    private final DefaultTableModel modeloTablaTallas;
+    private boolean categoriaValida;
+    private  DefaultTableModel modeloTablaProductos;
+    private  DefaultTableModel modeloTablaTallas;
+    private List<ProductoDTO> productosEncontrados;
     /**
      * Constructor por defecto.
      */
@@ -33,12 +45,14 @@ public class Inventario extends javax.swing.JPanel {
         jTFBuscador.setVisible(false);
         jLFiltroCategoriaEstado.setVisible(false);
         jCBCategoriaEstado.setVisible(false);
-        mostrarTallas(false);
+        
+        productosEncontrados = new ArrayList<>();
         
         modeloTablaProductos = (DefaultTableModel) jTProductos.getModel();
         modeloTablaProductos.setRowCount(0);
         jTProductos.setModel(modeloTablaProductos);
-         modeloTablaTallas = (DefaultTableModel) jTallas.getModel();
+        
+        modeloTablaTallas = (DefaultTableModel) jTallas.getModel();
         modeloTablaTallas.setRowCount(0);
         jTallas.setModel(modeloTablaTallas);
     }
@@ -66,12 +80,12 @@ public class Inventario extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTProductos = new javax.swing.JTable();
         jLFiltroBusqueda = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTallas = new javax.swing.JTable();
         btnEditar = new javax.swing.JButton();
         btnHabilitarDeshabilitar = new javax.swing.JButton();
         jCBCategoriaEstado = new javax.swing.JComboBox<>();
         jLFiltroCategoriaEstado = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTallas = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setForeground(new java.awt.Color(0, 0, 0));
@@ -86,14 +100,14 @@ public class Inventario extends javax.swing.JPanel {
         jLTítuloNuevoProducto.setForeground(new java.awt.Color(0, 0, 0));
         add(jLTítuloNuevoProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 10, -1, -1));
 
-        btnRegresar.setText("Regresar");
         btnRegresar.setBackground(new java.awt.Color(0, 0, 0));
+        btnRegresar.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegresar.setText("Regresar");
         btnRegresar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 0, true));
         btnRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnRegresar.setFocusPainted(false);
         btnRegresar.setFocusable(false);
-        btnRegresar.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegresarActionPerformed(evt);
@@ -116,10 +130,10 @@ public class Inventario extends javax.swing.JPanel {
             }
         });
 
-        jTFBuscador.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jTFBuscador.setBackground(new java.awt.Color(255, 255, 255));
-        jTFBuscador.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        jTFBuscador.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jTFBuscador.setForeground(new java.awt.Color(0, 0, 0));
+        jTFBuscador.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         jTFBuscador.setMaximumSize(new java.awt.Dimension(64, 21));
         add(jTFBuscador, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 150, 601, 33));
 
@@ -129,12 +143,12 @@ public class Inventario extends javax.swing.JPanel {
         jLBuscador.setForeground(new java.awt.Color(0, 0, 0));
         add(jLBuscador, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 110, 268, 28));
 
-        jCBFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N/A", "Nombre", "Estado", "Color", "Tipo", "Categoría", "Talla", "N° de caja" }));
         jCBFiltro.setBackground(new java.awt.Color(255, 255, 255));
-        jCBFiltro.setBorder(null);
-        jCBFiltro.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jCBFiltro.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jCBFiltro.setForeground(new java.awt.Color(0, 0, 0));
+        jCBFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N/A", "Nombre", "Estado", "Color", "Tipo", "Categoría", "Talla", "N° de caja" }));
+        jCBFiltro.setBorder(null);
+        jCBFiltro.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jCBFiltro.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jCBFiltroItemStateChanged(evt);
@@ -142,6 +156,9 @@ public class Inventario extends javax.swing.JPanel {
         });
         add(jCBFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 117, -1));
 
+        jTProductos.setBackground(new java.awt.Color(255, 255, 255));
+        jTProductos.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jTProductos.setForeground(new java.awt.Color(0, 0, 0));
         jTProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -154,7 +171,7 @@ public class Inventario extends javax.swing.JPanel {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -165,9 +182,6 @@ public class Inventario extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jTProductos.setBackground(new java.awt.Color(255, 255, 255));
-        jTProductos.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jTProductos.setForeground(new java.awt.Color(0, 0, 0));
         jTProductos.setMaximumSize(new java.awt.Dimension(375, 0));
         jTProductos.setMinimumSize(new java.awt.Dimension(375, 0));
         jTProductos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -189,56 +203,14 @@ public class Inventario extends javax.swing.JPanel {
         jLFiltroBusqueda.setForeground(new java.awt.Color(0, 0, 0));
         add(jLFiltroBusqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, 28));
 
-        jTallas.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Talla", "Cantidad"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTallas.setBackground(new java.awt.Color(255, 255, 255));
-        jTallas.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jTallas.setForeground(new java.awt.Color(0, 0, 0));
-        jTallas.setMaximumSize(new java.awt.Dimension(375, 0));
-        jTallas.setMinimumSize(new java.awt.Dimension(375, 0));
-        jTallas.setPreferredSize(new java.awt.Dimension(375, 0));
-        jTallas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jTallas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jTallas.getTableHeader().setResizingAllowed(false);
-        jTallas.getTableHeader().setReorderingAllowed(false);
-        jTallas.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTallasMouseClicked(evt);
-            }
-        });
-        jScrollPane2.setViewportView(jTallas);
-
-        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(987, 203, 260, 133));
-
-        btnEditar.setText("Editar");
         btnEditar.setBackground(new java.awt.Color(0, 0, 0));
+        btnEditar.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        btnEditar.setForeground(new java.awt.Color(255, 255, 255));
+        btnEditar.setText("Editar");
         btnEditar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 0, true));
         btnEditar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnEditar.setFocusPainted(false);
         btnEditar.setFocusable(false);
-        btnEditar.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        btnEditar.setForeground(new java.awt.Color(255, 255, 255));
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditarActionPerformed(evt);
@@ -261,14 +233,14 @@ public class Inventario extends javax.swing.JPanel {
             }
         });
 
-        btnHabilitarDeshabilitar.setText("Habilitar/deshabilitar producto");
         btnHabilitarDeshabilitar.setBackground(new java.awt.Color(0, 0, 0));
+        btnHabilitarDeshabilitar.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        btnHabilitarDeshabilitar.setForeground(new java.awt.Color(255, 255, 255));
+        btnHabilitarDeshabilitar.setText("Habilitar/deshabilitar producto");
         btnHabilitarDeshabilitar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 0, true));
         btnHabilitarDeshabilitar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnHabilitarDeshabilitar.setFocusPainted(false);
         btnHabilitarDeshabilitar.setFocusable(false);
-        btnHabilitarDeshabilitar.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        btnHabilitarDeshabilitar.setForeground(new java.awt.Color(255, 255, 255));
         btnHabilitarDeshabilitar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnHabilitarDeshabilitarActionPerformed(evt);
@@ -291,12 +263,12 @@ public class Inventario extends javax.swing.JPanel {
             }
         });
 
-        jCBCategoriaEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DAMA", "CABALLERO" }));
         jCBCategoriaEstado.setBackground(new java.awt.Color(255, 255, 255));
-        jCBCategoriaEstado.setBorder(null);
-        jCBCategoriaEstado.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jCBCategoriaEstado.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jCBCategoriaEstado.setForeground(new java.awt.Color(0, 0, 0));
+        jCBCategoriaEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N/A", "DAMA", "CABALLERO", "ACTIVO", "INACTIVO" }));
+        jCBCategoriaEstado.setBorder(null);
+        jCBCategoriaEstado.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jCBCategoriaEstado.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jCBCategoriaEstadoItemStateChanged(evt);
@@ -309,13 +281,47 @@ public class Inventario extends javax.swing.JPanel {
         jLFiltroCategoriaEstado.setForeground(new java.awt.Color(0, 0, 0));
         jLFiltroCategoriaEstado.setText("Categoría:");
         add(jLFiltroCategoriaEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 120, -1, 30));
+
+        jTallas.setBackground(new java.awt.Color(255, 255, 255));
+        jTallas.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jTallas.setForeground(new java.awt.Color(0, 0, 0));
+        jTallas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Talla", "Stock"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTallas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        jTallas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane3.setViewportView(jTallas);
+
+        add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 200, 240, 180));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         jTFBuscador.setText("");
         modeloTablaProductos.setRowCount(0);
-        modeloTablaTallas.setRowCount(0);
-        mostrarTallas(false);
+        modeloTablaTallas.setRowCount(0);;
         ControlFlujo.mostrarMenuPrincipal();
     }//GEN-LAST:event_btnRegresarActionPerformed
 
@@ -381,25 +387,26 @@ public class Inventario extends javax.swing.JPanel {
                 jTFBuscador.setVisible(false);
             
             modeloTablaProductos.setRowCount(0);
-            mostrarTallas(false);
         }
     }//GEN-LAST:event_jCBFiltroItemStateChanged
 
     private void jTProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTProductosMouseClicked
         
-        if(ControlOperaciones.validarCampoInvalidoComboBox(jCBFiltro) && jTProductos.getSelectedRow() != -1){
-            mostrarTallas(true);
-            
+        filtroValido = ControlOperaciones.validarCampoInvalidoComboBox(jCBFiltro);
+        if(filtroValido && jTProductos.getSelectedRow() != -1){
+            if(!btnHabilitarDeshabilitar.isVisible())
+                btnHabilitarDeshabilitar.setVisible(true);
+            if(!btnEditar.isVisible())
+                btnEditar.setVisible(true);
+            cargarTablaTallas();
         } else{
-            mostrarTallas(false);
-        }
-            
+            if(btnHabilitarDeshabilitar.isVisible())
+                btnHabilitarDeshabilitar.setVisible(false);
+            if(btnEditar.isVisible())
+                btnEditar.setVisible(false);
+        }  
         
     }//GEN-LAST:event_jTProductosMouseClicked
-
-    private void jTallasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTallasMouseClicked
-        
-    }//GEN-LAST:event_jTallasMouseClicked
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         ControlFlujo.mostrarEditarProducto();
@@ -410,40 +417,119 @@ public class Inventario extends javax.swing.JPanel {
     }//GEN-LAST:event_btnHabilitarDeshabilitarActionPerformed
 
     private void jCBCategoriaEstadoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCBCategoriaEstadoItemStateChanged
-
+        filtroValido = ControlOperaciones.validarCampoInvalidoComboBox(jCBFiltro);
+        categoriaValida = ControlOperaciones.validarCampoInvalidoComboBox(jCBCategoriaEstado);
+        if(jCBCategoriaEstado.getSelectedItem() != null && filtroValido){
+            try {
+                modeloTablaProductos.setRowCount(0);
+                if(jCBCategoriaEstado.getSelectedItem().equals("DAMA") || jCBCategoriaEstado.getSelectedItem().equals("CABALLERO")){
+                    productosEncontrados = ControlOperaciones.buscarPorCategoria((String) jCBCategoriaEstado.getSelectedItem());
+                    cargarTablaProductos();
+                } else{
+                    if(jCBCategoriaEstado.getSelectedItem().equals("ACTIVO")){
+                        productosEncontrados = ControlOperaciones.buscarPorEstado(EstadoProducto.ACTIVO);
+                        cargarTablaProductos();
+                    } else{
+                        productosEncontrados = ControlOperaciones.buscarPorEstado(EstadoProducto.INACTIVO);
+                        cargarTablaProductos();
+                    }
+                    
+                }
+                
+            } catch (NegocioException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_jCBCategoriaEstadoItemStateChanged
 
     private void activarBuscador(){
         jTFBuscador.getDocument().addDocumentListener( new DocumentListener() {
             @Override
-            public void insertUpdate(DocumentEvent e) {tablaDinamica();}
+            public void insertUpdate(DocumentEvent e) {
+                try {
+                    tablaDinamica();
+                } catch (NegocioException ex) {
+                    JOptionPane.showMessageDialog(Inventario.getInstance(), ex.getMessage(), "Error de búsqueda", JOptionPane.ERROR_MESSAGE);
+                }
+            }
 
             @Override
-            public void removeUpdate(DocumentEvent e) {tablaDinamica();}
+            public void removeUpdate(DocumentEvent e) {
+                try {
+                    tablaDinamica();
+                } catch (NegocioException ex) {
+                    JOptionPane.showMessageDialog(Inventario.getInstance(), ex.getMessage(), "Error de búsqueda", JOptionPane.ERROR_MESSAGE);
+                }
+            }
 
             @Override
-            public void changedUpdate(DocumentEvent e) {tablaDinamica();}
+            public void changedUpdate(DocumentEvent e) {
+                try {
+                    tablaDinamica();
+                } catch (NegocioException ex) {
+                    JOptionPane.showMessageDialog(Inventario.getInstance(), ex.getMessage(), "Error de búsqueda", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         });
     }
     
-    private void tablaDinamica(){
+    private void tablaDinamica() throws NegocioException{
+        campoValido = ControlOperaciones.validarCampoInvalidoTexto(jTFBuscador);
         filtroValido = ControlOperaciones.validarCampoInvalidoComboBox(jCBFiltro);
-        if(filtroValido && jTProductos.getSelectedRow() != -1){
-            if(!btnHabilitarDeshabilitar.isVisible())
-                btnHabilitarDeshabilitar.setVisible(true);
-            if(!btnEditar.isVisible())
-                btnEditar.setVisible(true);
-        } else{
-            if(btnHabilitarDeshabilitar.isVisible())
-                btnHabilitarDeshabilitar.setVisible(false);
-            if(btnEditar.isVisible())
-                btnEditar.setVisible(false);
+        
+        if(campoValido && filtroValido){
+            modeloTablaProductos.setRowCount(0);
+            if(jCBFiltro.getSelectedItem().equals("Nombre")){
+                productosEncontrados = ControlOperaciones.buscarProductosPorNombre(jTFBuscador.getText());
+                cargarTablaProductos();
+                
+            } else if(jCBFiltro.getSelectedItem().equals("Tipo")){
+                productosEncontrados = ControlOperaciones.buscarPorTipo(jTFBuscador.getText());
+                cargarTablaProductos();
+                
+            }else if(jCBFiltro.getSelectedItem().equals("Color")){
+                productosEncontrados = ControlOperaciones.buscarPorColor(jTFBuscador.getText());
+                cargarTablaProductos();
+                
+            }else if(jCBFiltro.getSelectedItem().equals("Talla")){
+                productosEncontrados = ControlOperaciones.buscarPorTalla(jTFBuscador.getText());
+                cargarTablaProductos();
+                
+            } else if(jCBFiltro.getSelectedItem().equals("Tipo")){
+                productosEncontrados = ControlOperaciones.buscarPorTipo(jTFBuscador.getText());
+                cargarTablaProductos();
+            
+            } else if(jCBFiltro.getSelectedItem().equals("N° de caja")){
+                productosEncontrados = ControlOperaciones.buscarPorCaja(Integer.valueOf(jTFBuscador.getText()));
+                cargarTablaProductos();    
+            }
         }
         
     }
     
-    private void mostrarTallas(boolean mostrar){
-        jTallas.setVisible(mostrar);
+    private void cargarTablaTallas(){
+        if(!productosEncontrados.isEmpty()){
+            List<StockPorTallaDTO> tallas = productosEncontrados.get(jTProductos.getSelectedRow()).getTallas();
+            tallas.stream().forEach(e -> {
+                modeloTablaTallas.addRow(new Object[] {e.getTalla().getTalla(), e.getStock()});
+            });
+        }
+    }
+    
+    private void cargarTablaProductos(){
+        if(!productosEncontrados.isEmpty()){
+            productosEncontrados.stream().forEach(e -> {
+            modeloTablaProductos.addRow(new Object[]{
+                    e.getNombre(),
+                    e.getEstado(),
+                    e.getTipo().getTipo(),
+                    e.getCategoria().getCategoria(),
+                    e.getColor().getColor(),
+                    e.getCaja().getCaja(),
+                    e.getPrecio()
+                });
+            });
+        }
     }
     
     private void filtrarComboBox(){
@@ -458,10 +544,15 @@ public class Inventario extends javax.swing.JPanel {
 
         if(!jCBCategoriaEstado.isVisible())
             jCBCategoriaEstado.setVisible(true);
+        
+        if(btnHabilitarDeshabilitar.isVisible())
+            btnHabilitarDeshabilitar.setVisible(false);
+        
+        if(btnEditar.isVisible())
+            btnEditar.setVisible(false);
 
         modeloTablaProductos.setRowCount(0);
         modeloTablaTallas.setRowCount(0);
-        mostrarTallas(false);
     }
     
     private void filtrarBuscador(String nuevoTítulo){
@@ -478,11 +569,16 @@ public class Inventario extends javax.swing.JPanel {
         if(!jTFBuscador.isVisible())
             jTFBuscador.setVisible(true);
         
+        if(btnHabilitarDeshabilitar.isVisible())
+            btnHabilitarDeshabilitar.setVisible(false);
+        
+        if(btnEditar.isVisible())
+            btnEditar.setVisible(false);
+        
         jLBuscador.setText(nuevoTítulo);
         jTFBuscador.setText("");
         modeloTablaProductos.setRowCount(0);
         modeloTablaTallas.setRowCount(0);
-        mostrarTallas(false);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -496,7 +592,7 @@ public class Inventario extends javax.swing.JPanel {
     private javax.swing.JLabel jLFiltroCategoriaEstado;
     private javax.swing.JLabel jLTítuloNuevoProducto;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField jTFBuscador;
     private javax.swing.JTable jTProductos;
     private javax.swing.JTable jTallas;

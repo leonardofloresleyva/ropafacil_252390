@@ -58,7 +58,7 @@ public class ProductoDAO implements iProductoDAO {
             em.getTransaction().begin();
             Producto productoActualizar = em.find(Producto.class, producto.getId());
             if(productoActualizar == null)
-                throw new PersistenciaException("");
+                throw new PersistenciaException("EL producto cuyas talla de desea actualizar su stock no está registrado.");
             
             boolean tieneTalla = false;
             List<StockPorTalla> tallas = productoActualizar.getTallas();
@@ -224,8 +224,8 @@ public class ProductoDAO implements iProductoDAO {
     public List<Producto> buscarPorTalla(String talla) throws PersistenciaException{
         EntityManager em = Conexion.crearConexion();
         try {
-            Query query = em.createQuery("SELECT p FROM Producto p WHERE p.tallas.talla.talla LIKE :talla AND p.tallas.stock > 0", Producto.class);
-            query.setParameter("talla", "%" + talla + "%");
+            Query query = em.createQuery("SELECT p FROM Producto p JOIN StockPorTalla s On p.id = s.producto.id WHERE s.talla.talla = :talla AND s.stock > 0", Producto.class);
+            query.setParameter("talla", talla);
             return query.getResultList();
             
         } catch (Exception ex) {

@@ -9,12 +9,9 @@ import dtos.TallaDTO;
 import exception.NegocioException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.HeadlessException;
 import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -721,11 +718,11 @@ public class Reposicion extends javax.swing.JPanel {
     }
     
     private void tablaDinamica() throws NegocioException{
-        modeloTablaProductos.setRowCount(0);
         campoValido = ControlOperaciones.validarCampoInvalidoTexto(jTFBuscador);
         filtroValido = ControlOperaciones.validarCampoInvalidoComboBox(jCBFiltro);
         
         if(campoValido && filtroValido){
+            modeloTablaProductos.setRowCount(0);
             if(jCBFiltro.getSelectedItem().equals("Nombre")){
                 productosEncontrados = ControlOperaciones.buscarProductosPorNombre(jTFBuscador.getText());
                 cargarTablaProductos();

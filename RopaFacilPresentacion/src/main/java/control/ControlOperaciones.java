@@ -4,16 +4,19 @@ import BO.CompraBO;
 import BO.ProductoBO;
 import BO.TallaBO;
 import Control.JTextFieldLimit;
+import com.github.lgooddatepicker.components.DatePicker;
 import dtos.DetalleCompraTallaDTO;
 import dtos.NuevoProductoDTO;
 import dtos.ProductoDTO;
 import dtos.ReposicionDTO;
 import dtos.StockPorTallaDTO;
 import dtos.TallaDTO;
+import enums.EstadoProducto;
 import exception.NegocioException;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.JComboBox;
@@ -55,6 +58,22 @@ public class ControlOperaciones {
     public static List<ProductoDTO> buscarPorColor(String color) throws NegocioException {return ProductoBO.getInstance().buscarPorColor(color);}
     
     public static List<ProductoDTO> buscarPorTalla(String talla) throws NegocioException{return ProductoBO.getInstance().buscarPorTalla(talla);}
+    
+    public static List<ProductoDTO> buscarPorEstado(EstadoProducto estado) throws NegocioException{return ProductoBO.getInstance().buscarPorEstado(estado);}
+    
+    public static List<ProductoDTO> buscarPorCaja(Integer caja) throws NegocioException{return ProductoBO.getInstance().buscarPorCaja(caja);}
+    
+    public static List<NuevoProductoDTO> buscarNuevosProductosFecha(LocalDate fechaInicio, LocalDate fechaFinal) throws NegocioException{return CompraBO.getInstance().obtenerNuevosProductosFecha(fechaInicio, fechaFinal);}
+    
+    public static List<NuevoProductoDTO> buscarNuevosProductosNombre(String nombre) throws NegocioException{return CompraBO.getInstance().obtenerNuevosProductosNombre(nombre);}
+    
+    public static List<NuevoProductoDTO> buscarNuevosProductosProveedor(String proveedor) throws NegocioException{return CompraBO.getInstance().obtenerNuevosProductosProveedor(proveedor);}
+    
+    public static List<ReposicionDTO> buscarReposicionesFecha(LocalDate fechaInicio, LocalDate fechaFinal) throws NegocioException{return CompraBO.getInstance().obtenerReposicionesFecha(fechaInicio, fechaFinal);}
+    
+    public static List<ReposicionDTO> buscarReposicionesNombre(String nombre) throws NegocioException{return CompraBO.getInstance().obtenerReposicionesNombre(nombre);}
+    
+    public static List<ReposicionDTO> buscarReposicionesProveedor(String proveedor) throws NegocioException{return CompraBO.getInstance().obtenerReposicionesProveedor(proveedor);}
     
     public static void configurarCamposTexto(JTextField campo){
         for(KeyListener keyListener : Arrays.asList(campo.getKeyListeners()))
@@ -121,6 +140,10 @@ public class ControlOperaciones {
     }
     
     public static boolean validarCampoInvalidoComboBox(JComboBox comboBox){
-        return !comboBox.getSelectedItem().equals("N/A");
+        return comboBox.getSelectedItem() != null && !comboBox.getSelectedItem().equals("N/A");
+    }
+    
+    public static boolean validarFechaInvalida(DatePicker picker){
+        return picker.getDate() != null;
     }
 }

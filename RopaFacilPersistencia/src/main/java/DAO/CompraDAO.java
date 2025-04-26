@@ -14,9 +14,12 @@ import entidades.Talla;
 import entidades.TipoPrenda;
 import exception.PersistenciaException;
 import interfaces.iCompraDAO;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 /**
  *
@@ -171,10 +174,109 @@ public class CompraDAO implements iCompraDAO {
             em.getTransaction().commit();
             return compra;
             
-        } catch (Exception ex) {
+        } catch (PersistenciaException ex) {
             em.getTransaction().rollback();
             throw new PersistenciaException(ex.getMessage(), ex);
         }finally {
+            em.close();
+        }
+    }
+    
+    @Override
+    public List<NuevoProducto> obtenerNuevosProductosFecha(LocalDate fechaInicial, LocalDate fechaFinal) throws PersistenciaException{
+        EntityManager em = Conexion.crearConexion();
+        try {
+            Query query = em.createQuery("SELECT c FROM NuevoProducto c WHERE c.fechaHora BETWEEN :fechaInicial AND :fechaFinal", NuevoProducto.class);
+            query.setParameter("fechaInicial", LocalDateTime.of(fechaInicial.getYear(), fechaInicial.getMonth(), fechaInicial.getDayOfMonth(),0, 0, 0));
+            query.setParameter("fechaFinal", LocalDateTime.of(fechaFinal.getYear(), fechaFinal.getMonth(), fechaFinal.getDayOfMonth(),0, 0, 0));
+            return query.getResultList();
+            
+        } catch (Exception ex) {
+            throw new PersistenciaException("Ha ocurrido un error al verificar la existencia del producto.");
+            
+        } finally {
+            em.close();
+        }
+    }
+    
+    @Override
+    public List<Reposicion> obtenerReposicionesFecha(LocalDate fechaInicial, LocalDate fechaFinal) throws PersistenciaException{
+        EntityManager em = Conexion.crearConexion();
+        try {
+            Query query = em.createQuery("SELECT c FROM Reposicion c WHERE c.fechaHora BETWEEN :fechaInicial AND :fechaFinal", Reposicion.class);
+            
+            query.setParameter("fechaInicial", LocalDateTime.of(fechaInicial.getYear(), fechaInicial.getMonth(), fechaInicial.getDayOfMonth(),0, 0, 0));
+            query.setParameter("fechaFinal", LocalDateTime.of(fechaFinal.getYear(), fechaFinal.getMonth(), fechaFinal.getDayOfMonth(),0, 0, 0));
+            return query.getResultList();
+            
+        } catch (Exception ex) {
+            throw new PersistenciaException("Ha ocurrido un error al verificar la existencia del producto.");
+            
+        } finally {
+            em.close();
+        }
+    }
+    
+    @Override
+    public List<NuevoProducto> obtenerNuevosProductosNombre(String nombre) throws PersistenciaException{
+        EntityManager em = Conexion.crearConexion();
+        try {
+            Query query = em.createQuery("SELECT c FROM NuevoProducto c WHERE c.productoComprado.nombre LIKE :nombre", NuevoProducto.class);
+            query.setParameter("nombre", "%" + nombre + "%");
+            return query.getResultList();
+            
+        } catch (Exception ex) {
+            throw new PersistenciaException("Ha ocurrido un error al verificar la existencia del producto.");
+            
+        } finally {
+            em.close();
+        }
+    }
+    
+    @Override
+    public List<Reposicion> obtenerReposicionesNombre(String nombre) throws PersistenciaException{
+        EntityManager em = Conexion.crearConexion();
+        try {
+            Query query = em.createQuery("SELECT c FROM Reposicion c WHERE c.productoComprado.nombre LIKE :nombre", Reposicion.class);
+            query.setParameter("nombre", "%" + nombre + "%");
+            return query.getResultList();
+            
+        } catch (Exception ex) {
+            throw new PersistenciaException("Ha ocurrido un error al verificar la existencia del producto.");
+            
+        } finally {
+            em.close();
+        }
+    }
+    
+    @Override
+    public List<NuevoProducto> obtenerNuevosProductosProveedor(String proveedor) throws PersistenciaException{
+        EntityManager em = Conexion.crearConexion();
+        try {
+            Query query = em.createQuery("SELECT c FROM NuevoProducto c WHERE c.productoComprado.proveedor.proveedor LIKE :proveedor", NuevoProducto.class);
+            query.setParameter("proveedor", "%" + proveedor + "%");
+            return query.getResultList();
+            
+        } catch (Exception ex) {
+            throw new PersistenciaException("Ha ocurrido un error al verificar la existencia del producto.");
+            
+        } finally {
+            em.close();
+        }
+    }
+    
+    @Override
+    public List<Reposicion> obtenerReposicionesProveedor(String proveedor) throws PersistenciaException{
+        EntityManager em = Conexion.crearConexion();
+        try {
+            Query query = em.createQuery("SELECT c FROM Reposicion c WHERE c.productoComprado.proveedor.proveedor LIKE :proveedor", Reposicion.class);
+            query.setParameter("proveedor", "%" + proveedor + "%");
+            return query.getResultList();
+            
+        } catch (Exception ex) {
+            throw new PersistenciaException("Ha ocurrido un error al verificar la existencia del producto.");
+            
+        } finally {
             em.close();
         }
     }
