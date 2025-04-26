@@ -31,8 +31,8 @@ public class Inventario extends javax.swing.JPanel {
     private boolean campoValido;
     private boolean filtroValido;
     private boolean categoriaValida;
-    private  DefaultTableModel modeloTablaProductos;
-    private  DefaultTableModel modeloTablaTallas;
+    private final  DefaultTableModel modeloTablaProductos;
+    private final  DefaultTableModel modeloTablaTallas;
     private List<ProductoDTO> productosEncontrados;
     /**
      * Constructor por defecto.

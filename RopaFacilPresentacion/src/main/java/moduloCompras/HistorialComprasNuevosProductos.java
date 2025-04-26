@@ -45,7 +45,7 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
         jLFechaFinal.setVisible(false);
         jDCFechaInicio.setVisible(false);
         jDCFechaFinal.setVisible(false);
-        jTallas.setVisible(false);
+        jTallasCompradas.setVisible(false);
         
         comprasEncontradas = new ArrayList<>();
         
@@ -53,9 +53,9 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
         modeloTablaProductos.setRowCount(0);
         jTProductos.setModel(modeloTablaProductos);
         
-        modeloTablaTallas = (DefaultTableModel) jTallas.getModel();
+        modeloTablaTallas = (DefaultTableModel) jTallasCompradas.getModel();
         modeloTablaTallas.setRowCount(0);
-        jTallas.setModel(modeloTablaTallas);
+        jTallasCompradas.setModel(modeloTablaTallas);
         
         ControlOperaciones.configurarCamposTexto(jTFBuscador);
         
@@ -90,8 +90,8 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
         jDCFechaFinal = new com.github.lgooddatepicker.components.DatePicker();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTProductos = new javax.swing.JTable();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTallas = new javax.swing.JTable();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTallasCompradas = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setForeground(new java.awt.Color(0, 0, 0));
@@ -232,19 +232,22 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
 
         add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 1050, 340));
 
-        jTallas.setBackground(new java.awt.Color(255, 255, 255));
-        jTallas.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jTallas.setForeground(new java.awt.Color(0, 0, 0));
-        jTallas.setModel(new javax.swing.table.DefaultTableModel(
+        jTallasCompradas.setBackground(new java.awt.Color(255, 255, 255));
+        jTallasCompradas.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jTallasCompradas.setForeground(new java.awt.Color(0, 0, 0));
+        jTallasCompradas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
                 "Talla", "Cantidad"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false
@@ -258,11 +261,11 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jTallas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jTallas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane2.setViewportView(jTallas);
+        jTallasCompradas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        jTallasCompradas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(jTallasCompradas);
 
-        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1092, 210, 180, 140));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 210, 150, 220));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
@@ -431,9 +434,10 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
     private void cargarTablaTallas(){
         if(!comprasEncontradas.isEmpty()){
             List<DetalleCompraTallaDTO> tallas = comprasEncontradas.get(jTProductos.getSelectedRow()).getTallasCompradas();
-            tallas.stream().forEach(e -> {
-                modeloTablaTallas.addRow(new Object[] {e.getTalla().getTalla(), e.getCantidadComprada().toString()});
-            });
+            jTallasCompradas.setVisible(true);
+            for(DetalleCompraTallaDTO talla : tallas){
+                modeloTablaTallas.addRow(new Object[]{talla.getTalla().getTalla(), talla.getCantidadComprada()});
+            }
         }
     }
     
@@ -473,10 +477,10 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
     private javax.swing.JLabel jLFechaInicio;
     private javax.swing.JLabel jLFiltroBusqueda;
     private javax.swing.JLabel jLTítuloNuevoProducto;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField jTFBuscador;
     private javax.swing.JTable jTProductos;
-    private javax.swing.JTable jTallas;
+    private javax.swing.JTable jTallasCompradas;
     // End of variables declaration//GEN-END:variables
 }
