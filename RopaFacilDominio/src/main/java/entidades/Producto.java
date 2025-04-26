@@ -81,7 +81,7 @@ public class Producto implements Serializable {
     /**
      * Lista de stock de tallas del producto.
      */
-    @OneToMany(mappedBy = "producto", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "producto", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<StockPorTalla> tallas = new ArrayList<>();
     /**
      * Constructor por defecto del producto.

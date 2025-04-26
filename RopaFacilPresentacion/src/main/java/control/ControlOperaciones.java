@@ -49,6 +49,8 @@ public class ControlOperaciones {
         return CompraBO.getInstance().registrarCompraReposicion(producto, compra, detalleCompraTalla);
     }
     
+    public static boolean actualizarProducto(ProductoDTO producto) throws NegocioException{return ProductoBO.getInstance().actualizarProducto(producto);}
+    
     public static List<ProductoDTO> buscarProductosPorNombre(String nombre) throws NegocioException {return ProductoBO.getInstance().buscarPorNombre(nombre);}
     
     public static List<ProductoDTO> buscarPorTipo(String tipo) throws NegocioException {return ProductoBO.getInstance().buscarPorTipo(tipo);}
@@ -62,6 +64,8 @@ public class ControlOperaciones {
     public static List<ProductoDTO> buscarPorEstado(EstadoProducto estado) throws NegocioException{return ProductoBO.getInstance().buscarPorEstado(estado);}
     
     public static List<ProductoDTO> buscarPorCaja(Integer caja) throws NegocioException{return ProductoBO.getInstance().buscarPorCaja(caja);}
+    
+    public static boolean cambiarEstado(ProductoDTO producto) throws NegocioException{return ProductoBO.getInstance().cambiarEstado(producto);}
     
     public static List<NuevoProductoDTO> buscarNuevosProductosFecha(LocalDate fechaInicio, LocalDate fechaFinal) throws NegocioException{return CompraBO.getInstance().obtenerNuevosProductosFecha(fechaInicio, fechaFinal);}
     

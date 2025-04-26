@@ -42,10 +42,10 @@ public class ProductoBO implements iProductoBO{
     }
 
     @Override
-    public boolean cambiarEstado(ProductoDTO producto, EstadoProducto nuevoEstado) throws NegocioException {
+    public boolean cambiarEstado(ProductoDTO producto) throws NegocioException {
         Producto productoEstado = ProductoMapper.toEntityViejo(producto);
         try {
-            return ProductoDAO.getInstance().cambiarEstado(productoEstado, nuevoEstado);
+            return ProductoDAO.getInstance().cambiarEstado(productoEstado);
         } catch (PersistenciaException ex) {
             throw new NegocioException(ex.getMessage(), ex);
         }

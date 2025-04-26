@@ -1,5 +1,6 @@
 package control;
 
+import dtos.ProductoDTO;
 import moduloVentas.SubmenuVentas;
 import javax.swing.JPanel;
 import menuPrincipal.MenuPrincipal;
@@ -79,10 +80,11 @@ public class ControlFlujo {
         panelActual = Inventario.getInstance();
     }
     
-    public static void mostrarEditarProducto(){
+    public static void mostrarEditarProducto(ProductoDTO producto){
         if(panelActual != null)
             panelActual.setVisible(false);
         EditarProducto.getInstance().setVisible(true);
+        EditarProducto.getInstance().ingresarProducto(producto);
         panelActual = EditarProducto.getInstance();
     }
     

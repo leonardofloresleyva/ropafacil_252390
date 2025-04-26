@@ -1,9 +1,13 @@
 package DAO;
 
 import conexion.Conexion;
+import entidades.CajaAlmacenamiento;
+import entidades.Categoria;
+import entidades.Color;
 import entidades.Producto;
 import entidades.StockPorTalla;
 import entidades.Talla;
+import entidades.TipoPrenda;
 import enums.EstadoProducto;
 import exception.PersistenciaException;
 import interfaces.iProductoDAO;
@@ -35,16 +39,60 @@ public class ProductoDAO implements iProductoDAO {
             Producto productoEncontrado = em.find(Producto.class, producto.getId());
             if(productoEncontrado == null)
                 throw new PersistenciaException("El producto recibido no está registrado.");
-            else
-                em.merge(producto);
             
+            Color nuevoColor = producto.getColor();
+            if(!productoEncontrado.getColor().getColor().equals(nuevoColor.getColor())){
+                Color color = ColorDAO.getInstance().verificarExistencia(nuevoColor.getColor());
+                if(color != null){
+                    productoEncontrado.setColor(color);
+                } else{
+                    color = ColorDAO.getInstance().registrarColor(nuevoColor);
+                    productoEncontrado.setColor(color);
+                }
+            }
+            Categoria nuevaCategoria = producto.getCategoria();
+            if(!productoEncontrado.getCategoria().getCategoria().equals(nuevaCategoria.getCategoria())){
+                Categoria categoria = CategoriaDAO.getInstance().verificarExistencia(nuevaCategoria.getCategoria());
+                if(categoria != null){
+                    productoEncontrado.setCategoria(categoria);
+                } else{
+                    categoria = CategoriaDAO.getInstance().registrarCategoria(categoria);
+                    productoEncontrado.setCategoria(categoria);
+                }
+            }
+            
+            TipoPrenda nuevoTipo = producto.getTipo();
+            if(!productoEncontrado.getTipo().getTipo().equals(nuevoTipo.getTipo())){
+                TipoPrenda tipo = TipoPrendaDAO.getInstance().verificarExistencia(nuevoTipo.getTipo());
+                if(tipo != null){
+                    productoEncontrado.setTipo(tipo);
+                } else{
+                    tipo = TipoPrendaDAO.getInstance().registrarTipo(nuevoTipo);
+                    productoEncontrado.setTipo(tipo);
+                }
+            }
+            
+            CajaAlmacenamiento nuevaCaja = producto.getCaja();
+            if(!productoEncontrado.getCaja().getCaja().equals(nuevaCaja.getCaja())){
+                CajaAlmacenamiento caja = CajaAlmacenamientoDAO.getInstance().verificarExistencia(nuevaCaja.getCaja());
+                if(caja != null){
+                    productoEncontrado.setCaja(caja);
+                } else{
+                    caja = CajaAlmacenamientoDAO.getInstance().registrarCaja(nuevaCaja);
+                    productoEncontrado.setCaja(caja);
+                }
+            }
+            
+            productoEncontrado.setTallas(producto.getTallas());
+            
+            em.merge(productoEncontrado);
             em.getTransaction().commit();
             
             return true;
             
-        } catch (Exception ex) {
+        } catch (PersistenciaException ex) {
             em.getTransaction().rollback();
-            throw new PersistenciaException("Ha ocurrido un error al verificar la existencia del producto.");
+            throw new PersistenciaException(ex.getMessage(), ex);
             
         } finally {
             em.close();
@@ -113,7 +161,7 @@ public class ProductoDAO implements iProductoDAO {
     }
     
     @Override
-    public boolean cambiarEstado(Producto producto, EstadoProducto nuevoEstado) throws PersistenciaException{
+    public boolean cambiarEstado(Producto producto) throws PersistenciaException{
         EntityManager em = Conexion.crearConexion();
         try {
             em.getTransaction().begin();
@@ -122,18 +170,19 @@ public class ProductoDAO implements iProductoDAO {
             if(productoEncontrado == null)
                 throw new PersistenciaException("El producto recibido no existe.");
             
-            if(productoEncontrado.getEstado().equals(nuevoEstado))
-                throw new PersistenciaException("EL producto ya tiene el mismo estado que el recibido.");
-            else{
-                productoEncontrado.setEstado(nuevoEstado);
-                em.merge(productoEncontrado);
-                em.getTransaction().commit();
-            }
+            if(productoEncontrado.getEstado().equals(EstadoProducto.ACTIVO))
+                productoEncontrado.setEstado(EstadoProducto.INACTIVO);
+            else
+                productoEncontrado.setEstado(EstadoProducto.ACTIVO);
+
+            em.merge(productoEncontrado);
+            em.getTransaction().commit();
+            
             return true;
             
-        } catch (Exception ex) {
+        } catch (PersistenciaException ex) {
             em.getTransaction().rollback();
-            throw new PersistenciaException("Ha ocurrido un error al registrar la talla.");
+            throw new PersistenciaException(ex.getMessage(), ex);
             
         } finally {
             em.close();

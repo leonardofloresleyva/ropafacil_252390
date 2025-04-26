@@ -409,11 +409,28 @@ public class Inventario extends javax.swing.JPanel {
     }//GEN-LAST:event_jTProductosMouseClicked
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        ControlFlujo.mostrarEditarProducto();
+        if(!productosEncontrados.isEmpty() && jTProductos.getSelectedRow() != -1){
+            ControlFlujo.mostrarEditarProducto(productosEncontrados.get(jTProductos.getSelectedRow()));
+        }
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnHabilitarDeshabilitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHabilitarDeshabilitarActionPerformed
-        
+        if(!productosEncontrados.isEmpty() && jTProductos.getSelectedRow() != -1){
+            try {
+                ProductoDTO producto = productosEncontrados.get(jTProductos.getSelectedRow());
+                ControlOperaciones.cambiarEstado(producto);
+                
+                modeloTablaProductos.setRowCount(0);
+                modeloTablaTallas.setRowCount(0);
+                productosEncontrados = ControlOperaciones.buscarProductosPorNombre(producto.getNombre());
+                cargarTablaProductos();
+                
+                JOptionPane.showMessageDialog(this, "¡El producto ha sido actualizado con éxito!", "¡Estado actualizado con éxito!", JOptionPane.PLAIN_MESSAGE);
+                
+            } catch (NegocioException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error de búsqueda", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnHabilitarDeshabilitarActionPerformed
 
     private void jCBCategoriaEstadoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCBCategoriaEstadoItemStateChanged

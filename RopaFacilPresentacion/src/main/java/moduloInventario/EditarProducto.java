@@ -2,10 +2,14 @@ package moduloInventario;
 
 import control.ControlFlujo;
 import control.ControlOperaciones;
+import dtos.ProductoDTO;
+import dtos.StockPorTallaDTO;
+import exception.NegocioException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -18,28 +22,40 @@ public class EditarProducto extends javax.swing.JPanel {
     
     private static EditarProducto instance;
     
-    private boolean nombreValido;
-    private boolean colorValido;
-    private boolean tipoValido;
-    private boolean precioVentaValido;
-    private boolean categoriaValida;
-    private boolean cajaValida;
-    private boolean XSValido;
-    private boolean SValido;
-    private boolean MValido;
-    private boolean LValido;
-    private boolean XLValido;
+    private boolean nombreDiferente;
+    private boolean colorDiferente;
+    private boolean tipoDiferente;
+    private boolean precioDiferente;
+    private boolean categoriaDiferente;
+    private boolean cajaDiferente;
+    
+    private boolean XSDiferente;
+    private boolean SDiferente;
+    private boolean MDiferente;
+    private boolean LDiferente;
+    private boolean XDiferente;
+    private ProductoDTO productoEditar;
     /**
      * Constructor por defecto.
      */
     private EditarProducto() {
         initComponents();
-        btnConfirmarEdicion.setEnabled(false);
-        jTFTallaXSInput.setText("0");
-        jTFTallaSInput.setText("0");
-        jTFTallaMInput.setText("0");
-        jTFTallaLInput.setText("0");
-        jTFTallaXLInput.setText("0");
+        btnConfirmarEdicion.setVisible(false);
+        
+        jLTallaXS.setVisible(false);
+        jTFTallaXSInput.setVisible(false);
+        
+        jLTallaS.setVisible(false);
+        jTFTallaSInput.setVisible(false);
+        
+        jLTallaM.setVisible(false);
+        jTFTallaMInput.setVisible(false);
+        
+        jLTallaL.setVisible(false);
+        jTFTallaLInput.setVisible(false);
+        
+        jLTallaXL.setVisible(false);
+        jTFTallaXLInput.setVisible(false);
         
         ControlOperaciones.limiteCaracteres(jTFNombre, 100);
         ControlOperaciones.limiteCaracteres(jTFColor, 50);
@@ -90,7 +106,7 @@ public class EditarProducto extends javax.swing.JPanel {
     private void initComponents() {
 
         jLTítuloNuevoProducto = new javax.swing.JLabel();
-        btnRegresar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
         jTFNombre = new javax.swing.JTextField();
         jLNombre = new javax.swing.JLabel();
         jLCategoria = new javax.swing.JLabel();
@@ -104,7 +120,7 @@ public class EditarProducto extends javax.swing.JPanel {
         jCBCajaAlmacenamiento = new javax.swing.JComboBox<>();
         jLTalla = new javax.swing.JLabel();
         jLTallaS = new javax.swing.JLabel();
-        jLTallaXS1 = new javax.swing.JLabel();
+        jLTallaXS = new javax.swing.JLabel();
         jLTallaM = new javax.swing.JLabel();
         jLTallaL = new javax.swing.JLabel();
         jLTallaXL = new javax.swing.JLabel();
@@ -128,17 +144,17 @@ public class EditarProducto extends javax.swing.JPanel {
         jLTítuloNuevoProducto.setForeground(new java.awt.Color(0, 0, 0));
         jLTítuloNuevoProducto.setText("Edición de Producto");
 
-        btnRegresar.setText("Regresar");
-        btnRegresar.setBackground(new java.awt.Color(0, 0, 0));
-        btnRegresar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 0, true));
-        btnRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnRegresar.setFocusPainted(false);
-        btnRegresar.setFocusable(false);
-        btnRegresar.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
-        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.setBackground(new java.awt.Color(0, 0, 0));
+        btnCancelar.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        btnCancelar.setForeground(new java.awt.Color(255, 255, 255));
+        btnCancelar.setText("Cancelar");
+        btnCancelar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 0, true));
+        btnCancelar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnCancelar.setFocusPainted(false);
+        btnCancelar.setFocusable(false);
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegresarActionPerformed(evt);
+                btnCancelarActionPerformed(evt);
             }
         });
 
@@ -192,12 +208,12 @@ public class EditarProducto extends javax.swing.JPanel {
         jLCajaAlmacenamiento.setForeground(new java.awt.Color(0, 0, 0));
         jLCajaAlmacenamiento.setText("Caja de almacenamiento:");
 
-        jCBCajaAlmacenamiento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N/A", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }));
         jCBCajaAlmacenamiento.setBackground(new java.awt.Color(255, 255, 255));
-        jCBCajaAlmacenamiento.setBorder(null);
-        jCBCajaAlmacenamiento.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jCBCajaAlmacenamiento.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jCBCajaAlmacenamiento.setForeground(new java.awt.Color(0, 0, 0));
+        jCBCajaAlmacenamiento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N/A", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }));
+        jCBCajaAlmacenamiento.setBorder(null);
+        jCBCajaAlmacenamiento.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jCBCajaAlmacenamiento.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jCBCajaAlmacenamientoItemStateChanged(evt);
@@ -216,10 +232,10 @@ public class EditarProducto extends javax.swing.JPanel {
         jLTallaS.setText("S");
         jLTallaS.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        jLTallaXS1.setBackground(new java.awt.Color(255, 255, 255));
-        jLTallaXS1.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
-        jLTallaXS1.setForeground(new java.awt.Color(0, 0, 0));
-        jLTallaXS1.setText("XS");
+        jLTallaXS.setBackground(new java.awt.Color(255, 255, 255));
+        jLTallaXS.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        jLTallaXS.setForeground(new java.awt.Color(0, 0, 0));
+        jLTallaXS.setText("XS");
 
         jLTallaM.setBackground(new java.awt.Color(255, 255, 255));
         jLTallaM.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
@@ -292,26 +308,26 @@ public class EditarProducto extends javax.swing.JPanel {
         jLTalla1.setForeground(new java.awt.Color(0, 0, 0));
         jLTalla1.setText("Cantidad:");
 
-        btnConfirmarEdicion.setText("Confirmar edición");
         btnConfirmarEdicion.setBackground(new java.awt.Color(0, 0, 0));
+        btnConfirmarEdicion.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        btnConfirmarEdicion.setForeground(new java.awt.Color(255, 255, 255));
+        btnConfirmarEdicion.setText("Confirmar edición");
         btnConfirmarEdicion.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 0, true));
         btnConfirmarEdicion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnConfirmarEdicion.setFocusPainted(false);
         btnConfirmarEdicion.setFocusable(false);
-        btnConfirmarEdicion.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        btnConfirmarEdicion.setForeground(new java.awt.Color(255, 255, 255));
         btnConfirmarEdicion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConfirmarEdicionActionPerformed(evt);
             }
         });
 
-        jCBCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N/A", "DAMA", "CABALLERO" }));
         jCBCategoria.setBackground(new java.awt.Color(255, 255, 255));
-        jCBCategoria.setBorder(null);
-        jCBCategoria.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jCBCategoria.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jCBCategoria.setForeground(new java.awt.Color(0, 0, 0));
+        jCBCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N/A", "DAMA", "CABALLERO" }));
+        jCBCategoria.setBorder(null);
+        jCBCategoria.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jCBCategoria.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jCBCategoriaItemStateChanged(evt);
@@ -341,7 +357,7 @@ public class EditarProducto extends javax.swing.JPanel {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jTFNombre)
-                                    .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jCBCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -365,7 +381,7 @@ public class EditarProducto extends javax.swing.JPanel {
                                         .addGroup(layout.createSequentialGroup()
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                                 .addComponent(jLTallaS, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jLTallaXS1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jLTallaXS, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(jLTallaM, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(jLTallaL, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(jLTallaXL, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -421,7 +437,7 @@ public class EditarProducto extends javax.swing.JPanel {
                                 .addComponent(jLTalla1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLTallaXS1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLTallaXS, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jTFTallaXSInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGap(18, 18, 18)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -446,15 +462,15 @@ public class EditarProducto extends javax.swing.JPanel {
                 .addComponent(jTFPrecioVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnConfirmarEdicion, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(65, 65, 65))
         );
 
-        btnRegresar.setBorderPainted(false);
-        btnRegresar.setContentAreaFilled(false);
-        btnRegresar.setOpaque(false);
-        btnRegresar.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
+        btnCancelar.setBorderPainted(false);
+        btnCancelar.setContentAreaFilled(false);
+        btnCancelar.setOpaque(false);
+        btnCancelar.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
             @Override
             public void paint(Graphics g, JComponent c) {
                 Graphics2D g2 = (Graphics2D) g.create();
@@ -483,12 +499,104 @@ public class EditarProducto extends javax.swing.JPanel {
         });
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        ControlFlujo.mostrarSubmenuCompras();
-    }//GEN-LAST:event_btnRegresarActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        jTFNombre.setText("");
+        jTFPrecioVenta.setText("0");
+        jTFTipoPrenda.setText("");
+        jTFColor.setText("");
+
+        jTFTallaXSInput.setText("");
+        jTFTallaSInput.setText("");
+        jTFTallaMInput.setText("");
+        jTFTallaLInput.setText("");
+        jTFTallaXLInput.setText("");
+
+        jCBCategoria.setSelectedItem("N/A");
+        jCBCajaAlmacenamiento.setSelectedItem("N/A");
+                    
+        productoEditar = null;
+        ControlFlujo.mostrarInventario();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnConfirmarEdicionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarEdicionActionPerformed
-        
+        if(productoEditar != null){
+            
+            if(
+                    nombreDiferente || precioDiferente || tipoDiferente || colorDiferente || categoriaDiferente || cajaDiferente
+                                                                ||    
+                                            XSDiferente || SDiferente || MDiferente || LDiferente || XDiferente
+             ){
+                if(nombreDiferente)
+                    productoEditar.setNombre(jTFNombre.getText());
+                
+                if(precioDiferente)
+                    productoEditar.setPrecio(Double.valueOf(jTFPrecioVenta.getText()));
+                
+                if(tipoDiferente)
+                    productoEditar.getTipo().setTipo(jTFTipoPrenda.getText());
+                
+                if(colorDiferente)
+                    productoEditar.getColor().setColor(jTFColor.getText());
+                
+                if(categoriaDiferente)
+                    productoEditar.getCategoria().setCategoria((String) jCBCategoria.getSelectedItem());
+                
+                if(cajaDiferente)
+                    productoEditar.getCaja().setCaja(Integer.valueOf((String) jCBCajaAlmacenamiento.getSelectedItem()));
+                
+                for(StockPorTallaDTO talla: productoEditar.getTallas()){
+                    if(talla.getTalla().getTalla().equals(jLTallaXS.getText()) && XSDiferente){
+                        talla.setStock(Integer.valueOf(jTFTallaXSInput.getText()));
+                        continue;
+                    }
+                    
+                    if(talla.getTalla().getTalla().equals(jLTallaS.getText()) && SDiferente){
+                        talla.setStock(Integer.valueOf(jTFTallaSInput.getText()));
+                        continue;
+                    }
+                    
+                    if(talla.getTalla().getTalla().equals(jLTallaM.getText()) && MDiferente){
+                        talla.setStock(Integer.valueOf(jTFTallaMInput.getText()));
+                        continue;
+                    }
+                    
+                    if(talla.getTalla().getTalla().equals(jLTallaL.getText()) && LDiferente){
+                        talla.setStock(Integer.valueOf(jTFTallaLInput.getText()));
+                        continue;
+                    }
+                    
+                    if(talla.getTalla().getTalla().equals(jLTallaXL.getText()) && XDiferente)
+                        talla.setStock(Integer.valueOf(jTFTallaXLInput.getText()));
+                    
+                }
+                try {
+                    ControlOperaciones.actualizarProducto(productoEditar);
+                    
+                    jTFNombre.setText("");
+                    jTFPrecioVenta.setText("0");
+                    jTFTipoPrenda.setText("");
+                    jTFColor.setText("");
+                    
+                    jTFTallaXSInput.setText("");
+                    jTFTallaSInput.setText("");
+                    jTFTallaMInput.setText("");
+                    jTFTallaLInput.setText("");
+                    jTFTallaXLInput.setText("");
+                    
+                    jCBCategoria.setSelectedItem("N/A");
+                    jCBCajaAlmacenamiento.setSelectedItem("N/A");
+                    
+                    productoEditar = null;
+                    
+                    JOptionPane.showMessageDialog(this, "¡El producto ha sido actualizado con éxito!", "¡Producto actualizado con éxito!", JOptionPane.PLAIN_MESSAGE);
+                    
+                    ControlFlujo.mostrarInventario();
+                    
+                } catch (NegocioException e) {
+                    JOptionPane.showMessageDialog(this, e.getMessage(), "Error de edición", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
     }//GEN-LAST:event_btnConfirmarEdicionActionPerformed
 
     private void jCBCategoriaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCBCategoriaItemStateChanged
@@ -519,32 +627,94 @@ public class EditarProducto extends javax.swing.JPanel {
     }
     
     private void validarCampos(){
-        nombreValido = ControlOperaciones.validarCampoInvalidoTexto(jTFNombre);
-        colorValido = ControlOperaciones.validarCampoInvalidoTexto(jTFColor);
-        tipoValido = ControlOperaciones.validarCampoInvalidoTexto(jTFTipoPrenda);
-        precioVentaValido = ControlOperaciones.validarCampoInvalidoPrecios(jTFPrecioVenta);
-        categoriaValida = ControlOperaciones.validarCampoInvalidoComboBox(jCBCategoria);
-        cajaValida = ControlOperaciones.validarCampoInvalidoComboBox(jCBCajaAlmacenamiento);
-        XSValido = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaXSInput);
-        SValido = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaSInput);
-        MValido = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaMInput);
-        LValido = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaLInput);
-        XLValido = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaXLInput);
-        
-        btnConfirmarEdicion.setEnabled(
-                nombreValido || colorValido || tipoValido 
-                        || 
-                precioVentaValido 
-                        ||
-                categoriaValida || cajaValida 
-                        ||
-                XSValido || SValido || MValido || LValido || XLValido
-        );
+        if(productoEditar != null){
+            nombreDiferente = ControlOperaciones.validarCampoInvalidoTexto(jTFNombre) && !jTFNombre.getText().equals(productoEditar.getNombre());
+            colorDiferente = ControlOperaciones.validarCampoInvalidoTexto(jTFColor) && !jTFColor.getText().equals(productoEditar.getColor().getColor());
+            tipoDiferente = ControlOperaciones.validarCampoInvalidoTexto(jTFTipoPrenda) && !jTFTipoPrenda.getText().equals(productoEditar.getTipo().getTipo());
+            precioDiferente = ControlOperaciones.validarCampoInvalidoPrecios(jTFPrecioVenta) && Double.valueOf(jTFPrecioVenta.getText()) != productoEditar.getPrecio();
+            categoriaDiferente = ControlOperaciones.validarCampoInvalidoComboBox(jCBCategoria) && !jCBCategoria.getSelectedItem().equals(productoEditar.getCategoria().getCategoria());
+            cajaDiferente = ControlOperaciones.validarCampoInvalidoComboBox(jCBCajaAlmacenamiento) && !jCBCajaAlmacenamiento.getSelectedItem().equals(productoEditar.getCaja().getCaja());
+            
+            for(StockPorTallaDTO talla: productoEditar.getTallas()){
+                if(talla.getTalla().getTalla().equals(jLTallaXS.getText())){
+                    XSDiferente = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaXSInput) && Integer.valueOf(jTFTallaXSInput.getText()) != talla.getStock();
+                    continue;
+                }
+                if(talla.getTalla().getTalla().equals(jLTallaS.getText())){
+                    SDiferente = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaSInput) && Integer.valueOf(jTFTallaSInput.getText()) != talla.getStock();
+                    continue;
+                }
+                if(talla.getTalla().getTalla().equals(jLTallaM.getText())){
+                    MDiferente = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaMInput) && Integer.valueOf(jTFTallaMInput.getText()) != talla.getStock();
+                    continue;
+                }
+                if(talla.getTalla().getTalla().equals(jLTallaL.getText())){
+                    LDiferente = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaLInput) && Integer.valueOf(jTFTallaLInput.getText()) != talla.getStock();
+                    continue;
+                }
+                if(talla.getTalla().getTalla().equals(jLTallaXL.getText()))
+                    XDiferente = ControlOperaciones.validarCampoInvalidoTexto(jTFTallaXLInput) && Integer.valueOf(jTFTallaXLInput.getText()) != talla.getStock();
+                
+            }
+
+            btnConfirmarEdicion.setVisible(
+                    nombreDiferente || colorDiferente || tipoDiferente 
+                            || 
+                    precioDiferente 
+                            ||
+                    categoriaDiferente || cajaDiferente 
+                            ||
+                    XSDiferente || SDiferente || MDiferente || LDiferente || XDiferente
+            );
+        }
+    }
+    
+    public void ingresarProducto(ProductoDTO producto){
+        if(producto != null){
+            this.productoEditar = producto;
+            jTFNombre.setText(producto.getNombre());
+            jTFPrecioVenta.setText(producto.getPrecio().toString());
+            jTFColor.setText(producto.getColor().getColor());
+            jTFTipoPrenda.setText(producto.getTipo().getTipo());
+            jCBCajaAlmacenamiento.setSelectedItem(productoEditar.getCaja().getCaja().toString());
+            jCBCategoria.setSelectedItem(productoEditar.getCategoria().getCategoria());
+            for(StockPorTallaDTO talla: producto.getTallas()){
+                if(talla.getTalla().getTalla().equals(jLTallaXS.getText())){
+                    jTFTallaXSInput.setText(talla.getStock().toString());
+                    jLTallaXS.setVisible(true);
+                    jTFTallaXSInput.setVisible(true);
+                    continue;
+                }
+                if(talla.getTalla().getTalla().equals(jLTallaS.getText())){
+                    jTFTallaSInput.setText(talla.getStock().toString());
+                    jLTallaS.setVisible(true);
+                    jTFTallaSInput.setVisible(true);
+                    continue;
+                }
+                if(talla.getTalla().getTalla().equals(jLTallaM.getText())){
+                    jTFTallaMInput.setText(talla.getStock().toString());
+                    jLTallaM.setVisible(true);
+                    jTFTallaMInput.setVisible(true);
+                    continue;
+                }
+                if(talla.getTalla().getTalla().equals(jLTallaL.getText())){
+                    jTFTallaLInput.setText(talla.getStock().toString());
+                    jLTallaL.setVisible(true);
+                    jTFTallaLInput.setVisible(true);
+                    continue;
+                }
+                if(talla.getTalla().getTalla().equals(jLTallaXL.getText())){
+                    jTFTallaXLInput.setText(talla.getStock().toString());
+                    jLTallaXL.setVisible(true);
+                    jTFTallaXLInput.setVisible(true);
+                }
+            }
+        }
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnConfirmarEdicion;
-    private javax.swing.JButton btnRegresar;
     private javax.swing.JComboBox<String> jCBCajaAlmacenamiento;
     private javax.swing.JComboBox<String> jCBCategoria;
     private javax.swing.JLabel jLCajaAlmacenamiento;
@@ -558,7 +728,7 @@ public class EditarProducto extends javax.swing.JPanel {
     private javax.swing.JLabel jLTallaM;
     private javax.swing.JLabel jLTallaS;
     private javax.swing.JLabel jLTallaXL;
-    private javax.swing.JLabel jLTallaXS1;
+    private javax.swing.JLabel jLTallaXS;
     private javax.swing.JLabel jLTipoPrenda;
     private javax.swing.JLabel jLTítuloNuevoProducto;
     private javax.swing.JTextField jTFColor;

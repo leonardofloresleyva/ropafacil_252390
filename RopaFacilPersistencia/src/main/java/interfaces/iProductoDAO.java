@@ -19,7 +19,7 @@ public interface iProductoDAO {
     
     public boolean actualizarStock(Producto producto, Talla talla, int cantidad) throws PersistenciaException;
     
-    public boolean cambiarEstado(Producto producto, EstadoProducto nuevoEstado) throws PersistenciaException;
+    public boolean cambiarEstado(Producto producto) throws PersistenciaException;
     
     public List<Producto> buscarPorNombre(String nombre) throws PersistenciaException;
     
