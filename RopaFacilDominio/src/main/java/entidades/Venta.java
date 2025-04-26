@@ -181,7 +181,7 @@ public class Venta implements Serializable {
      */
     public boolean verificarDetalleVentaTalla(DetalleVentaTalla tallaVendida){
         for(DetalleVentaTalla talla : tallasVendidas){
-            if(talla.getTalla().equals(tallaVendida.getTalla()))
+            if(talla.getTalla().getTalla().equals(tallaVendida.getTalla().getTalla()))
                 return true;
         }
         return false;

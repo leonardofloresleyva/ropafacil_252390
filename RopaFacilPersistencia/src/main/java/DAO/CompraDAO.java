@@ -141,20 +141,21 @@ public class CompraDAO implements iCompraDAO {
             if(productoEncontrado == null)
                 throw new PersistenciaException("El producto asociado no se encuentra registrado");
             
-            
-            
             compra.setFechaHora(LocalDateTime.now());
             int cantidadTotalTallas = 0;
             
             List<DetalleCompraTalla> tallasCompradas = detalleCompraTalla;
-            List<StockPorTalla> tallasProducto = producto.getTallas();
             
             for(DetalleCompraTalla tallaComprada : tallasCompradas){
                 try {
-                    
                     cantidadTotalTallas += tallaComprada.getCantidadComprada();
                     Talla talla = TallaDAO.getInstance().buscarTalla(tallaComprada.getTalla());
-                    tallaComprada.setTalla(talla);
+                    if(talla == null){
+                        talla = TallaDAO.getInstance().registrarTalla(tallaComprada.getTalla());
+                        tallaComprada.setTalla(talla);
+                    } else{
+                        tallaComprada.setTalla(talla);
+                    }
                     ProductoDAO.getInstance().actualizarStock(productoEncontrado, talla, tallaComprada.getCantidadComprada());
                 } catch (PersistenciaException e) {
                     throw new PersistenciaException(e.getMessage(), e);

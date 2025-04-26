@@ -56,33 +56,29 @@ public class ProductoDAO implements iProductoDAO {
         EntityManager em = Conexion.crearConexion();
         try {
             em.getTransaction().begin();
+            Producto productoActualizar = em.find(Producto.class, producto.getId());
+            if(productoActualizar == null)
+                throw new PersistenciaException("");
             
             boolean tieneTalla = false;
-            List<StockPorTalla> tallas = producto.getTallas();
+            List<StockPorTalla> tallas = productoActualizar.getTallas();
             for(StockPorTalla stockPorTalla : tallas){
-                if(stockPorTalla.getTalla().equals(talla)){
+                if(stockPorTalla.getTalla().getTalla().equals(talla.getTalla())){
                     tieneTalla = true;
                     stockPorTalla.setStock(stockPorTalla.getStock() + cantidad);
                     if(stockPorTalla.getStock() < 0)
                         throw new PersistenciaException("El stock resultante de la talla: " + talla.getTalla() + " es menor a cero.");
                 }
             }
-            if(tieneTalla)
-                producto.setTallas(tallas);
-            else{
+            if(!tieneTalla){
+                
                 StockPorTalla nuevaTalla = new StockPorTalla();
                 nuevaTalla.setStock(cantidad);
-                
-                Talla tallaEncontrada = TallaDAO.getInstance().buscarTalla(talla);
-                if(tallaEncontrada != null)
-                    nuevaTalla.setTalla(tallaEncontrada);
-                else{
-                    tallaEncontrada = TallaDAO.getInstance().registrarTalla(talla);
-                    nuevaTalla.setTalla(tallaEncontrada);
-                }
-                producto.agregarTalla(nuevaTalla);
+                nuevaTalla.setTalla(talla);
+                tallas.add(nuevaTalla);
             }
-            em.merge(producto);
+            productoActualizar.setTallas(tallas);
+            em.merge(productoActualizar);
             em.getTransaction().commit();
             return true;
             
@@ -148,14 +144,11 @@ public class ProductoDAO implements iProductoDAO {
     public List<Producto> buscarPorNombre(String nombre) throws PersistenciaException{
         EntityManager em = Conexion.crearConexion();
         try {
-            em.getTransaction().begin();
             Query query = em.createQuery("SELECT p FROM Producto p WHERE p.nombre LIKE :nombre", Producto.class);
             query.setParameter("nombre", "%" + nombre + "%");
-            em.getTransaction().commit();
             return query.getResultList();
             
         } catch (Exception ex) {
-            em.getTransaction().rollback();
             throw new PersistenciaException("Ha ocurrido un error al realizar la consulta.");
             
         } finally {
@@ -167,14 +160,11 @@ public class ProductoDAO implements iProductoDAO {
     public List<Producto> buscarPorEstado(EstadoProducto estado) throws PersistenciaException{
         EntityManager em = Conexion.crearConexion();
         try {
-            em.getTransaction().begin();
             Query query = em.createQuery("SELECT p FROM Producto p WHERE p.estado = :estado", Producto.class);
             query.setParameter("estado", estado);
-            em.getTransaction().commit();
             return query.getResultList();
             
         } catch (Exception ex) {
-            em.getTransaction().rollback();
             throw new PersistenciaException("Ha ocurrido un error al realizar la consulta.");
             
         } finally {
@@ -186,14 +176,11 @@ public class ProductoDAO implements iProductoDAO {
     public List<Producto> buscarPorColor(String color) throws PersistenciaException{
         EntityManager em = Conexion.crearConexion();
         try {
-            em.getTransaction().begin();
             Query query = em.createQuery("SELECT p FROM Producto p WHERE p.color.color LIKE :color", Producto.class);
             query.setParameter("color", "%" + color + "%");
-            em.getTransaction().commit();
             return query.getResultList();
             
         } catch (Exception ex) {
-            em.getTransaction().rollback();
             throw new PersistenciaException("Ha ocurrido un error al realizar la consulta");
             
         } finally {
@@ -205,14 +192,11 @@ public class ProductoDAO implements iProductoDAO {
     public List<Producto> buscarPorTipo(String tipo) throws PersistenciaException{
         EntityManager em = Conexion.crearConexion();
         try {
-            em.getTransaction().begin();
             Query query = em.createQuery("SELECT p FROM Producto p WHERE p.tipo.tipo LIKE :tipo", Producto.class);
             query.setParameter("tipo", "%" + tipo + "%");
-            em.getTransaction().commit();
             return query.getResultList();
             
         } catch (Exception ex) {
-            em.getTransaction().rollback();
             throw new PersistenciaException("Ha ocurrido un error al realizar la consulta");
             
         } finally {
@@ -224,14 +208,11 @@ public class ProductoDAO implements iProductoDAO {
     public List<Producto> buscarPorCategoria(String categoria) throws PersistenciaException{
         EntityManager em = Conexion.crearConexion();
         try {
-            em.getTransaction().begin();
             Query query = em.createQuery("SELECT p FROM Producto p WHERE p.categoria.categoria = :categoria", Producto.class);
             query.setParameter("categoria", categoria);
-            em.getTransaction().commit();
             return query.getResultList();
             
         } catch (Exception ex) {
-            em.getTransaction().rollback();
             throw new PersistenciaException("Ha ocurrido un error al realizar la consulta");
             
         } finally {
@@ -243,14 +224,11 @@ public class ProductoDAO implements iProductoDAO {
     public List<Producto> buscarPorTalla(String talla) throws PersistenciaException{
         EntityManager em = Conexion.crearConexion();
         try {
-            em.getTransaction().begin();
             Query query = em.createQuery("SELECT p FROM Producto p WHERE p.tallas.talla.talla LIKE :talla AND p.tallas.stock > 0", Producto.class);
             query.setParameter("talla", "%" + talla + "%");
-            em.getTransaction().commit();
             return query.getResultList();
             
         } catch (Exception ex) {
-            em.getTransaction().rollback();
             throw new PersistenciaException("Ha ocurrido un error al realizar la consulta");
             
         } finally {
@@ -262,14 +240,11 @@ public class ProductoDAO implements iProductoDAO {
     public List<Producto> buscarPorCaja(Integer numeroCaja) throws PersistenciaException{
         EntityManager em = Conexion.crearConexion();
         try {
-            em.getTransaction().begin();
             Query query = em.createQuery("SELECT p FROM Producto p WHERE p.caja.caja = :caja", Producto.class);
             query.setParameter("caja", numeroCaja);
-            em.getTransaction().commit();
             return query.getResultList();
             
         } catch (Exception ex) {
-            em.getTransaction().rollback();
             throw new PersistenciaException("Ha ocurrido un error al realizar la consulta");
             
         } finally {

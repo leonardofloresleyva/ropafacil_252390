@@ -2,10 +2,14 @@ package moduloCompras;
 
 import control.ControlFlujo;
 import control.ControlOperaciones;
+import dtos.DetalleCompraTallaDTO;
 import dtos.ProductoDTO;
+import dtos.ReposicionDTO;
+import dtos.TallaDTO;
 import exception.NegocioException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.HeadlessException;
 import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.List;
@@ -528,8 +532,58 @@ public class Reposicion extends javax.swing.JPanel {
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void btnConfirmarReposicionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarReposicionActionPerformed
+        ProductoDTO producto = productosEncontrados.get(jTProductos.getSelectedRow());
         
+        List<DetalleCompraTallaDTO> tallasCompradas = new ArrayList<>();
+        if(XSValido){
+            DetalleCompraTallaDTO tallaXS = new DetalleCompraTallaDTO();
+            tallaXS.setCantidadComprada(Integer.valueOf(jTFTallaXSInput.getText()));
+            tallaXS.setTalla(new TallaDTO("XS"));
+            tallasCompradas.add(tallaXS);
+        }
         
+        if(SValido){
+            DetalleCompraTallaDTO tallaS = new DetalleCompraTallaDTO();
+            tallaS.setCantidadComprada(Integer.valueOf(jTFTallaSInput.getText()));
+            tallaS.setTalla(new TallaDTO("S"));
+            tallasCompradas.add(tallaS);
+        }
+        
+        if(MValido){
+            DetalleCompraTallaDTO tallaM = new DetalleCompraTallaDTO();
+            tallaM.setCantidadComprada(Integer.valueOf(jTFTallaMInput.getText()));
+            tallaM.setTalla(new TallaDTO("M"));
+            tallasCompradas.add(tallaM);
+        }
+        
+        if(LValido){
+            DetalleCompraTallaDTO tallaL = new DetalleCompraTallaDTO();
+            tallaL.setCantidadComprada(Integer.valueOf(jTFTallaLInput.getText()));
+            tallaL.setTalla(new TallaDTO("L"));
+            tallasCompradas.add(tallaL);
+        }
+        
+        if(XLValido){
+            DetalleCompraTallaDTO tallaXL = new DetalleCompraTallaDTO();
+            tallaXL.setCantidadComprada(Integer.valueOf(jTFTallaXLInput.getText()));
+            tallaXL.setTalla(new TallaDTO("XL"));
+            tallasCompradas.add(tallaXL);
+        }
+        
+        ReposicionDTO reposicion = new ReposicionDTO();
+        reposicion.setPrecioCompraUnitario(Double.valueOf(jTFPrecioCompraUnitario.getText()));
+        
+        try {
+            
+            ControlOperaciones.registrarCompraReposicion(producto, reposicion, tallasCompradas);
+            
+            jCBFiltro.setSelectedItem("N/A");
+            
+            JOptionPane.showMessageDialog(this, "¡Producto repuesto con éxito!", "¡Reposición exitosa!", JOptionPane.PLAIN_MESSAGE);
+            
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnConfirmarReposicionActionPerformed
 
     private void jCBFiltroItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCBFiltroItemStateChanged

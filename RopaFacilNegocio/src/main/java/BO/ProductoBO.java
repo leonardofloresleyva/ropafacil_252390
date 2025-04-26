@@ -58,9 +58,11 @@ public class ProductoBO implements iProductoBO{
             List<ProductoDTO> productosEncontradosDTO = new ArrayList<>();
             
             List<Producto> productosEncontrados = ProductoDAO.getInstance().buscarPorNombre(nombre);
-            if(!productosEncontrados.isEmpty())
-                productosEncontrados.stream().forEach(e -> {productosEncontradosDTO.add(ProductoMapper.toDTOViejo(e));});
-            
+            if(!productosEncontrados.isEmpty()){
+                for(Producto producto : productosEncontrados){
+                    productosEncontradosDTO.add(ProductoMapper.toDTOViejo(producto));
+                }
+            }
             return productosEncontradosDTO;
         } catch (PersistenciaException e) {
             throw new NegocioException(e.getMessage(), e);

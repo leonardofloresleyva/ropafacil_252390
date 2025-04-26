@@ -38,7 +38,7 @@ public class ControlOperaciones {
         return CompraBO.getInstance().registrarCompraNuevoProducto(producto, tallas, compra, detalleCompraTalla);
     }
     
-    public boolean registrarCompraReposicion(
+    public static boolean registrarCompraReposicion(
             ProductoDTO producto, 
             ReposicionDTO compra, 
             List<DetalleCompraTallaDTO> detalleCompraTalla

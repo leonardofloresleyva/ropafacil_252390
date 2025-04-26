@@ -26,7 +26,7 @@ public class CajaAlmacenamientoMapper {
     
     public static CajaAlmacenamientoDTO toDTONuevo(CajaAlmacenamiento cajaAlmacenamiento){
         CajaAlmacenamientoDTO cajaAlmacenamientoDTO = new CajaAlmacenamientoDTO();
-        cajaAlmacenamiento.setCaja(cajaAlmacenamiento.getCaja());
+        cajaAlmacenamientoDTO.setCaja(cajaAlmacenamiento.getCaja());
         
         return cajaAlmacenamientoDTO;
     }
@@ -34,7 +34,7 @@ public class CajaAlmacenamientoMapper {
     public static CajaAlmacenamientoDTO toDTOViejo(CajaAlmacenamiento cajaAlmacenamiento){
         CajaAlmacenamientoDTO cajaAlmacenamientoDTO = new CajaAlmacenamientoDTO();
         cajaAlmacenamientoDTO.setId(cajaAlmacenamiento.getId());
-        cajaAlmacenamiento.setCaja(cajaAlmacenamiento.getCaja());
+        cajaAlmacenamientoDTO.setCaja(cajaAlmacenamiento.getCaja());
         
         return cajaAlmacenamientoDTO;
     }

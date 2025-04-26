@@ -11,13 +11,7 @@ public class ReposicionMapper {
     
     public static Reposicion toEntityNuevo(ReposicionDTO reposicionDTO){
         Reposicion reposicion = new Reposicion();
-        reposicion.setPrecioCompraUnitario(reposicion.getPrecioCompraUnitario());
-        
-        if(reposicionDTO.getFechaHora() != null)
-            reposicion.setFechaHora(reposicionDTO.getFechaHora());
-        
-        if(reposicionDTO.getTotalCompra() != null)
-            reposicion.setTotalCompra(reposicionDTO.getTotalCompra());
+        reposicion.setPrecioCompraUnitario(reposicionDTO.getPrecioCompraUnitario());
         
         return reposicion;
     }
@@ -26,7 +20,7 @@ public class ReposicionMapper {
         Reposicion reposicion = new Reposicion();
         reposicion.setId(reposicionDTO.getId());
         reposicion.setFechaHora(reposicionDTO.getFechaHora());
-        reposicion.setPrecioCompraUnitario(reposicion.getPrecioCompraUnitario());
+        reposicion.setPrecioCompraUnitario(reposicionDTO.getPrecioCompraUnitario());
         
         reposicion.setProductoComprado(ProductoMapper.toEntityViejo(reposicionDTO.getProductoComprado()));
         reposicion.setTallasCompradas(reposicionDTO.getTallasCompradas().stream().map(e -> DetalleCompraTallaMapper.toEntityViejo(e)).toList());
@@ -37,13 +31,7 @@ public class ReposicionMapper {
     
     public static ReposicionDTO toDTONuevo(Reposicion reposicion){
         ReposicionDTO reposicionDTO = new ReposicionDTO();
-        reposicion.setPrecioCompraUnitario(reposicion.getPrecioCompraUnitario());
-        
-        if(reposicion.getFechaHora() != null)
-            reposicionDTO.setFechaHora(reposicion.getFechaHora());
-        
-        if(reposicion.getTotalCompra() != null)
-            reposicionDTO.setTotalCompra(reposicion.getTotalCompra());
+        reposicionDTO.setPrecioCompraUnitario(reposicion.getPrecioCompraUnitario());
         
         return reposicionDTO;
     }
@@ -52,7 +40,7 @@ public class ReposicionMapper {
         ReposicionDTO reposicionDTO = new ReposicionDTO();
         reposicionDTO.setId(reposicion.getId());
         reposicionDTO.setFechaHora(reposicion.getFechaHora());
-        reposicion.setPrecioCompraUnitario(reposicion.getPrecioCompraUnitario());
+        reposicionDTO.setPrecioCompraUnitario(reposicion.getPrecioCompraUnitario());
         
         reposicionDTO.setProductoComprado(ProductoMapper.toDTOViejo(reposicion.getProductoComprado()));
         reposicionDTO.setTallasCompradas(reposicion.getTallasCompradas().stream().map(e -> DetalleCompraTallaMapper.toDTOViejo(e)).toList());

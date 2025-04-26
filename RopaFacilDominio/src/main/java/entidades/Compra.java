@@ -189,7 +189,7 @@ public abstract class Compra implements Serializable {
      */
     public boolean verificarDetalleCompraTalla(DetalleCompraTalla tallaComprada){
         for(DetalleCompraTalla talla : tallasCompradas){
-            if(talla.getTalla().equals(tallaComprada.getTalla()))
+            if(talla.getTalla().getTalla().equals(tallaComprada.getTalla().getTalla()))
                 return true;
         }
         return false;

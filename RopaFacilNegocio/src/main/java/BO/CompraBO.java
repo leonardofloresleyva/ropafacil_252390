@@ -57,10 +57,15 @@ public class CompraBO implements iCompraBO{
 
     @Override
     public boolean registrarCompraReposicion(ProductoDTO producto, ReposicionDTO compra, List<DetalleCompraTallaDTO> detalleCompraTalla) throws NegocioException {
-        Producto productoNuevo = ProductoMapper.toEntityNuevo(producto);
+        Producto productoNuevo = ProductoMapper.toEntityViejo(producto);
         Reposicion compraNueva = ReposicionMapper.toEntityNuevo(compra);
         List<DetalleCompraTalla> tallasCompradas = detalleCompraTalla.stream().map(e -> DetalleCompraTallaMapper.toEntityNuevo(e)).toList();
-        return true;
+        try {
+            compraNueva = CompraDAO.getInstance().registrarReposicion(productoNuevo, compraNueva, tallasCompradas);
+            return compraNueva.getId() != null;
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @Override

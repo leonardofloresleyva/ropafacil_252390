@@ -22,6 +22,7 @@ public class StockPorTallaMapper {
     
     public static StockPorTalla toEntityViejo(StockPorTallaDTO stockPorTallaDTO){
         StockPorTalla stockPorTalla = new StockPorTalla();
+        stockPorTalla.setId(stockPorTallaDTO.getId());
         stockPorTalla.setStock(stockPorTallaDTO.getStock());
         stockPorTalla.setTalla(TallaMapper.toEntityViejo(stockPorTallaDTO.getTalla()));
         
@@ -43,6 +44,7 @@ public class StockPorTallaMapper {
     
     public static StockPorTallaDTO toDTOViejo(StockPorTalla stockPorTalla){
         StockPorTallaDTO stockPorTallaDTO = new StockPorTallaDTO();
+        stockPorTallaDTO.setId(stockPorTalla.getId());
         stockPorTallaDTO.setStock(stockPorTalla.getStock());
         stockPorTallaDTO.setTalla(TallaMapper.toDTOViejo(stockPorTalla.getTalla()));
         
