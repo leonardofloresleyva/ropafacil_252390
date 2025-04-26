@@ -40,6 +40,12 @@ public class ProductoDAO implements iProductoDAO {
             if(productoEncontrado == null)
                 throw new PersistenciaException("El producto recibido no está registrado.");
             
+            if(!productoEncontrado.getNombre().equals(producto.getNombre()))
+                productoEncontrado.setNombre(producto.getNombre());
+            
+            if(productoEncontrado.getPrecio() != producto.getPrecio())
+                productoEncontrado.setPrecio(producto.getPrecio());
+            
             Color nuevoColor = producto.getColor();
             if(!productoEncontrado.getColor().getColor().equals(nuevoColor.getColor())){
                 Color color = ColorDAO.getInstance().verificarExistencia(nuevoColor.getColor());
