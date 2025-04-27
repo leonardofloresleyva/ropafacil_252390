@@ -106,14 +106,14 @@ public class HistorialComprasReposiciones extends javax.swing.JPanel {
         jLTítuloNuevoProducto.setForeground(new java.awt.Color(0, 0, 0));
         add(jLTítuloNuevoProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 10, -1, -1));
 
-        btnRegresar.setBackground(new java.awt.Color(0, 0, 0));
-        btnRegresar.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
         btnRegresar.setText("Regresar");
+        btnRegresar.setBackground(new java.awt.Color(0, 0, 0));
         btnRegresar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 0, true));
         btnRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnRegresar.setFocusPainted(false);
         btnRegresar.setFocusable(false);
+        btnRegresar.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegresarActionPerformed(evt);
@@ -149,12 +149,12 @@ public class HistorialComprasReposiciones extends javax.swing.JPanel {
         jLBuscador.setForeground(new java.awt.Color(0, 0, 0));
         add(jLBuscador, new org.netbeans.lib.awtextra.AbsoluteConstraints(646, 118, 268, 28));
 
-        jCBFiltro.setBackground(new java.awt.Color(255, 255, 255));
-        jCBFiltro.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        jCBFiltro.setForeground(new java.awt.Color(0, 0, 0));
         jCBFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N/A", "Nombre", "Fecha", "Proveedor" }));
+        jCBFiltro.setBackground(new java.awt.Color(255, 255, 255));
         jCBFiltro.setBorder(null);
         jCBFiltro.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jCBFiltro.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        jCBFiltro.setForeground(new java.awt.Color(0, 0, 0));
         jCBFiltro.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jCBFiltroItemStateChanged(evt);
@@ -223,6 +223,8 @@ public class HistorialComprasReposiciones extends javax.swing.JPanel {
         jTProductos.setForeground(new java.awt.Color(0, 0, 0));
         jTProductos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         jTProductos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTProductos.getTableHeader().setResizingAllowed(false);
+        jTProductos.getTableHeader().setReorderingAllowed(false);
         jTProductos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTProductosMouseClicked(evt);
@@ -232,9 +234,6 @@ public class HistorialComprasReposiciones extends javax.swing.JPanel {
 
         add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 1050, 340));
 
-        jTallasRepuestas.setBackground(new java.awt.Color(255, 255, 255));
-        jTallasRepuestas.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jTallasRepuestas.setForeground(new java.awt.Color(0, 0, 0));
         jTallasRepuestas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -258,8 +257,13 @@ public class HistorialComprasReposiciones extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        jTallasRepuestas.setBackground(new java.awt.Color(255, 255, 255));
+        jTallasRepuestas.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jTallasRepuestas.setForeground(new java.awt.Color(0, 0, 0));
         jTallasRepuestas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         jTallasRepuestas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTallasRepuestas.getTableHeader().setResizingAllowed(false);
+        jTallasRepuestas.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTallasRepuestas);
 
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 210, 170, 220));

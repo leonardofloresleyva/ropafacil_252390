@@ -192,9 +192,6 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
         jDCFechaFinal.setMaximumSize(new java.awt.Dimension(143, 21));
         add(jDCFechaFinal, new org.netbeans.lib.awtextra.AbsoluteConstraints(432, 158, -1, 33));
 
-        jTProductos.setBackground(new java.awt.Color(255, 255, 255));
-        jTProductos.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jTProductos.setForeground(new java.awt.Color(0, 0, 0));
         jTProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null, null},
@@ -221,8 +218,13 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        jTProductos.setBackground(new java.awt.Color(255, 255, 255));
+        jTProductos.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jTProductos.setForeground(new java.awt.Color(0, 0, 0));
         jTProductos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         jTProductos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTProductos.getTableHeader().setResizingAllowed(false);
+        jTProductos.getTableHeader().setReorderingAllowed(false);
         jTProductos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTProductosMouseClicked(evt);
@@ -232,9 +234,6 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
 
         add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 1050, 340));
 
-        jTallasCompradas.setBackground(new java.awt.Color(255, 255, 255));
-        jTallasCompradas.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jTallasCompradas.setForeground(new java.awt.Color(0, 0, 0));
         jTallasCompradas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
@@ -261,8 +260,13 @@ public class HistorialComprasNuevosProductos extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        jTallasCompradas.setBackground(new java.awt.Color(255, 255, 255));
+        jTallasCompradas.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jTallasCompradas.setForeground(new java.awt.Color(0, 0, 0));
         jTallasCompradas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         jTallasCompradas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTallasCompradas.getTableHeader().setResizingAllowed(false);
+        jTallasCompradas.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTallasCompradas);
 
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 210, 150, 220));

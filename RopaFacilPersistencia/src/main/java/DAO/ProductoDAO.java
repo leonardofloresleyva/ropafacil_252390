@@ -348,7 +348,7 @@ public class ProductoDAO implements iProductoDAO {
         EntityManager em = Conexion.crearConexion();
         try {
             Query query = em.createQuery(
-                    "SELECT p FROM Producto p JOIN StockPorTalla s On p.id = s.producto.id WHERE s.talla.talla = :talla AND s.stock > 0", 
+                    "SELECT p FROM Producto p JOIN StockPorTalla s ON p.id = s.producto.id WHERE s.talla.talla = :talla AND s.stock > 0", 
                     Producto.class
             );
             query.setParameter("talla", talla);
@@ -367,7 +367,7 @@ public class ProductoDAO implements iProductoDAO {
         EntityManager em = Conexion.crearConexion();
         try {
             Query query = em.createQuery(
-                    "SELECT p FROM Producto p JOIN StockPorTalla s On p.id = s.producto.id WHERE s.talla.talla = :talla AND s.stock > 0 AND p.estado = :estado", 
+                    "SELECT p FROM Producto p JOIN StockPorTalla s ON p.id = s.producto.id WHERE s.talla.talla = :talla AND s.stock > 0 AND p.estado = :estado", 
                     Producto.class
             );
             query.setParameter("talla", talla);

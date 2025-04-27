@@ -310,6 +310,8 @@ public class Inventario extends javax.swing.JPanel {
         });
         jTallas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         jTallas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTallas.getTableHeader().setResizingAllowed(false);
+        jTallas.getTableHeader().setReorderingAllowed(false);
         jScrollPane3.setViewportView(jTallas);
 
         add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 200, 240, 180));

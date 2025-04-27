@@ -1,11 +1,19 @@
 package moduloVentas;
 
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import control.ControlFlujo;
 import control.ControlOperaciones;
+import dtos.DetalleVentaTallaDTO;
+import dtos.VentaDTO;
+import exception.NegocioException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -20,8 +28,12 @@ public class HistorialVentas extends javax.swing.JPanel {
     
     private boolean campoValido;
     private boolean filtroValido;
+    private boolean fechaInicioValida;
+    private boolean fechaFinalValida;
+    
     private final DefaultTableModel modeloTablaProductos;
     private final DefaultTableModel modeloTablaTallas;
+    private List<VentaDTO> comprasEncontradas;
     /**
      * Constructor por defecto.
      */
@@ -33,18 +45,22 @@ public class HistorialVentas extends javax.swing.JPanel {
         jLFechaFinal.setVisible(false);
         jDCFechaInicio.setVisible(false);
         jDCFechaFinal.setVisible(false);
-        jTallas.setVisible(false);
-        mostrarTallas(false);
+        jTallasVendidas.setVisible(false);
+        
+        comprasEncontradas = new ArrayList<>();
         
         modeloTablaProductos = (DefaultTableModel) jTProductos.getModel();
         modeloTablaProductos.setRowCount(0);
         jTProductos.setModel(modeloTablaProductos);
         
-        modeloTablaTallas = (DefaultTableModel) jTallas.getModel();
+        modeloTablaTallas = (DefaultTableModel) jTallasVendidas.getModel();
         modeloTablaTallas.setRowCount(0);
-        jTallas.setModel(modeloTablaTallas);
+        jTallasVendidas.setModel(modeloTablaTallas);
         
         ControlOperaciones.configurarCamposTexto(jTFBuscador);
+        
+        activarListenerFechas(jDCFechaInicio);
+        activarListenerFechas(jDCFechaFinal);
     }
     
     public static HistorialVentas getInstance(){
@@ -62,20 +78,20 @@ public class HistorialVentas extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLTítuloHistorialVentas = new javax.swing.JLabel();
+        jLTítuloNuevoProducto = new javax.swing.JLabel();
         btnRegresar = new javax.swing.JButton();
         jTFBuscador = new javax.swing.JTextField();
         jLBuscador = new javax.swing.JLabel();
         jCBFiltro = new javax.swing.JComboBox<>();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTProductos = new javax.swing.JTable();
         jLFiltroBusqueda = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTallas = new javax.swing.JTable();
         jDCFechaInicio = new com.github.lgooddatepicker.components.DatePicker();
         jLFechaInicio = new javax.swing.JLabel();
         jLFechaFinal = new javax.swing.JLabel();
         jDCFechaFinal = new com.github.lgooddatepicker.components.DatePicker();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTProductos = new javax.swing.JTable();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTallasVendidas = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setForeground(new java.awt.Color(0, 0, 0));
@@ -84,20 +100,20 @@ public class HistorialVentas extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(1280, 720));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLTítuloHistorialVentas.setText("Historial Ventas");
-        jLTítuloHistorialVentas.setBackground(new java.awt.Color(255, 255, 255));
-        jLTítuloHistorialVentas.setFont(new java.awt.Font("Century Gothic", 1, 72)); // NOI18N
-        jLTítuloHistorialVentas.setForeground(new java.awt.Color(0, 0, 0));
-        add(jLTítuloHistorialVentas, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 10, -1, -1));
+        jLTítuloNuevoProducto.setText("Historial Ventas");
+        jLTítuloNuevoProducto.setBackground(new java.awt.Color(255, 255, 255));
+        jLTítuloNuevoProducto.setFont(new java.awt.Font("Century Gothic", 1, 72)); // NOI18N
+        jLTítuloNuevoProducto.setForeground(new java.awt.Color(0, 0, 0));
+        add(jLTítuloNuevoProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 10, -1, -1));
 
-        btnRegresar.setBackground(new java.awt.Color(0, 0, 0));
-        btnRegresar.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
         btnRegresar.setText("Regresar");
+        btnRegresar.setBackground(new java.awt.Color(0, 0, 0));
         btnRegresar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 0, true));
         btnRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnRegresar.setFocusPainted(false);
         btnRegresar.setFocusable(false);
+        btnRegresar.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegresarActionPerformed(evt);
@@ -120,25 +136,25 @@ public class HistorialVentas extends javax.swing.JPanel {
             }
         });
 
-        jTFBuscador.setBackground(new java.awt.Color(255, 255, 255));
         jTFBuscador.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jTFBuscador.setForeground(new java.awt.Color(0, 0, 0));
+        jTFBuscador.setBackground(new java.awt.Color(255, 255, 255));
         jTFBuscador.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        jTFBuscador.setForeground(new java.awt.Color(0, 0, 0));
         jTFBuscador.setMaximumSize(new java.awt.Dimension(64, 21));
         add(jTFBuscador, new org.netbeans.lib.awtextra.AbsoluteConstraints(646, 158, 601, 33));
 
+        jLBuscador.setText("Nombre del producto:");
         jLBuscador.setBackground(new java.awt.Color(255, 255, 255));
         jLBuscador.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         jLBuscador.setForeground(new java.awt.Color(0, 0, 0));
-        jLBuscador.setText("Nombre del producto:");
         add(jLBuscador, new org.netbeans.lib.awtextra.AbsoluteConstraints(646, 118, 268, 28));
 
-        jCBFiltro.setBackground(new java.awt.Color(255, 255, 255));
-        jCBFiltro.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        jCBFiltro.setForeground(new java.awt.Color(0, 0, 0));
         jCBFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N/A", "Nombre", "Fecha", "Color", "Talla" }));
+        jCBFiltro.setBackground(new java.awt.Color(255, 255, 255));
         jCBFiltro.setBorder(null);
         jCBFiltro.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jCBFiltro.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        jCBFiltro.setForeground(new java.awt.Color(0, 0, 0));
         jCBFiltro.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jCBFiltroItemStateChanged(evt);
@@ -146,94 +162,11 @@ public class HistorialVentas extends javax.swing.JPanel {
         });
         add(jCBFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 117, -1));
 
-        jTProductos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Nombre", "Tipo", "Categoría", "Color", "Precio Unitario", "Total", "Fecha y hora"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTProductos.setBackground(new java.awt.Color(255, 255, 255));
-        jTProductos.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jTProductos.setForeground(new java.awt.Color(0, 0, 0));
-        jTProductos.setMaximumSize(new java.awt.Dimension(375, 0));
-        jTProductos.setMinimumSize(new java.awt.Dimension(375, 0));
-        jTProductos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jTProductos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jTProductos.getTableHeader().setResizingAllowed(false);
-        jTProductos.getTableHeader().setReorderingAllowed(false);
-        jTProductos.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTProductosMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(jTProductos);
-
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(26, 203, 950, 358));
-
         jLFiltroBusqueda.setBackground(new java.awt.Color(255, 255, 255));
         jLFiltroBusqueda.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         jLFiltroBusqueda.setForeground(new java.awt.Color(0, 0, 0));
         jLFiltroBusqueda.setText("Filtro de búsqueda:");
         add(jLFiltroBusqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, 28));
-
-        jTallas.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Talla", "Cantidad", "Subtotal"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Double.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, true
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTallas.setBackground(new java.awt.Color(255, 255, 255));
-        jTallas.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jTallas.setForeground(new java.awt.Color(0, 0, 0));
-        jTallas.setMaximumSize(new java.awt.Dimension(375, 0));
-        jTallas.setMinimumSize(new java.awt.Dimension(375, 0));
-        jTallas.setPreferredSize(new java.awt.Dimension(375, 0));
-        jTallas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jTallas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jTallas.getTableHeader().setResizingAllowed(false);
-        jTallas.getTableHeader().setReorderingAllowed(false);
-        jTallas.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTallasMouseClicked(evt);
-            }
-        });
-        jScrollPane2.setViewportView(jTallas);
-
-        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(997, 203, 250, 133));
 
         jDCFechaInicio.setBackground(new java.awt.Color(255, 255, 255));
         jDCFechaInicio.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
@@ -258,14 +191,90 @@ public class HistorialVentas extends javax.swing.JPanel {
         jDCFechaFinal.setForeground(new java.awt.Color(0, 0, 0));
         jDCFechaFinal.setMaximumSize(new java.awt.Dimension(143, 21));
         add(jDCFechaFinal, new org.netbeans.lib.awtextra.AbsoluteConstraints(432, 158, -1, 33));
+
+        jTProductos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Nombre", "Tipo", "Categoria", "Color", "Precio Venta", "Total", "Fecha y hora"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTProductos.setBackground(new java.awt.Color(255, 255, 255));
+        jTProductos.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jTProductos.setForeground(new java.awt.Color(0, 0, 0));
+        jTProductos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        jTProductos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTProductos.getTableHeader().setResizingAllowed(false);
+        jTProductos.getTableHeader().setReorderingAllowed(false);
+        jTProductos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTProductosMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(jTProductos);
+
+        add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 930, 340));
+
+        jTallasVendidas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Talla", "Cantidad", "Subtotal"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTallasVendidas.setBackground(new java.awt.Color(255, 255, 255));
+        jTallasVendidas.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jTallasVendidas.setForeground(new java.awt.Color(0, 0, 0));
+        jTallasVendidas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        jTallasVendidas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTallasVendidas.getTableHeader().setResizingAllowed(false);
+        jTallasVendidas.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(jTallasVendidas);
+
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 210, 280, 220));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        jCBFiltro.setSelectedItem("N/A");
         jTFBuscador.setText("");
         modeloTablaProductos.setRowCount(0);
         modeloTablaTallas.setRowCount(0);
-        mostrarTallas(false);
-        ControlFlujo.mostrarSubmenuVentas();
+        ControlFlujo.mostrarHistorialCompras();
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void jCBFiltroItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCBFiltroItemStateChanged
@@ -296,18 +305,16 @@ public class HistorialVentas extends javax.swing.JPanel {
 
                 modeloTablaProductos.setRowCount(0);
                 modeloTablaTallas.setRowCount(0);
-                mostrarTallas(false);
                 activarBuscador();
                 
             } else if(jCBFiltro.getSelectedItem().equals("Color")){
                 filtrarBuscador("Color del producto");
-                ControlOperaciones.limiteCaracteres(jTFBuscador, 50);
+                ControlOperaciones.limiteCaracteres(jTFBuscador, 100);
                 activarBuscador();
                 
             } else if(jCBFiltro.getSelectedItem().equals("Talla")){
-                filtrarBuscador("Talla de producto");
-                ControlOperaciones.limiteCaracteres(jTFBuscador, 5);
-                ControlOperaciones.configurarCamposTexto(jTFBuscador);
+                filtrarBuscador("Talla del producto");
+                ControlOperaciones.limiteCaracteres(jTFBuscador, 100);
                 activarBuscador();
                 
             }
@@ -333,47 +340,119 @@ public class HistorialVentas extends javax.swing.JPanel {
                 jTFBuscador.setVisible(false);
             
             modeloTablaProductos.setRowCount(0);
-            mostrarTallas(false);
+            modeloTablaTallas.setRowCount(0);
         }
     }//GEN-LAST:event_jCBFiltroItemStateChanged
 
     private void jTProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTProductosMouseClicked
-        
-        if(ControlOperaciones.validarCampoInvalidoComboBox(jCBFiltro) && jTProductos.getSelectedRow() != -1){
-            mostrarTallas(true);
-            
-        } else{
-            mostrarTallas(false);
+        filtroValido = ControlOperaciones.validarCampoInvalidoComboBox(jCBFiltro);
+        if(filtroValido && jTProductos.getSelectedRow() != -1){
+            modeloTablaTallas.setRowCount(0);
+            cargarTablaTallas();
         }
-            
-        
     }//GEN-LAST:event_jTProductosMouseClicked
 
-    private void jTallasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTallasMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTallasMouseClicked
-
     private void activarBuscador(){
-        jTFBuscador.getDocument().addDocumentListener( new DocumentListener() {
+        jTFBuscador.getDocument().addDocumentListener(new DocumentListener() {
             @Override
-            public void insertUpdate(DocumentEvent e) {tablaDinamica();}
+            public void insertUpdate(DocumentEvent e) {
+                try {
+                    tablaDinamica();
+                } catch (NegocioException ex) {
+                    JOptionPane.showMessageDialog(HistorialVentas.getInstance(), ex.getMessage(), "Error de búsqueda", JOptionPane.ERROR_MESSAGE);
+                }
+            }
 
             @Override
-            public void removeUpdate(DocumentEvent e) {tablaDinamica();}
+            public void removeUpdate(DocumentEvent e) {
+                try {
+                    tablaDinamica();
+                } catch (NegocioException ex) {
+                    JOptionPane.showMessageDialog(HistorialVentas.getInstance(), ex.getMessage(), "Error de búsqueda", JOptionPane.ERROR_MESSAGE);
+                }
+            }
 
             @Override
-            public void changedUpdate(DocumentEvent e) {tablaDinamica();}
+            public void changedUpdate(DocumentEvent e) {
+                try {
+                    tablaDinamica();
+                } catch (NegocioException ex) {
+                    JOptionPane.showMessageDialog(HistorialVentas.getInstance(), ex.getMessage(), "Error de búsqueda", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         });
     }
     
-    private void tablaDinamica(){
+    private void activarListenerFechas(DatePicker picker){
+        picker.addDateChangeListener((DateChangeEvent event) -> {
+            fechaInicioValida = ControlOperaciones.validarFechaInvalida(jDCFechaInicio);
+            fechaFinalValida = ControlOperaciones.validarFechaInvalida(jDCFechaFinal);
+            if(fechaInicioValida && fechaFinalValida){
+                try {
+                    comprasEncontradas = ControlOperaciones.buscarVentasFecha(jDCFechaInicio.getDate(), jDCFechaFinal.getDate());
+                    cargarTablaCompras();
+                } catch (NegocioException ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Error de búsqueda", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+    }
+    
+    private void tablaDinamica() throws NegocioException{
         campoValido = ControlOperaciones.validarCampoInvalidoTexto(jTFBuscador);
+        filtroValido = ControlOperaciones.validarCampoInvalidoComboBox(jCBFiltro);
         
+        if(campoValido && filtroValido){
+            
+            modeloTablaProductos.setRowCount(0);
+            modeloTablaTallas.setRowCount(0);
+            
+            if(jCBFiltro.getSelectedItem().equals("Nombre")){
+                comprasEncontradas = ControlOperaciones.buscarVentasNombre(jTFBuscador.getText());
+                cargarTablaCompras();
+                
+            } else if (jCBFiltro.getSelectedItem().equals("Color")){
+                comprasEncontradas = ControlOperaciones.buscarVentasColor(jTFBuscador.getText());
+                cargarTablaCompras();
+                
+            } else if (jCBFiltro.getSelectedItem().equals("Talla")){
+                comprasEncontradas = ControlOperaciones.buscarVentasTalla(jTFBuscador.getText());
+                cargarTablaCompras();
+            }
+        }
         
     }
     
-    private void mostrarTallas(boolean mostrar){
-        jTallas.setVisible(mostrar);
+    private void cargarTablaCompras(){
+        if(!comprasEncontradas.isEmpty()){
+            for(VentaDTO e : comprasEncontradas){
+                String proveedor = "N/A";
+                if(e.getProductoVendido().getProveedor() != null)
+                    proveedor = e.getProductoVendido().getProveedor().getProveedor();
+                    
+                modeloTablaProductos.addRow(new Object[]{
+                    e.getProductoVendido().getNombre(),
+                    e.getProductoVendido().getTipo().getTipo(),
+                    e.getProductoVendido().getCategoria().getCategoria(),
+                    e.getProductoVendido().getColor().getColor(),
+                    e.getPrecioVenta(),
+                    e.getTotalVenta(),
+                    e.getFechaHora().toString()
+                });
+            }
+        }
+    }
+    
+    private void cargarTablaTallas(){
+        if(!comprasEncontradas.isEmpty()){
+            List<DetalleVentaTallaDTO> tallas = comprasEncontradas.get(jTProductos.getSelectedRow()).getTallasVendidas();
+            jTallasVendidas.setVisible(true);
+            tallas.stream().forEach(e -> {
+                modeloTablaTallas.addRow(new Object[] {
+                    e.getTalla().getTalla(), e.getCantidadVendida().toString(), e.getSubtotalVenta()
+                });
+            });
+        }
     }
     
     private void filtrarBuscador(String nuevoTítulo){
@@ -400,7 +479,6 @@ public class HistorialVentas extends javax.swing.JPanel {
         jTFBuscador.setText("");
         modeloTablaProductos.setRowCount(0);
         modeloTablaTallas.setRowCount(0);
-        mostrarTallas(false);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -412,11 +490,11 @@ public class HistorialVentas extends javax.swing.JPanel {
     private javax.swing.JLabel jLFechaFinal;
     private javax.swing.JLabel jLFechaInicio;
     private javax.swing.JLabel jLFiltroBusqueda;
-    private javax.swing.JLabel jLTítuloHistorialVentas;
+    private javax.swing.JLabel jLTítuloNuevoProducto;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField jTFBuscador;
     private javax.swing.JTable jTProductos;
-    private javax.swing.JTable jTallas;
+    private javax.swing.JTable jTallasVendidas;
     // End of variables declaration//GEN-END:variables
 }

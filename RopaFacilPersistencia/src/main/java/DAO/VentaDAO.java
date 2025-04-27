@@ -78,21 +78,69 @@ public class VentaDAO implements iVentaDAO {
     
     @Override
     public List<Venta> obtenerVentasPorFecha(LocalDate fechaInicio, LocalDate fechaFinal) throws PersistenciaException{
-        return null;
+        EntityManager em = Conexion.crearConexion();
+        try {
+            Query query = em.createQuery("SELECT v FROM Venta v WHERE v.fechaHora BETWEEN :fechaInicial AND :fechaFinal", Venta.class);
+            query.setParameter("fechaInicial", LocalDateTime.of(fechaInicio.getYear(), fechaInicio.getMonth(), fechaInicio.getDayOfMonth(),0, 0, 0));
+            query.setParameter("fechaFinal", LocalDateTime.of(fechaFinal.getYear(), fechaFinal.getMonth(), fechaFinal.getDayOfMonth(),0, 0, 0));
+            return query.getResultList();
+            
+        } catch (Exception ex) {
+            throw new PersistenciaException("Ha ocurrido un error al realizar la consulta por período.");
+            
+        } finally {
+            em.close();
+        }
     }
     
     @Override
     public List<Venta> obtenerVentasPorNombre(String nombre) throws PersistenciaException{
-        return null;
+        EntityManager em = Conexion.crearConexion();
+        try {
+            Query query = em.createQuery("SELECT v FROM Venta v WHERE v.productoVendido.nombre LIKE :nombre", Venta.class);
+            query.setParameter("nombre", "%" + nombre + "%");
+            return query.getResultList();
+            
+        } catch (Exception ex) {
+            throw new PersistenciaException("Ha ocurrido un error al realizar la consulta por nombre.");
+            
+        } finally {
+            em.close();
+        }
     }
     
     @Override
     public List<Venta> obtenerVentasPorColor(String color) throws PersistenciaException{
-        return null;
+        EntityManager em = Conexion.crearConexion();
+        try {
+            Query query = em.createQuery("SELECT v FROM Venta v WHERE v.productoVendido.color.color LIKE :color", Venta.class);
+            query.setParameter("color", "%" + color + "%");
+            return query.getResultList();
+            
+        } catch (Exception ex) {
+            throw new PersistenciaException("Ha ocurrido un error al realizar la consulta por color.");
+            
+        } finally {
+            em.close();
+        }
     }
     
     @Override
     public List<Venta> obtenerVentasPorTalla(String talla) throws PersistenciaException{
-        return null;
+        EntityManager em = Conexion.crearConexion();
+        try {
+            Query query = em.createQuery(
+                    "SELECT v FROM Venta v JOIN DetalleVentaTalla d ON v.id = d.venta.id WHERE d.talla.talla = :talla", 
+                    Venta.class
+            );
+            query.setParameter("talla", talla);
+            return query.getResultList();
+            
+        } catch (Exception ex) {
+            throw new PersistenciaException("Ha ocurrido un error al realizar la consulta por talla.");
+            
+        } finally {
+            em.close();
+        }
     }
 }

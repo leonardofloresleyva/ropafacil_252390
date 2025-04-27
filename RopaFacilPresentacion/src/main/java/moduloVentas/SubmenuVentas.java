@@ -187,7 +187,7 @@ public class SubmenuVentas extends javax.swing.JPanel {
     }//GEN-LAST:event_btnVenderMouseExited
 
     private void btnHistorialVentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHistorialVentasMouseClicked
-        
+        ControlFlujo.mostrarHistorialVentas();
     }//GEN-LAST:event_btnHistorialVentasMouseClicked
 
     private void btnHistorialVentasMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHistorialVentasMouseEntered

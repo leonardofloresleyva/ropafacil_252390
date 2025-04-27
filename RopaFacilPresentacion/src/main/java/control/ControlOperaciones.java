@@ -60,6 +60,14 @@ public class ControlOperaciones {
     
     public static List<ReposicionDTO> buscarReposicionesProveedor(String proveedor) throws NegocioException{return CompraBO.getInstance().obtenerReposicionesProveedor(proveedor);}
     
+    public static List<VentaDTO> buscarVentasNombre(String nombre) throws NegocioException{return VentaBO.getInstance().obtenerVentasPorNombre(nombre);}
+    
+    public static List<VentaDTO> buscarVentasFecha(LocalDate fechaInicio, LocalDate fechaFinal) throws NegocioException{return VentaBO.getInstance().obtenerVentasPorFecha(fechaInicio, fechaFinal);}
+    
+    public static List<VentaDTO> buscarVentasColor(String color) throws NegocioException{return VentaBO.getInstance().obtenerVentasPorColor(color);}
+    
+    public static List<VentaDTO> buscarVentasTalla(String talla) throws NegocioException{return VentaBO.getInstance().obtenerVentasPorTalla(talla);}
+    
     public static boolean actualizarProducto(ProductoDTO producto) throws NegocioException{return ProductoBO.getInstance().actualizarProducto(producto);}
     
     public static List<ProductoDTO> buscarProductosPorNombre(String nombre) throws NegocioException {return ProductoBO.getInstance().buscarPorNombre(nombre);}

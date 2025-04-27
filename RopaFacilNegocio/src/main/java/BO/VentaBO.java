@@ -9,6 +9,7 @@ import exception.NegocioException;
 import exception.PersistenciaException;
 import interfaces.iVentaBO;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import mappers.DetalleVentaTallaMapper;
 import mappers.VentaMapper;
@@ -42,22 +43,50 @@ public class VentaBO implements iVentaBO{
 
     @Override
     public List<VentaDTO> obtenerVentasPorFecha(LocalDate fechaInicio, LocalDate fechaFinal) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<VentaDTO> ventas = new ArrayList<>();
+        try {
+            List<Venta> ventasObtenidas = VentaDAO.getInstance().obtenerVentasPorFecha(fechaInicio, fechaFinal);
+            ventasObtenidas.stream().forEach(e -> ventas.add(VentaMapper.toDTOViejo(e)));
+            return ventas;
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @Override
     public List<VentaDTO> obtenerVentasPorNombre(String nombre) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<VentaDTO> ventas = new ArrayList<>();
+        try {
+            List<Venta> ventasObtenidas = VentaDAO.getInstance().obtenerVentasPorNombre(nombre);
+            ventasObtenidas.stream().forEach(e -> ventas.add(VentaMapper.toDTOViejo(e)));
+            return ventas;
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @Override
     public List<VentaDTO> obtenerVentasPorColor(String color) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<VentaDTO> ventas = new ArrayList<>();
+        try {
+            List<Venta> ventasObtenidas = VentaDAO.getInstance().obtenerVentasPorColor(color);
+            ventasObtenidas.stream().forEach(e -> ventas.add(VentaMapper.toDTOViejo(e)));
+            return ventas;
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @Override
     public List<VentaDTO> obtenerVentasPorTalla(String talla) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<VentaDTO> ventas = new ArrayList<>();
+        try {
+            List<Venta> ventasObtenidas = VentaDAO.getInstance().obtenerVentasPorTalla(talla);
+            ventasObtenidas.stream().forEach(e -> ventas.add(VentaMapper.toDTOViejo(e)));
+            return ventas;
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
     
 }
