@@ -1,16 +1,28 @@
 package moduloVentas;
 
+import control.ControlOperaciones;
+import dtos.DetalleVentaTallaDTO;
+import dtos.StockPorTallaDTO;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JComponent;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
  * @author PC WHITE WOLF
  */
 public class IngresarCantidad extends javax.swing.JDialog {
-
+    
+    private StockPorTallaDTO tallaVender;
+    private final List<DetalleVentaTallaDTO> tallasVender;
+    private boolean cantidadValida;
+    private boolean estado;
+    
     /**
      * Creates new form IngresarCantidad
      * @param parent
@@ -19,6 +31,13 @@ public class IngresarCantidad extends javax.swing.JDialog {
     public IngresarCantidad(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setLocationRelativeTo(parent);
+        btnAceptar.setVisible(false);
+        tallasVender = new ArrayList<>();
+        estado = false;
+        ControlOperaciones.configurarCamposCantidades(jTFCantidad);
+        ControlOperaciones.limiteCaracteres(jTFCantidad, 20);
+        validacionDinamica();
     }
 
     /**
@@ -31,30 +50,38 @@ public class IngresarCantidad extends javax.swing.JDialog {
     private void initComponents() {
 
         jPIngresarCantidad = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jLIngresarCantidad = new javax.swing.JLabel();
         jTFCantidad = new javax.swing.JTextField();
         btnCancelar = new javax.swing.JButton();
         btnAceptar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        setMaximumSize(new java.awt.Dimension(300, 200));
-        setMinimumSize(new java.awt.Dimension(300, 200));
+        setMaximumSize(new java.awt.Dimension(600, 300));
+        setMinimumSize(new java.awt.Dimension(600, 300));
         setName("IngresarCantidad"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(300, 200));
+        setPreferredSize(new java.awt.Dimension(600, 300));
+        setResizable(false);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         jPIngresarCantidad.setBackground(new java.awt.Color(255, 255, 255));
         jPIngresarCantidad.setForeground(new java.awt.Color(0, 0, 0));
-        jPIngresarCantidad.setMaximumSize(new java.awt.Dimension(300, 200));
-        jPIngresarCantidad.setMinimumSize(new java.awt.Dimension(300, 200));
+        jPIngresarCantidad.setMaximumSize(new java.awt.Dimension(600, 300));
+        jPIngresarCantidad.setMinimumSize(new java.awt.Dimension(600, 300));
+        jPIngresarCantidad.setPreferredSize(new java.awt.Dimension(600, 300));
+        jPIngresarCantidad.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Ingrese la cantidad a vender:");
-        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLIngresarCantidad.setBackground(new java.awt.Color(255, 255, 255));
+        jLIngresarCantidad.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
+        jLIngresarCantidad.setForeground(new java.awt.Color(0, 0, 0));
+        jLIngresarCantidad.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLIngresarCantidad.setText("Ingrese la cantidad a vender:");
+        jLIngresarCantidad.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPIngresarCantidad.add(jLIngresarCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, -1, 36));
 
         jTFCantidad.setBackground(new java.awt.Color(255, 255, 255));
         jTFCantidad.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
@@ -62,6 +89,7 @@ public class IngresarCantidad extends javax.swing.JDialog {
         jTFCantidad.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         jTFCantidad.setText("0");
         jTFCantidad.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        jPIngresarCantidad.add(jTFCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 120, 130, 33));
 
         btnCancelar.setBackground(new java.awt.Color(255, 255, 255));
         btnCancelar.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
@@ -74,6 +102,22 @@ public class IngresarCantidad extends javax.swing.JDialog {
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarActionPerformed(evt);
+            }
+        });
+        jPIngresarCantidad.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 92, 39));
+        btnCancelar.setBorderPainted(false);
+        btnCancelar.setContentAreaFilled(false);
+        btnCancelar.setOpaque(false);
+        btnCancelar.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                // Pinta un fondo redondeado
+                g2.setColor(c.getBackground());
+                g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), 20, 20);
+                super.paint(g2, c);
+                g2.dispose();
             }
         });
 
@@ -90,55 +134,7 @@ public class IngresarCantidad extends javax.swing.JDialog {
                 btnAceptarActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout jPIngresarCantidadLayout = new javax.swing.GroupLayout(jPIngresarCantidad);
-        jPIngresarCantidad.setLayout(jPIngresarCantidadLayout);
-        jPIngresarCantidadLayout.setHorizontalGroup(
-            jPIngresarCantidadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPIngresarCantidadLayout.createSequentialGroup()
-                .addGap(0, 33, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(23, 23, 23))
-            .addGroup(jPIngresarCantidadLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPIngresarCantidadLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jTFCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(91, 91, 91))
-        );
-        jPIngresarCantidadLayout.setVerticalGroup(
-            jPIngresarCantidadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPIngresarCantidadLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTFCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-                .addGroup(jPIngresarCantidadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14))
-        );
-
-        btnCancelar.setBorderPainted(false);
-        btnCancelar.setContentAreaFilled(false);
-        btnCancelar.setOpaque(false);
-        btnCancelar.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
-            @Override
-            public void paint(Graphics g, JComponent c) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                // Pinta un fondo redondeado
-                g2.setColor(c.getBackground());
-                g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), 20, 20);
-                super.paint(g2, c);
-                g2.dispose();
-            }
-        });
+        jPIngresarCantidad.add(btnAceptar, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 180, 92, 39));
         btnAceptar.setBorderPainted(false);
         btnAceptar.setContentAreaFilled(false);
         btnAceptar.setOpaque(false);
@@ -159,28 +155,98 @@ public class IngresarCantidad extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPIngresarCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPIngresarCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPIngresarCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPIngresarCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        dispose();
+        jLIngresarCantidad.setText("Ingrese la cantidad a vender");
+        jTFCantidad.setText("0");
+        setVisible(false);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        
+        if(tallaVender != null && tallasVender != null){
+            DetalleVentaTallaDTO tallaVenta = new DetalleVentaTallaDTO();
+            tallaVenta.setTalla(tallaVender.getTalla());
+            tallaVenta.setCantidadVendida(Integer.valueOf(jTFCantidad.getText()));
+            tallasVender.add(tallaVenta);
+            if(!estado)
+                estado = true;
+            jLIngresarCantidad.setText("Ingrese la cantidad a vender");
+            jTFCantidad.setText("0");
+            setVisible(false);
+        }
     }//GEN-LAST:event_btnAceptarActionPerformed
 
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        if(tallaVender != null){
+            jLIngresarCantidad.setText("Ingresar cantidad para " + tallaVender.getTalla().getTalla() + ":");
+        } else{
+            jLIngresarCantidad.setText("Ingrese la cantidad a vender");
+            jTFCantidad.setText("0");
+        }
+    }//GEN-LAST:event_formComponentShown
+    
+    public void agregarTalla(StockPorTallaDTO talla){
+        if(talla != null){
+            this.tallaVender = talla;
+            jLIngresarCantidad.setText("Ingresar cantidad para " + tallaVender.getTalla().getTalla() + ":");
+        }
+    }
+    
+    private void validacionDinamica(){
+        jTFCantidad.getDocument().addDocumentListener( new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                validarCampo();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                validarCampo();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                validarCampo();
+            }
+        });
+    }
+    
+    private void validarCampo(){
+        cantidadValida = ControlOperaciones.validarCampoInvalidoCantidades(jTFCantidad) && (tallaVender.getStock() - Integer.valueOf(jTFCantidad.getText())) >= 0;
+        if(cantidadValida){
+            jLIngresarCantidad.setText("Ingresar cantidad para " + tallaVender.getTalla().getTalla() + ":");
+            btnAceptar.setVisible(true);
+        } else{
+            if(!jTFCantidad.getText().isEmpty()){
+                jLIngresarCantidad.setText("La cantidad ingresada supera el stock disponible de la talla " + tallaVender.getTalla().getTalla());
+                btnAceptar.setVisible(false);
+            } else{
+                jLIngresarCantidad.setText("Por favor, ingrese una cantidad para la talla " + tallaVender.getTalla().getTalla());
+                btnAceptar.setVisible(false);
+            }
+            
+        }
+    }
+    
+    public void setTallaVender(StockPorTallaDTO talla){this.tallaVender = talla;}
+    
+    public boolean getEstado(){return this.estado;}
+    
+    public List<DetalleVentaTallaDTO> getTallas(){return this.tallasVender;}
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLIngresarCantidad;
     private javax.swing.JPanel jPIngresarCantidad;
     private javax.swing.JTextField jTFCantidad;
     // End of variables declaration//GEN-END:variables

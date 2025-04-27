@@ -316,6 +316,7 @@ public class Inventario extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        jCBFiltro.setSelectedItem("N/A");
         jTFBuscador.setText("");
         modeloTablaProductos.setRowCount(0);
         modeloTablaTallas.setRowCount(0);;
@@ -523,6 +524,7 @@ public class Inventario extends javax.swing.JPanel {
     
     private void cargarTablaTallas(){
         if(!productosEncontrados.isEmpty()){
+            modeloTablaTallas.setRowCount(0);
             List<StockPorTallaDTO> tallas = productosEncontrados.get(jTProductos.getSelectedRow()).getTallas();
             tallas.stream().forEach(e -> {
                 modeloTablaTallas.addRow(new Object[] {e.getTalla().getTalla(), e.getStock()});

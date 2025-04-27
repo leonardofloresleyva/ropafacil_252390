@@ -1,6 +1,7 @@
 package control;
 
 import dtos.ProductoDTO;
+import dtos.VentaDTO;
 import moduloVentas.SubmenuVentas;
 import javax.swing.JPanel;
 import menuPrincipal.MenuPrincipal;
@@ -95,10 +96,11 @@ public class ControlFlujo {
         panelActual = SubmenuVentas.getInstance();
     }
     
-    public static void mostrarVender(){
+    public static void mostrarVender(VentaDTO venta){
         if(panelActual != null)
             panelActual.setVisible(false);
         Vender.getInstance().setVisible(true);
+        Vender.getInstance().agregarVenta(venta);
         panelActual = Vender.getInstance();
     }
     

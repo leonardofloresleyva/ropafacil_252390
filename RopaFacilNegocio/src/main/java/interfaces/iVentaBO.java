@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface iVentaBO {
     
-    public boolean registarVenta(VentaDTO venta, ProductoDTO producto, List<DetalleVentaTallaDTO> tallasVendidas) throws NegocioException;
+    public boolean registarVenta(VentaDTO venta, List<DetalleVentaTallaDTO> tallasVendidas) throws NegocioException;
     
     public List<VentaDTO> obtenerVentasPorFecha(LocalDate fechaInicio, LocalDate fechaFinal) throws NegocioException;
     

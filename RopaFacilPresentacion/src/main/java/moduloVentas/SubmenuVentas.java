@@ -175,7 +175,7 @@ public class SubmenuVentas extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVenderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVenderMouseClicked
-        ControlFlujo.mostrarVender();
+        ControlFlujo.mostrarVender(null);
     }//GEN-LAST:event_btnVenderMouseClicked
 
     private void btnVenderMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVenderMouseEntered

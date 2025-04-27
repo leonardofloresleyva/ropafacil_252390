@@ -13,10 +13,9 @@ public class DetalleVentaTallaMapper {
     
     public static DetalleVentaTalla toEntityNuevo(DetalleVentaTallaDTO detalleVentaTallaDTO){
         DetalleVentaTalla detalleVentaTalla = new DetalleVentaTalla();
-        detalleVentaTalla.setId(detalleVentaTallaDTO.getId());
         detalleVentaTalla.setCantidadVendida(detalleVentaTallaDTO.getCantidadVendida());
         detalleVentaTalla.setSubtotalVenta(detalleVentaTallaDTO.getSubtotalVenta());
-        detalleVentaTalla.setTalla(TallaMapper.toEntityNuevo(detalleVentaTallaDTO.getTalla()));
+        detalleVentaTalla.setTalla(TallaMapper.toEntityViejo(detalleVentaTallaDTO.getTalla()));
         
         return detalleVentaTalla;
     }
@@ -37,14 +36,9 @@ public class DetalleVentaTallaMapper {
     
     public static DetalleVentaTallaDTO toDTONuevo(DetalleVentaTalla detalleVentaTalla){
         DetalleVentaTallaDTO detalleVentaTallaDTO = new DetalleVentaTallaDTO();
-        detalleVentaTallaDTO.setId(detalleVentaTalla.getId());
         detalleVentaTallaDTO.setCantidadVendida(detalleVentaTalla.getCantidadVendida());
         detalleVentaTallaDTO.setSubtotalVenta(detalleVentaTalla.getSubtotalVenta());
-        detalleVentaTallaDTO.setTalla(TallaMapper.toDTONuevo(detalleVentaTalla.getTalla()));
-        
-        VentaDTO ventaDTO = new VentaDTO();
-        ventaDTO.setId(detalleVentaTalla.getVenta().getId());
-        detalleVentaTallaDTO.setVenta(ventaDTO);
+        detalleVentaTallaDTO.setTalla(TallaMapper.toDTOViejo(detalleVentaTalla.getTalla()));
         
         return detalleVentaTallaDTO;
     }

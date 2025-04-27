@@ -1,14 +1,17 @@
 package moduloVentas;
 
 import control.ControlFlujo;
+import control.ControlOperaciones;
 import dtos.ProductoDTO;
 import dtos.VentaDTO;
+import exception.NegocioException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 
@@ -64,6 +67,7 @@ public class Vender extends javax.swing.JPanel {
         modeloTablaTallas = (DefaultTableModel) jTallas.getModel();
         modeloTablaTallas.setRowCount(0);
         jTallas.setModel(modeloTablaTallas);
+        jTallas.setVisible(true);
     }
     
     public static Vender getInstance(){
@@ -85,13 +89,13 @@ public class Vender extends javax.swing.JPanel {
         btnRegresar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTProductos = new javax.swing.JTable();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTallas = new javax.swing.JTable();
         btnConfirmarVenta = new javax.swing.JButton();
         btnQuitarProducto = new javax.swing.JButton();
         btnAgregarTalla = new javax.swing.JButton();
         jLTotal = new javax.swing.JLabel();
         jFTotal = new javax.swing.JFormattedTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTallas = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setForeground(new java.awt.Color(0, 0, 0));
@@ -176,43 +180,6 @@ public class Vender extends javax.swing.JPanel {
         jScrollPane1.setViewportView(jTProductos);
 
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, 840, 358));
-
-        jTallas.setBackground(new java.awt.Color(255, 255, 255));
-        jTallas.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jTallas.setForeground(new java.awt.Color(0, 0, 0));
-        jTallas.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Talla", "Cantidad", "Subtotal"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Double.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, true
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTallas.setMaximumSize(new java.awt.Dimension(375, 0));
-        jTallas.setMinimumSize(new java.awt.Dimension(375, 0));
-        jTallas.setPreferredSize(new java.awt.Dimension(375, 0));
-        jTallas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jTallas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jTallas.getTableHeader().setResizingAllowed(false);
-        jTallas.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(jTallas);
-
-        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 130, 320, 133));
 
         btnConfirmarVenta.setBackground(new java.awt.Color(0, 0, 0));
         btnConfirmarVenta.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
@@ -317,6 +284,38 @@ public class Vender extends javax.swing.JPanel {
         jFTotal.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         jFTotal.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         add(jFTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 540, 140, 40));
+
+        jTallas.setBackground(new java.awt.Color(255, 255, 255));
+        jTallas.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jTallas.setForeground(new java.awt.Color(0, 0, 0));
+        jTallas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Talla", "Cantidad", "Subtotal"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTallas.getTableHeader().setResizingAllowed(false);
+        jTallas.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(jTallas);
+
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 130, 350, 280));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
@@ -338,7 +337,31 @@ public class Vender extends javax.swing.JPanel {
     }//GEN-LAST:event_jTProductosMouseClicked
 
     private void btnConfirmarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarVentaActionPerformed
-        
+        if(ventas != null && !ventas.isEmpty()){
+            List<VentaDTO> ventasEliminar = new ArrayList<>();
+            VentaDTO ventaActual = new VentaDTO();
+            try {
+                for(VentaDTO venta : ventas){
+                    ventaActual = venta;
+                    ControlOperaciones.registrarVenta(venta, venta.getTallasVendidas());
+                    ventasEliminar.add(venta);
+                }
+                JOptionPane.showMessageDialog(this, "¡Compra registrada con éxito!", "Registro completado", JOptionPane.INFORMATION_MESSAGE);
+                ventas.clear();
+                jFTotal.setText("0.00");
+                modeloTablaProductos.setRowCount(0);
+                modeloTablaTallas.setRowCount(0);
+                
+            } catch (NegocioException e) {
+                ventasEliminar.stream().forEach(venta -> ventas.remove(venta));
+                String mensaje = String.format(
+                        "No se registró correctamente la venta cuyo nombre del producto es %s y su color es %s. "
+                                + "Causa: %s. Recomendamos retirar el producto de la lista.", 
+                        ventaActual.getProductoVendido().getNombre(), ventaActual.getProductoVendido().getColor().getColor(), e.getMessage()
+                );
+                JOptionPane.showMessageDialog(this, mensaje, "Error en el registro de una venta", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnConfirmarVentaActionPerformed
 
     private void btnQuitarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarProductoActionPerformed
@@ -354,10 +377,28 @@ public class Vender extends javax.swing.JPanel {
     
     public void agregarVenta(VentaDTO venta){
         if(venta != null){
+            boolean productoEncontrado = false;
             if(ventas == null)
                 ventas = new ArrayList<>();
-            ventas.add(venta);
-            cargarVentas();
+            
+            else if(!ventas.isEmpty()){
+                for(VentaDTO ventaDTO : ventas){
+                    if(ventaDTO.getProductoVendido().getId() == venta.getProductoVendido().getId()){
+                        JOptionPane.showMessageDialog(
+                                this, 
+                                "El producto asociado a la nueva venta ya se encuentra agregado. Agregue un producto diferente o quite el producto de la lista.", 
+                                "Producto ya agregado", 
+                                JOptionPane.ERROR_MESSAGE
+                        );
+                        productoEncontrado = true;
+                        break;
+                    }
+                }
+            }
+            if(!productoEncontrado){
+                ventas.add(venta);
+                cargarVentas();
+            }
         }
     }
     

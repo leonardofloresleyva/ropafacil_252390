@@ -17,15 +17,25 @@ public interface iProductoBO {
     
     public List<ProductoDTO> buscarPorNombre(String nombre) throws NegocioException;
     
+    public List<ProductoDTO> buscarProductoActivoPorNombre(String nombre) throws NegocioException;
+    
     public List<ProductoDTO> buscarPorEstado(EstadoProducto estado) throws NegocioException;
     
     public List<ProductoDTO> buscarPorColor(String color) throws NegocioException;
     
+    public List<ProductoDTO> buscarProductoActivoPorColor(String color) throws NegocioException;
+    
     public List<ProductoDTO> buscarPorTipo(String tipo) throws NegocioException;
+    
+    public List<ProductoDTO> buscarProductoActivoPorTipo(String tipo) throws NegocioException;
     
     public List<ProductoDTO> buscarPorCategoria(String categoria) throws NegocioException;
     
+    public List<ProductoDTO> buscarProductoActivoPorCategoria(String categoria) throws NegocioException;
+    
     public List<ProductoDTO> buscarPorTalla(String talla) throws NegocioException;
+    
+    public List<ProductoDTO> buscarProductoActivoPorTalla(String talla) throws NegocioException;
     
     public List<ProductoDTO> buscarPorCaja(Integer numeroCaja) throws NegocioException;
     

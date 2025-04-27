@@ -266,6 +266,7 @@ public class HistorialComprasReposiciones extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        jCBFiltro.setSelectedItem("N/A");
         jTFBuscador.setText("");
         modeloTablaProductos.setRowCount(0);
         modeloTablaTallas.setRowCount(0);

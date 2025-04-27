@@ -11,7 +11,9 @@ public class VentaMapper {
     
     public static Venta toEntityNuevo(VentaDTO ventaDTO){
         Venta venta = new Venta();
-        venta.setPrecioVenta(ventaDTO.getPrecioVenta());
+        venta.setProductoVendido(ProductoMapper.toEntityViejo(ventaDTO.getProductoVendido()));
+        if(ventaDTO.getTotalVenta() != null)
+            venta.setTotalVenta(ventaDTO.getTotalVenta());
         
         return venta;
     }
@@ -31,7 +33,9 @@ public class VentaMapper {
     
     public static VentaDTO toDTONuevo(Venta venta){
         VentaDTO ventaDTO = new VentaDTO();
-        ventaDTO.setPrecioVenta(venta.getPrecioVenta());
+        ventaDTO.setProductoVendido(ProductoMapper.toDTOViejo(venta.getProductoVendido()));
+        if(venta.getTotalVenta() != null)
+            ventaDTO.setTotalVenta(venta.getTotalVenta());
         
         return ventaDTO;
     }

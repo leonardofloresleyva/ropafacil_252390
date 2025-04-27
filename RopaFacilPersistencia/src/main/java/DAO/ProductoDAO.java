@@ -212,6 +212,23 @@ public class ProductoDAO implements iProductoDAO {
     }
     
     @Override
+    public List<Producto> buscarProductoActivoPorNombre(String nombre) throws PersistenciaException{
+        EntityManager em = Conexion.crearConexion();
+        try {
+            Query query = em.createQuery("SELECT p FROM Producto p WHERE p.nombre LIKE :nombre AND p.estado = :estado", Producto.class);
+            query.setParameter("nombre", "%" + nombre + "%");
+            query.setParameter("estado", EstadoProducto.ACTIVO);
+            return query.getResultList();
+            
+        } catch (Exception ex) {
+            throw new PersistenciaException("Ha ocurrido un error al realizar la consulta.");
+            
+        } finally {
+            em.close();
+        }
+    }
+    
+    @Override
     public List<Producto> buscarPorEstado(EstadoProducto estado) throws PersistenciaException{
         EntityManager em = Conexion.crearConexion();
         try {
@@ -244,11 +261,45 @@ public class ProductoDAO implements iProductoDAO {
     }
     
     @Override
+    public List<Producto> buscarProductoAcivoPorColor(String color) throws PersistenciaException{
+        EntityManager em = Conexion.crearConexion();
+        try {
+            Query query = em.createQuery("SELECT p FROM Producto p WHERE p.color.color LIKE :color AND p.estado = :estado", Producto.class);
+            query.setParameter("color", "%" + color + "%");
+            query.setParameter("estado", EstadoProducto.ACTIVO);
+            return query.getResultList();
+            
+        } catch (Exception ex) {
+            throw new PersistenciaException("Ha ocurrido un error al realizar la consulta");
+            
+        } finally {
+            em.close();
+        }
+    }
+    
+    @Override
     public List<Producto> buscarPorTipo(String tipo) throws PersistenciaException{
         EntityManager em = Conexion.crearConexion();
         try {
             Query query = em.createQuery("SELECT p FROM Producto p WHERE p.tipo.tipo LIKE :tipo", Producto.class);
             query.setParameter("tipo", "%" + tipo + "%");
+            return query.getResultList();
+            
+        } catch (Exception ex) {
+            throw new PersistenciaException("Ha ocurrido un error al realizar la consulta");
+            
+        } finally {
+            em.close();
+        }
+    }
+    
+    @Override
+    public List<Producto> buscarProductoActivoPorTipo(String tipo) throws PersistenciaException{
+        EntityManager em = Conexion.crearConexion();
+        try {
+            Query query = em.createQuery("SELECT p FROM Producto p WHERE p.tipo.tipo LIKE :tipo AND p.estado = :estado", Producto.class);
+            query.setParameter("tipo", "%" + tipo + "%");
+            query.setParameter("estado", EstadoProducto.ACTIVO);
             return query.getResultList();
             
         } catch (Exception ex) {
@@ -276,11 +327,51 @@ public class ProductoDAO implements iProductoDAO {
     }
     
     @Override
+    public List<Producto> buscarProductoActivoPorCategoria(String categoria) throws PersistenciaException{
+        EntityManager em = Conexion.crearConexion();
+        try {
+            Query query = em.createQuery("SELECT p FROM Producto p WHERE p.estado = :estado AND p.categoria.categoria = :categoria", Producto.class);
+            query.setParameter("categoria", categoria);
+            query.setParameter("estado", EstadoProducto.ACTIVO);
+            return query.getResultList();
+            
+        } catch (Exception ex) {
+            throw new PersistenciaException("Ha ocurrido un error al realizar la consulta");
+            
+        } finally {
+            em.close();
+        }
+    }
+    
+    @Override
     public List<Producto> buscarPorTalla(String talla) throws PersistenciaException{
         EntityManager em = Conexion.crearConexion();
         try {
-            Query query = em.createQuery("SELECT p FROM Producto p JOIN StockPorTalla s On p.id = s.producto.id WHERE s.talla.talla = :talla AND s.stock > 0", Producto.class);
+            Query query = em.createQuery(
+                    "SELECT p FROM Producto p JOIN StockPorTalla s On p.id = s.producto.id WHERE s.talla.talla = :talla AND s.stock > 0", 
+                    Producto.class
+            );
             query.setParameter("talla", talla);
+            return query.getResultList();
+            
+        } catch (Exception ex) {
+            throw new PersistenciaException("Ha ocurrido un error al realizar la consulta");
+            
+        } finally {
+            em.close();
+        }
+    }
+    
+    @Override
+    public List<Producto> buscarProductoActivoPorTalla(String talla) throws PersistenciaException{
+        EntityManager em = Conexion.crearConexion();
+        try {
+            Query query = em.createQuery(
+                    "SELECT p FROM Producto p JOIN StockPorTalla s On p.id = s.producto.id WHERE s.talla.talla = :talla AND s.stock > 0 AND p.estado = :estado", 
+                    Producto.class
+            );
+            query.setParameter("talla", talla);
+            query.setParameter("estado", EstadoProducto.ACTIVO);
             return query.getResultList();
             
         } catch (Exception ex) {

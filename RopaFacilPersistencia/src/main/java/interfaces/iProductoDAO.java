@@ -23,15 +23,25 @@ public interface iProductoDAO {
     
     public List<Producto> buscarPorNombre(String nombre) throws PersistenciaException;
     
+    public List<Producto> buscarProductoActivoPorNombre(String nombre) throws PersistenciaException;
+    
     public List<Producto> buscarPorEstado(EstadoProducto estado) throws PersistenciaException;
     
     public List<Producto> buscarPorColor(String color) throws PersistenciaException;
     
+    public List<Producto> buscarProductoAcivoPorColor(String color) throws PersistenciaException;
+    
     public List<Producto> buscarPorTipo(String tipo) throws PersistenciaException;
+    
+    public List<Producto> buscarProductoActivoPorTipo(String tipo) throws PersistenciaException;
     
     public List<Producto> buscarPorCategoria(String categoria) throws PersistenciaException;
     
+    public List<Producto> buscarProductoActivoPorCategoria(String categoria) throws PersistenciaException;
+    
     public List<Producto> buscarPorTalla(String talla) throws PersistenciaException;
+    
+    public List<Producto> buscarProductoActivoPorTalla(String talla) throws PersistenciaException;
     
     public List<Producto> buscarPorCaja(Integer numeroCaja) throws PersistenciaException;
     

@@ -1,12 +1,17 @@
 package BO;
 
+import DAO.VentaDAO;
 import dtos.DetalleVentaTallaDTO;
-import dtos.ProductoDTO;
 import dtos.VentaDTO;
+import entidades.DetalleVentaTalla;
+import entidades.Venta;
 import exception.NegocioException;
+import exception.PersistenciaException;
 import interfaces.iVentaBO;
 import java.time.LocalDate;
 import java.util.List;
+import mappers.DetalleVentaTallaMapper;
+import mappers.VentaMapper;
 
 /**
  *
@@ -25,8 +30,14 @@ public class VentaBO implements iVentaBO{
     }
     
     @Override
-    public boolean registarVenta(VentaDTO venta, ProductoDTO producto, List<DetalleVentaTallaDTO> tallasVendidas) throws NegocioException {
-        return true;
+    public boolean registarVenta(VentaDTO venta, List<DetalleVentaTallaDTO> tallasVendidas) throws NegocioException {
+        Venta ventaNueva = VentaMapper.toEntityNuevo(venta);
+        List<DetalleVentaTalla> tallasVender = tallasVendidas.stream().map(e -> DetalleVentaTallaMapper.toEntityNuevo(e)).toList();
+        try {
+            return VentaDAO.getInstance().registarVenta(ventaNueva, tallasVender);
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @Override
