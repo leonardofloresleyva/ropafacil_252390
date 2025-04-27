@@ -28,9 +28,7 @@ import javax.swing.JTextField;
  */
 public class ControlOperaciones {
     
-    public static boolean registrarTalla(TallaDTO tallaDTO) throws NegocioException{
-        return TallaBO.getInstance().registrarTalla(tallaDTO);
-    }
+    public static boolean registrarTalla(TallaDTO tallaDTO) throws NegocioException{return TallaBO.getInstance().registrarTalla(tallaDTO);}
     
     public static boolean registrarCompra(
             ProductoDTO producto, 
@@ -131,23 +129,13 @@ public class ControlOperaciones {
             campo.setDocument(new JTextFieldLimit(limite));
     }
     
-    public static boolean validarCampoInvalidoTexto(JTextField campo){
-        return !campo.getText().trim().isEmpty();
-    }
+    public static boolean validarCampoInvalidoTexto(JTextField campo){return !campo.getText().trim().isEmpty();}
     
-    public static boolean validarCampoInvalidoPrecios(JTextField campo){
-        return !campo.getText().trim().isEmpty() && Double.parseDouble(campo.getText()) > 0.0;
-    }
+    public static boolean validarCampoInvalidoPrecios(JTextField campo){return !campo.getText().trim().isEmpty() && Double.parseDouble(campo.getText()) > 0.0;}
     
-    public static boolean validarCampoInvalidoCantidades(JTextField campo){
-        return !campo.getText().trim().isEmpty() && Integer.parseInt(campo.getText()) > 0;
-    }
+    public static boolean validarCampoInvalidoCantidades(JTextField campo){return !campo.getText().trim().isEmpty() && Integer.parseInt(campo.getText()) > 0;}
     
-    public static boolean validarCampoInvalidoComboBox(JComboBox comboBox){
-        return comboBox.getSelectedItem() != null && !comboBox.getSelectedItem().equals("N/A");
-    }
+    public static boolean validarCampoInvalidoComboBox(JComboBox comboBox){return comboBox.getSelectedItem() != null && !comboBox.getSelectedItem().equals("N/A");}
     
-    public static boolean validarFechaInvalida(DatePicker picker){
-        return picker.getDate() != null;
-    }
+    public static boolean validarFechaInvalida(DatePicker picker){return picker.getDate() != null;}
 }

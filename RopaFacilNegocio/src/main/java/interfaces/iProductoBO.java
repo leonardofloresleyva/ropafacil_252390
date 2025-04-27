@@ -29,6 +29,4 @@ public interface iProductoBO {
     
     public List<ProductoDTO> buscarPorCaja(Integer numeroCaja) throws NegocioException;
     
-    
-    
 }

@@ -115,6 +115,4 @@ public class ControlFlujo {
         HistorialVentas.getInstance().setVisible(true);
         panelActual = HistorialVentas.getInstance();
     }
-    
-    
 }

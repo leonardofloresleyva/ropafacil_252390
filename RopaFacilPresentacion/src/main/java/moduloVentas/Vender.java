@@ -1,9 +1,13 @@
 package moduloVentas;
 
 import control.ControlFlujo;
+import dtos.ProductoDTO;
+import dtos.VentaDTO;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
@@ -17,6 +21,7 @@ public class Vender extends javax.swing.JPanel {
     private static Vender instance;
     private final DefaultTableModel modeloTablaProductos;
     private final DefaultTableModel modeloTablaTallas;
+    private List<VentaDTO> ventas;
     /**
      * Constructor por defecto.
      */
@@ -24,7 +29,6 @@ public class Vender extends javax.swing.JPanel {
         initComponents();
         jFTotal.setText("0.00");
         jTallas.setVisible(false);
-        mostrarTallas(false);
         btnQuitarProducto.setVisible(false);
         btnConfirmarVenta.setVisible(false);
         
@@ -51,8 +55,7 @@ public class Vender extends javax.swing.JPanel {
                     else
                         btnConfirmarVenta.setVisible(false);
                 }
-                default -> {
-                }
+                default -> {btnConfirmarVenta.setVisible(true);}
             }
         });
         
@@ -103,14 +106,14 @@ public class Vender extends javax.swing.JPanel {
         jLTítuloNuevoProducto.setForeground(new java.awt.Color(0, 0, 0));
         add(jLTítuloNuevoProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 20, -1, -1));
 
-        btnRegresar.setText("Regresar");
         btnRegresar.setBackground(new java.awt.Color(0, 0, 0));
+        btnRegresar.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegresar.setText("Regresar");
         btnRegresar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 0, true));
         btnRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnRegresar.setFocusPainted(false);
         btnRegresar.setFocusable(false);
-        btnRegresar.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegresarActionPerformed(evt);
@@ -133,6 +136,9 @@ public class Vender extends javax.swing.JPanel {
             }
         });
 
+        jTProductos.setBackground(new java.awt.Color(255, 255, 255));
+        jTProductos.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jTProductos.setForeground(new java.awt.Color(0, 0, 0));
         jTProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -156,9 +162,6 @@ public class Vender extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jTProductos.setBackground(new java.awt.Color(255, 255, 255));
-        jTProductos.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jTProductos.setForeground(new java.awt.Color(0, 0, 0));
         jTProductos.setMaximumSize(new java.awt.Dimension(375, 0));
         jTProductos.setMinimumSize(new java.awt.Dimension(375, 0));
         jTProductos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -174,6 +177,9 @@ public class Vender extends javax.swing.JPanel {
 
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, 840, 358));
 
+        jTallas.setBackground(new java.awt.Color(255, 255, 255));
+        jTallas.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jTallas.setForeground(new java.awt.Color(0, 0, 0));
         jTallas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -197,9 +203,6 @@ public class Vender extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jTallas.setBackground(new java.awt.Color(255, 255, 255));
-        jTallas.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jTallas.setForeground(new java.awt.Color(0, 0, 0));
         jTallas.setMaximumSize(new java.awt.Dimension(375, 0));
         jTallas.setMinimumSize(new java.awt.Dimension(375, 0));
         jTallas.setPreferredSize(new java.awt.Dimension(375, 0));
@@ -207,11 +210,6 @@ public class Vender extends javax.swing.JPanel {
         jTallas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jTallas.getTableHeader().setResizingAllowed(false);
         jTallas.getTableHeader().setReorderingAllowed(false);
-        jTallas.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTallasMouseClicked(evt);
-            }
-        });
         jScrollPane2.setViewportView(jTallas);
 
         add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 130, 320, 133));
@@ -325,35 +323,73 @@ public class Vender extends javax.swing.JPanel {
         jFTotal.setText("0.00");
         modeloTablaProductos.setRowCount(0);
         modeloTablaTallas.setRowCount(0);
-        mostrarTallas(false);
         ControlFlujo.mostrarSubmenuVentas();
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void jTProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTProductosMouseClicked
-        if(jTProductos.getSelectedRow() != -1)
+        if(ventas != null && !ventas.isEmpty() && jTProductos.getSelectedRow() != -1){
+            cargarTallas();
+            jLTotal.setVisible(true);
+            jFTotal.setVisible(true);
             btnQuitarProducto.setVisible(true);
+        }
         else
             btnQuitarProducto.setVisible(false);
     }//GEN-LAST:event_jTProductosMouseClicked
-
-    private void jTallasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTallasMouseClicked
-        
-    }//GEN-LAST:event_jTallasMouseClicked
 
     private void btnConfirmarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarVentaActionPerformed
         
     }//GEN-LAST:event_btnConfirmarVentaActionPerformed
 
     private void btnQuitarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarProductoActionPerformed
-        
+        if(ventas != null && !ventas.isEmpty() && jTProductos.getSelectedRow() != -1){
+            ventas.remove(jTProductos.getSelectedRow());
+            cargarVentas();
+        }
     }//GEN-LAST:event_btnQuitarProductoActionPerformed
 
     private void btnAgregarTallaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarTallaActionPerformed
         ControlFlujo.mostrarAgregarProducto();
     }//GEN-LAST:event_btnAgregarTallaActionPerformed
     
-    private void mostrarTallas(boolean mostrar){
-        jTallas.setVisible(mostrar);
+    public void agregarVenta(VentaDTO venta){
+        if(venta != null){
+            if(ventas == null)
+                ventas = new ArrayList<>();
+            ventas.add(venta);
+            cargarVentas();
+        }
+    }
+    
+    private void cargarVentas(){
+        modeloTablaProductos.setRowCount(0);
+        modeloTablaTallas.setRowCount(0);
+        Double total = 0.0;
+        for(VentaDTO venta : ventas){
+            total += venta.getTotalVenta();
+            ProductoDTO productoVendido = venta.getProductoVendido();
+            modeloTablaProductos.addRow(new Object[]{
+                productoVendido.getNombre(),
+                productoVendido.getTipo().getTipo(),
+                productoVendido.getCategoria().getCategoria(),
+                productoVendido.getColor().getColor(),
+                productoVendido.getPrecio(),
+                venta.getTotalVenta()
+            });
+        }
+        jFTotal.setText(total.toString());
+    }
+    
+    private void cargarTallas(){
+        modeloTablaTallas.setRowCount(0);
+        if(ventas != null && modeloTablaProductos.getRowCount() != -1){
+            VentaDTO venta = ventas.get(jTProductos.getSelectedRow());
+            venta.getTallasVendidas().stream().forEach(e -> {
+                modeloTablaTallas.addRow(new Object[]{e.getTalla().getTalla(), e.getCantidadVendida(), e.getSubtotalVenta()});
+            });
+        }
+        
+        
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

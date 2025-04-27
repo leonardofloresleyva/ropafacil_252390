@@ -2,7 +2,6 @@ package BO;
 
 import DAO.ProductoDAO;
 import dtos.ProductoDTO;
-import dtos.StockPorTallaDTO;
 import entidades.Producto;
 import enums.EstadoProducto;
 import exception.NegocioException;
@@ -10,8 +9,6 @@ import exception.PersistenciaException;
 import interfaces.iProductoBO;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import mappers.ProductoMapper;
 
 /**
