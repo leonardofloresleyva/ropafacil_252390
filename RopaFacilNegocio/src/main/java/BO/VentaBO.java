@@ -32,6 +32,16 @@ public class VentaBO implements iVentaBO{
     
     @Override
     public boolean registarVenta(VentaDTO venta, List<DetalleVentaTallaDTO> tallasVendidas) throws NegocioException {
+        
+        if(venta == null)
+            throw new NegocioException("La venta no puede estar vacía");
+        
+        if(venta.getProductoVendido() == null)
+            throw new NegocioException("El producto no puede estar vacío");
+        
+        if(tallasVendidas == null)
+            throw new NegocioException("Las tallas no pueden estar vacías");
+        
         Venta ventaNueva = VentaMapper.toEntityNuevo(venta);
         List<DetalleVentaTalla> tallasVender = tallasVendidas.stream().map(e -> DetalleVentaTallaMapper.toEntityNuevo(e)).toList();
         try {

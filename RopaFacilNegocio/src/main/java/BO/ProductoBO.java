@@ -30,6 +30,30 @@ public class ProductoBO implements iProductoBO{
     @Override
     public boolean actualizarProducto(ProductoDTO producto) throws NegocioException {
         
+        if(producto == null)
+            throw new NegocioException("El producto no puede estar vacío");
+        
+        if(producto.getNombre() == null)
+            throw new NegocioException("El nombre del producto no puede estar vacío");
+        
+        if(producto.getPrecio() == null)
+            throw new NegocioException("El precio del producto no puede estar vacío");
+        
+        if(producto.getEstado() == null)
+            throw new NegocioException("El estado del producto no puede estar vacío");
+        
+        if(producto.getColor() == null)
+            throw new NegocioException("El color del producto no puede estar vacío");
+        
+        if(producto.getCategoria() == null)
+            throw new NegocioException("La categoría del producto no puede estar vacía");
+        
+        if(producto.getTipo() == null)
+            throw new NegocioException("El tipo del producto no puede estar vacío");
+        
+        if(producto.getTallas() == null)
+            throw new NegocioException("Las tallas del producto no pueden estar vacías");
+        
         Producto productoActualizar = ProductoMapper.toEntityViejo(producto);
         try {
             return ProductoDAO.getInstance().actualizarProducto(productoActualizar);
@@ -40,6 +64,31 @@ public class ProductoBO implements iProductoBO{
 
     @Override
     public boolean cambiarEstado(ProductoDTO producto) throws NegocioException {
+        
+        if(producto == null)
+            throw new NegocioException("El producto no puede estar vacío");
+        
+        if(producto.getNombre() == null)
+            throw new NegocioException("El nombre del producto no puede estar vacío");
+        
+        if(producto.getPrecio() == null)
+            throw new NegocioException("El precio del producto no puede estar vacío");
+        
+        if(producto.getEstado() == null)
+            throw new NegocioException("El estado del producto no puede estar vacío");
+        
+        if(producto.getColor() == null)
+            throw new NegocioException("El color del producto no puede estar vacío");
+        
+        if(producto.getCategoria() == null)
+            throw new NegocioException("La categoría del producto no puede estar vacía");
+        
+        if(producto.getTipo() == null)
+            throw new NegocioException("El tipo del producto no puede estar vacío");
+        
+        if(producto.getTallas() == null)
+            throw new NegocioException("Las tallas del producto no pueden estar vacías");
+        
         Producto productoEstado = ProductoMapper.toEntityViejo(producto);
         try {
             return ProductoDAO.getInstance().cambiarEstado(productoEstado);

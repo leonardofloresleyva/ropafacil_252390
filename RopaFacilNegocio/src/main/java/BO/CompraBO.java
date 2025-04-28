@@ -41,6 +41,40 @@ public class CompraBO implements iCompraBO{
     
     @Override
     public boolean registrarCompraNuevoProducto(ProductoDTO producto, List<StockPorTallaDTO> tallas, NuevoProductoDTO compra, List<DetalleCompraTallaDTO> detalleCompraTalla) throws NegocioException {
+        
+        if(producto == null)
+            throw new NegocioException("El producto no puede estar vacío");
+        
+        if(producto.getNombre() == null)
+            throw new NegocioException("El nombre del producto no puede estar vacío");
+        
+        if(producto.getPrecio() == null)
+            throw new NegocioException("El precio del producto no puede estar vacío");
+        
+        if(producto.getEstado() == null)
+            throw new NegocioException("El estado del producto no puede estar vacío");
+        
+        if(producto.getColor() == null)
+            throw new NegocioException("El color del producto no puede estar vacío");
+        
+        if(producto.getCategoria() == null)
+            throw new NegocioException("La categoría del producto no puede estar vacía");
+        
+        if(producto.getTipo() == null)
+            throw new NegocioException("El tipo del producto no puede estar vacío");
+        
+        if(producto.getTallas() == null)
+            throw new NegocioException("Las tallas del producto no pueden estar vacías");
+        
+        if(tallas == null)
+            throw new NegocioException("Las tallas no pueden estar vacías");
+        
+        if(compra == null)
+            throw new NegocioException("La compra no puede estar vacía");
+        
+        if(detalleCompraTalla == null)
+            throw new NegocioException("Las tallas a compras no pueden estar vacías");
+        
         Producto productoNuevo = ProductoMapper.toEntityNuevo(producto);
         List<StockPorTalla> tallasNuevas = tallas.stream().map(e -> StockPorTallaMapper.toEntityNuevo(e)).toList();
         NuevoProducto compraNueva = NuevoProductoMapper.toEntityNuevo(compra);
@@ -56,6 +90,16 @@ public class CompraBO implements iCompraBO{
 
     @Override
     public boolean registrarCompraReposicion(ProductoDTO producto, ReposicionDTO compra, List<DetalleCompraTallaDTO> detalleCompraTalla) throws NegocioException {
+        
+        if(producto == null)
+            throw new NegocioException("El producto no puede estar vacío");
+        
+        if(compra == null)
+            throw new NegocioException("La reposición no puede estar vacía");
+        
+        if(detalleCompraTalla == null)
+            throw new NegocioException("Las tallas a reponer no pueden estar vacías");
+        
         Producto productoNuevo = ProductoMapper.toEntityViejo(producto);
         Reposicion compraNueva = ReposicionMapper.toEntityNuevo(compra);
         List<DetalleCompraTalla> tallasCompradas = detalleCompraTalla.stream().map(e -> DetalleCompraTallaMapper.toEntityNuevo(e)).toList();

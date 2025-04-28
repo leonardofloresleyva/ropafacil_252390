@@ -27,6 +27,10 @@ public class TallaBO implements iTallaBO {
     @Override
     public boolean registrarTalla(TallaDTO tallaDTO) throws NegocioException {
         try {
+            
+            if(tallaDTO == null)
+                throw new NegocioException("La talla no puede estar vacía");
+            
             Talla talla = TallaMapper.toEntityNuevo(tallaDTO);
             if(TallaDAO.getInstance().buscarTalla(talla) != null)
                 return false;
