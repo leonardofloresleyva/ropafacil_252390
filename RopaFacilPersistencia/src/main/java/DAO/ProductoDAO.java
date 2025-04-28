@@ -62,7 +62,7 @@ public class ProductoDAO implements iProductoDAO {
                 if(categoria != null){
                     productoEncontrado.setCategoria(categoria);
                 } else{
-                    categoria = CategoriaDAO.getInstance().registrarCategoria(categoria);
+                    categoria = CategoriaDAO.getInstance().registrarCategoria(nuevaCategoria);
                     productoEncontrado.setCategoria(categoria);
                 }
             }
